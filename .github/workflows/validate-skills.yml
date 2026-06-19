@@ -18,6 +18,9 @@ jobs:
           set -e
           for dir in skills/*/; do
             skill="$(basename "$dir")"
+            if [[ "$skill" == _* ]]; then
+              continue
+            fi
             file="${dir}SKILL.md"
             if [[ ! -f "$file" ]]; then
               echo "Missing SKILL.md in $skill"

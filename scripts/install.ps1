@@ -32,7 +32,9 @@ if ($Codex) { $Targets += @{ Name = "Codex"; Dir = Join-Path $env:USERPROFILE ".
 $SkillNames = if ($Skill) {
     @($Skill)
 } else {
-    Get-ChildItem $SkillsSrc -Directory | ForEach-Object { $_.Name }
+    Get-ChildItem $SkillsSrc -Directory |
+        Where-Object { -not $_.Name.StartsWith('_') } |
+        ForEach-Object { $_.Name }
 }
 
 function Install-OneSkill {

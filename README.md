@@ -7,6 +7,7 @@ Monorepo Agent Skills для экосистемы **DotCore** ([Agent Skills spe
 | Скилл | Назначение | Триггеры |
 |-------|------------|----------|
 | [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` | «обнови README», «настрой правила проекта» |
+| [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Новый скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
 
@@ -15,7 +16,7 @@ Monorepo Agent Skills для экосистемы **DotCore** ([Agent Skills spe
 Клонируй репозиторий и установи все скиллы в user-level каталоги агентов:
 
 ```powershell
-git clone https://github.com/YOUR_USER/dotcore-skills.git
+git clone https://github.com/network-user/dotcore-skills.git
 cd dotcore-skills
 .\scripts\install.ps1
 ```
@@ -23,7 +24,7 @@ cd dotcore-skills
 macOS / Linux:
 
 ```bash
-git clone https://github.com/YOUR_USER/dotcore-skills.git
+git clone https://github.com/network-user/dotcore-skills.git
 cd dotcore-skills
 chmod +x scripts/install.sh
 ./scripts/install.sh
@@ -61,6 +62,18 @@ LINK=1 ./scripts/install.sh
 your-repo/.cursor/skills/generate-readme/
 ```
 
+Скрипт из monorepo:
+
+```powershell
+.\scripts\sync-to-project.ps1 -Target C:\path\to\your-repo
+.\scripts\sync-to-project.ps1 -Target . -Skill generate-readme -Link -ClaudeMirror
+```
+
+```bash
+./scripts/sync-to-project.sh /path/to/your-repo generate-readme
+LINK=1 CLAUDE=1 ./scripts/sync-to-project.sh .
+```
+
 Опционально зеркало для Claude Code:
 
 ```text
@@ -71,18 +84,22 @@ your-repo/.claude/skills/generate-readme/
 
 ```text
 dotcore-skills/
-├── AGENTS.md                 # инструкции для агентов в этом repo
-├── LICENSE                   # MIT
-├── README.md                 # этот файл
+├── AGENTS.md
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
 ├── docs/
-│   └── ADDING_SKILL.md       # как добавить скилл
+│   └── ADDING_SKILL.md
 ├── scripts/
-│   ├── install.ps1           # Windows
-│   └── install.sh            # macOS / Linux
+│   ├── install.ps1
+│   ├── install.sh
+│   ├── sync-to-project.ps1
+│   └── sync-to-project.sh
 ├── skills/
-│   └── generate-readme/      # README + project rules DotCore
+│   ├── _template/            # заготовка нового скилла
+│   └── generate-readme/
 └── .github/workflows/
-    └── validate-skills.yml   # проверка SKILL.md frontmatter
+    └── validate-skills.yml
 ```
 
 ## Разработка
