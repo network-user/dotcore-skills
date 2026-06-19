@@ -33,7 +33,8 @@ dotcore-skills/
 | Установить все скиллы (Windows) | `.\scripts\install.ps1` |
 | Установить все скиллы (Unix) | `./scripts/install.sh` |
 | Один скилл | `.\scripts\install.ps1 -Skill generate-readme` |
-| Проверка frontmatter | см. `.github/workflows/validate-skills.yml` |
+| Скопировать в проект | `.\scripts\sync-to-project.ps1 -Target <path>` |
+| Проверка frontmatter | `.github/workflows/validate-skills.yml` |
 
 ## Чего не делать
 
