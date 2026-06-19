@@ -1,0 +1,106 @@
+{
+  "schema": "dotcore-skills/agent-targets/v1",
+  "spec": "https://agentskills.io/specification",
+  "userTargets": [
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "dir": ".cursor/skills"
+    },
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "dir": ".claude/skills"
+    },
+    {
+      "id": "codex",
+      "name": "OpenAI Codex",
+      "dir": ".codex/skills",
+      "promptsDir": ".codex/prompts",
+      "promptSource": "codex-prompt.md"
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "dir": ".gemini/skills"
+    },
+    {
+      "id": "agents",
+      "name": "Universal (.agents)",
+      "dir": ".agents/skills",
+      "aliases": ["Gemini CLI", "OpenCode", "Amp", "Kimi", "Replit"]
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "dir": ".config/opencode/skills"
+    },
+    {
+      "id": "goose",
+      "name": "Goose",
+      "dir": ".config/goose/skills"
+    },
+    {
+      "id": "roo",
+      "name": "Roo Code",
+      "dir": ".roo/skills"
+    },
+    {
+      "id": "junie",
+      "name": "Junie",
+      "dir": ".junie/skills"
+    },
+    {
+      "id": "amp",
+      "name": "Amp",
+      "dir": ".config/agents/skills"
+    }
+  ],
+  "projectTargets": [
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "dir": ".cursor/skills"
+    },
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "dir": ".claude/skills"
+    },
+    {
+      "id": "codex",
+      "name": "OpenAI Codex",
+      "dir": ".codex/skills"
+    },
+    {
+      "id": "agents",
+      "name": "Universal (.agents)",
+      "dir": ".agents/skills"
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "dir": ".gemini/skills"
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "dir": ".opencode/skills"
+    },
+    {
+      "id": "goose",
+      "name": "Goose",
+      "dir": ".goose/skills"
+    },
+    {
+      "id": "roo",
+      "name": "Roo Code",
+      "dir": ".roo/skills"
+    },
+    {
+      "id": "junie",
+      "name": "Junie",
+      "dir": ".junie/skills"
+    }
+  ]
+}

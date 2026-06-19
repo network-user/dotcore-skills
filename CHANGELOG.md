@@ -2,6 +2,20 @@
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.1.0] - 2026-06-19
+
+### Added
+
+- Поддержка 10 coding-агентов: Cursor, Claude Code, Codex, Gemini CLI, OpenCode, Goose, Roo Code, Junie, Amp, universal `.agents/`
+- `scripts/agents.targets.json` - единый конфиг user/project путей
+- `docs/AGENTS_PATHS.md` - таблица путей и примеры
+- `install.ps1 -Agent`, `-ListAgents`; `sync-to-project -AllAgents`, `-Agent`
+
+### Changed
+
+- `install.sh` / `sync-to-project.sh` читают `agents.targets.json` (Python 3)
+- `sync-to-project`: `-ClaudeMirror` заменён на `-AllAgents` / `-Agent`
+
 ## [1.0.0] - 2026-06-19
 
 ### Added
@@ -15,4 +29,5 @@
 - CI `.github/workflows/validate-skills.yml` - проверка frontmatter
 - `docs/ADDING_SKILL.md`, корневой `AGENTS.md`
 
+[1.1.0]: https://github.com/network-user/dotcore-skills/releases/tag/v1.1.0
 [1.0.0]: https://github.com/network-user/dotcore-skills/releases/tag/v1.0.0

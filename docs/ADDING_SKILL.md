@@ -35,8 +35,9 @@ description: >-
 ## 4. Обнови monorepo
 
 1. Добавь строку в таблицу скиллов в [README.md](../README.md)
-2. Если нужен Codex slash - добавь `codex-prompt.md` и строку в `scripts/install.ps1`
-3. Запусти `.\scripts\install.ps1` локально для проверки
+2. Если нужен Codex slash - добавь `codex-prompt.md` и `promptSource` в [agents.targets.json](../scripts/agents.targets.json)
+3. Новый агент - пути в `agents.targets.json` и [AGENTS_PATHS.md](../docs/AGENTS_PATHS.md)
+4. Запусти `.\scripts\install.ps1` локально для проверки
 
 ## 5. Шаблон для копирования
 
