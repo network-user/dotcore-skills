@@ -32,9 +32,11 @@ dotcore-skills/
 |----------|---------|
 | Установить все скиллы (Windows) | `.\scripts\install.ps1` |
 | Установить все скиллы (Unix) | `./scripts/install.sh` |
+| Список агентов | `.\scripts\install.ps1 -ListAgents` |
+| Выборочно | `.\scripts\install.ps1 -Agent cursor,agents` |
 | Один скилл | `.\scripts\install.ps1 -Skill generate-readme` |
-| Скопировать в проект | `.\scripts\sync-to-project.ps1 -Target <path>` |
-| Проверка frontmatter | `.github/workflows/validate-skills.yml` |
+| Скопировать в проект | `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents` |
+| Пути агентов | [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md) |
 
 ## Чего не делать
 
@@ -46,4 +48,5 @@ dotcore-skills/
 
 - [README.md](README.md) - каталог скиллов
 - [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md) - как добавить новый скилл
+- [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md) - пути Cursor, Claude, Codex, Gemini, OpenCode, Goose, Roo, Junie, Amp
 - [skills/generate-readme/SKILL.md](skills/generate-readme/SKILL.md) - первый скилл

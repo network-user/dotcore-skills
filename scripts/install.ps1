@@ -1,33 +1,56 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Install DotCore Agent Skills to Cursor, Claude Code, and Codex.
+  Install DotCore Agent Skills to supported AI coding agents.
 
 .EXAMPLE
   .\scripts\install.ps1
   .\scripts\install.ps1 -Skill generate-readme
   .\scripts\install.ps1 -Link
+  .\scripts\install.ps1 -Agent cursor,claude,agents
+  .\scripts\install.ps1 -ListAgents
 #>
 param(
     [string]$Skill = "",
     [switch]$Link,
-    [switch]$Cursor = $true,
-    [switch]$Claude = $true,
-    [switch]$Codex = $true
+    [string[]]$Agent = @(),
+    [switch]$ListAgents
 )
 
 $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path $PSScriptRoot -Parent
-
 $SkillsSrc = Join-Path $RepoRoot "skills"
+$ConfigPath = Join-Path $PSScriptRoot "agents.targets.json"
+
 if (-not (Test-Path $SkillsSrc)) {
     Write-Error "skills/ not found at $SkillsSrc"
 }
+if (-not (Test-Path $ConfigPath)) {
+    Write-Error "agents.targets.json not found at $ConfigPath"
+}
 
-$Targets = @()
-if ($Cursor) { $Targets += @{ Name = "Cursor"; Dir = Join-Path $env:USERPROFILE ".cursor\skills" } }
-if ($Claude) { $Targets += @{ Name = "Claude Code"; Dir = Join-Path $env:USERPROFILE ".claude\skills" } }
-if ($Codex) { $Targets += @{ Name = "Codex"; Dir = Join-Path $env:USERPROFILE ".codex\skills" } }
+$config = Get-Content $ConfigPath -Raw | ConvertFrom-Json
+$allTargets = @($config.userTargets)
+
+if ($ListAgents) {
+    Write-Host "Supported agent IDs (user-level):"
+    foreach ($t in $allTargets) {
+        $extra = if ($t.aliases) { " [" + ($t.aliases -join ", ") + "]" } else { "" }
+        Write-Host ("  {0,-10} {1} -> ~/{2}{3}" -f $t.id, $t.name, $t.dir, $extra)
+    }
+    exit 0
+}
+
+$selectedTargets = if ($Agent.Count -gt 0) {
+    $ids = $Agent | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ }
+    $allTargets | Where-Object { $ids -contains $_.id }
+} else {
+    $allTargets
+}
+
+if ($selectedTargets.Count -eq 0) {
+    Write-Error "No matching agents. Use -ListAgents for IDs."
+}
 
 $SkillNames = if ($Skill) {
     @($Skill)
@@ -35,6 +58,16 @@ $SkillNames = if ($Skill) {
     Get-ChildItem $SkillsSrc -Directory |
         Where-Object { -not $_.Name.StartsWith('_') } |
         ForEach-Object { $_.Name }
+}
+
+function Get-UserPath {
+    param([string]$RelativeDir)
+    $parts = $RelativeDir -split '/'
+    $path = $env:USERPROFILE
+    foreach ($part in $parts) {
+        $path = Join-Path $path $part
+    }
+    return $path
 }
 
 function Install-OneSkill {
@@ -63,27 +96,28 @@ function Install-OneSkill {
 Write-Host "dotcore-skills install"
 Write-Host "Source: $SkillsSrc"
 Write-Host "Skills: $($SkillNames -join ', ')"
+Write-Host "Agents: $($selectedTargets.id -join ', ')"
 Write-Host ""
 
-foreach ($t in $Targets) {
-    Write-Host "$($t.Name):"
+foreach ($target in $selectedTargets) {
+    $dir = Get-UserPath $target.dir
+    Write-Host "$($target.name) ($($target.id)):"
     foreach ($name in $SkillNames) {
-        Install-OneSkill -SkillName $name -TargetDir $t.Dir -AgentName $t.Name
+        Install-OneSkill -SkillName $name -TargetDir $dir -AgentName $target.name
     }
-    Write-Host ""
-}
 
-# Codex slash prompts
-if ($Codex) {
-    $PromptsDir = Join-Path $env:USERPROFILE ".codex\prompts"
-    New-Item -ItemType Directory -Force -Path $PromptsDir | Out-Null
-    foreach ($name in $SkillNames) {
-        $PromptSrc = Join-Path (Join-Path $SkillsSrc $name) "codex-prompt.md"
-        if (Test-Path $PromptSrc) {
-            Copy-Item -Force $PromptSrc (Join-Path $PromptsDir "$name.md")
-            Write-Host "  [Codex prompt] $name.md -> $PromptsDir"
+    if ($target.promptsDir -and $target.promptSource) {
+        $PromptsDir = Get-UserPath $target.promptsDir
+        New-Item -ItemType Directory -Force -Path $PromptsDir | Out-Null
+        foreach ($name in $SkillNames) {
+            $PromptSrc = Join-Path (Join-Path $SkillsSrc $name) $target.promptSource
+            if (Test-Path $PromptSrc) {
+                Copy-Item -Force $PromptSrc (Join-Path $PromptsDir "$name.md")
+                Write-Host "  [$($target.name) prompt] $name.md -> $PromptsDir"
+            }
         }
     }
+    Write-Host ""
 }
 
 Write-Host "Done."
