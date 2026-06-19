@@ -1,0 +1,35 @@
+name: Validate DotCore Skills
+on:
+  push:
+    paths:
+      - "skills/**"
+  pull_request:
+    paths:
+      - "skills/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check SKILL.md exists and has frontmatter
+        run: |
+          set -e
+          for dir in skills/*/; do
+            skill="$(basename "$dir")"
+            file="${dir}SKILL.md"
+            if [[ ! -f "$file" ]]; then
+              echo "Missing SKILL.md in $skill"
+              exit 1
+            fi
+            head -1 "$file" | grep -q '^---$' || { echo "No YAML frontmatter in $skill"; exit 1; }
+            grep -q '^name:' "$file" || { echo "No name: in $skill"; exit 1; }
+            grep -q '^description:' "$file" || { echo "No description: in $skill"; exit 1; }
+            name=$(grep '^name:' "$file" | head -1 | sed 's/name:[[:space:]]*//')
+            if [[ "$name" != "$skill" ]]; then
+              echo "Folder name '$skill' != name '$name'"
+              exit 1
+            fi
+            echo "OK: $skill"
+          done
