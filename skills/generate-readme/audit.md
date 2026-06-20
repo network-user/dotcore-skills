@@ -10,6 +10,7 @@
 - [ ] Пути, env-имена, версии, числа сверены с репо
 - [ ] LoC из `code-counter` или явно указан способ подсчёта
 - [ ] Стек-бейджи = реальные зависимости
+- [ ] Лицензия: есть файл `LICENSE` и футер `## Лицензия`; формулировка совпадает с [license.md](license.md)
 
 **0** - выдуманные факты · **1** - мелкие несоответствия · **2** - всё проверено
 
@@ -17,8 +18,8 @@
 
 - [ ] Тон internal doc, русский (или EN-only проект)
 - [ ] Нет `<details>`, centered hero, emoji, LLM-маркеров, длинного тире
-- [ ] Header flat (3), LoC под cover, стек for-the-badge
-- [ ] Архитектура - последняя секция README
+- [ ] Header: 4 бейджа `<img style=flat>` (не `![]()`) в один ряд - Runtime · Platform · Category · **LoC (4-й, в маркерах)**; стек for-the-badge
+- [ ] Архитектура - последняя содержательная секция; `## Лицензия` - футер после неё
 
 ### 3. Обложка и визуал (0-2)
 
@@ -30,6 +31,8 @@
 ### 4. Правила агента (0-2)
 
 - [ ] `AGENTS.md` перегенерирован, 80-150 строк, без marketing
+- [ ] Rule-файл агента запуска создан (папка создана, если отсутствовала)
+- [ ] `AGENTS.md`/`CLAUDE.md`/`.mdc` содержат правило README-sync (обновлять README при глобальных изменениях)
 - [ ] `.cursor/rules/dotcore-project.mdc` обновлён
 - [ ] `CLAUDE.md` - обёртка на AGENTS.md
 - [ ] Нет дублирования README целиком в AGENTS.md
@@ -54,7 +57,7 @@ DotCore-формат:   X/2
 ИТОГО:            X/10
 
 Исправлено: {список или «ничего»}
-Файлы: README.md, AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md{, docs/portfolio-draft.md}
+Файлы: README.md, LICENSE, AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md{, <rule-файл агента запуска>}{, docs/portfolio-draft.md}
 LoC: {N}
 Cover: {file|inline|preview}
 ```
@@ -63,7 +66,11 @@ Cover: {file|inline|preview}
 
 | Проблема | Исправление |
 |----------|-------------|
-| LoC в header | Перенести под cover |
+| LoC под cover | Перенести в header, 4-м бейджем (в маркерах) |
+| LoC на отдельной строке от header | Сделать все 4 header-бейджа `<img style=flat>` (не `![]()`) |
+| Пустая строка перед LoC-бейджем | Убрать - иначе бейдж уходит на отдельную строку |
+| Нет `LICENSE` / футера лицензии | Создать по [license.md](license.md) (строгий All Rights Reserved) |
+| Rule-файл агента запуска не создан | Создать файл и папку по таблице в project-rules.md |
 | Команда не в package.json | Удалить или найти реальный script |
 | AGENTS.md копирует README | Оставить в AGENTS только operational |
 | CLAUDE.md дублирует AGENTS | Сократить до обёртки |

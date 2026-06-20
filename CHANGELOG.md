@@ -2,6 +2,24 @@
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+
+- `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - правила проекта для агентов
+- `skills/generate-readme/license.md` - политика строгой лицензии в скилле
+
+### Changed
+
+- README перегенерирован по стандарту DotCore: inline SVG-обложка, flat-бейджи, LoC-бейдж, ASCII-архитектура
+- `AGENTS.md` перегенерирован (профиль monorepo-tool, команды из `scripts/`)
+- LoC-бейдж перенесён в строку header (4-м), пересчитан честно: 582
+- Скилл `generate-readme`: LoC в header, строгая лицензия (LICENSE + футер), файл правил агента запуска, правило README-sync на глобальные изменения
+
+### Removed
+
+- Лицензия MIT заменена на строгий All Rights Reserved (проприетарная, все права у автора)
+
 ## [1.1.0] - 2026-06-19
 
 ### Added
@@ -28,6 +46,3 @@
 - `skills/_template/` - заготовка нового скилла
 - CI `.github/workflows/validate-skills.yml` - проверка frontmatter
 - `docs/ADDING_SKILL.md`, корневой `AGENTS.md`
-
-[1.1.0]: https://github.com/network-user/dotcore-skills/releases/tag/v1.1.0
-[1.0.0]: https://github.com/network-user/dotcore-skills/releases/tag/v1.0.0
