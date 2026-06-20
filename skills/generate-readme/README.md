@@ -12,6 +12,8 @@
 | `AGENTS.md` | Канон для Codex, Cursor, Claude, Copilot |
 | `.cursor/rules/dotcore-project.mdc` | Правило Cursor, `alwaysApply: true` |
 | `CLAUDE.md` | Обёртка → AGENTS.md |
+| `LICENSE` | Строгий All Rights Reserved (всегда) |
+| Файл агента запуска | Нативный rule-файл агента, из которого запущен скилл |
 | `docs/cover.svg` | Обложка для GitHub (если cover_mode=file) |
 | `docs/portfolio-draft.md` | Черновик DotBioSite (если audience=portfolio) |
 
@@ -21,9 +23,10 @@
 |------|------------|
 | [SKILL.md](SKILL.md) | Workflow (точка входа) |
 | [project-classify.md](project-classify.md) | Тип, аудитория, cover mode |
-| [project-rules.md](project-rules.md) | Шаблоны AGENTS.md, .mdc, CLAUDE.md |
+| [project-rules.md](project-rules.md) | Шаблоны AGENTS.md, .mdc, CLAUDE.md, агент запуска, README-sync |
+| [license.md](license.md) | Лицензия (строгий All Rights Reserved) |
 | [logo-cover.md](logo-cover.md) | SVG DotBioSite |
-| [stack-badges.md](stack-badges.md) | Shields, LoC |
+| [stack-badges.md](stack-badges.md) | Shields, LoC в header |
 | [audit.md](audit.md) | Оценка 1-10 |
 | [reference.md](reference.md) | Пример README (DotLearn) |
 | [PROMPT.md](PROMPT.md) | Standalone для чатов без skills |
@@ -92,4 +95,4 @@ pip install code-counter-ntwusr
 code-counter .
 ```
 
-LoC-бейдж под cover - [stack-badges.md](stack-badges.md). GitHub cover - [logo-cover.md](logo-cover.md).
+LoC-бейдж - 4-й в строке header, см. [stack-badges.md](stack-badges.md). GitHub cover - [logo-cover.md](logo-cover.md). Лицензия - [license.md](license.md).

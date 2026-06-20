@@ -70,9 +70,9 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 
 ```
 # {brand}
-[3 flat badges]     Runtime · Platform · Category
+[4 flat badges]     Runtime · Platform · Category · LoC
+                    LoC = 4-й бейдж В ТОЙ ЖЕ строке header, в маркерах <!-- loc:start -->…<!-- loc:end -->
 [cover]
-[LoC badge]         <!-- loc:start --> … <!-- loc:end -->
 {intro}             до 3 предложений
 
 ## Что внутри       ОПЦ. - см. project-classify.md
@@ -80,23 +80,28 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 ## Команды          таблица из scripts
 ## Стек             for-the-badge <img> только
 ## Тесты / …        если есть в репо
-## Архитектура      ПОСЛЕДНЯЯ: абзац + ASCII-дерево + 3-6 инвариантов
+## Архитектура      последняя содержательная: абзац + ASCII-дерево + 3-6 инвариантов
+## Лицензия         футер: строгий All Rights Reserved (см. license.md)
 ```
 
 - **intro** - что это + одно ключевое решение. Без tagline-абзаца и маркетинговых буллетов.
 - **Что внутри** - факты и числа, `**ключ**: значение`, без emoji. Не для library/cli без UX.
-- **Архитектура** - ASCII, не mermaid если дерева хватает. После неё секций нет.
+- **Архитектура** - ASCII, не mermaid если дерева хватает. После неё - только футер `## Лицензия`.
+- **Лицензия** - всегда присутствует; по умолчанию строгий All Rights Reserved + файл `LICENSE`. См. [license.md](license.md).
 
-Бейджи и LoC: [stack-badges.md](stack-badges.md). Эталон: [reference.md](reference.md).
+Бейджи и LoC: [stack-badges.md](stack-badges.md). Лицензия: [license.md](license.md). Эталон: [reference.md](reference.md).
 
 ### 5. Write project rules
 
 Перегенерируй файлы по [project-rules.md](project-rules.md):
 
-1. `AGENTS.md` - канон для всех агентов (Codex, Cursor, Claude, Copilot)
-2. `.cursor/rules/dotcore-project.mdc` - Cursor rule, `alwaysApply: true`
-3. `CLAUDE.md` - обёртка → AGENTS.md
-4. `docs/portfolio-draft.md` - только если `audience=portfolio`
+1. `AGENTS.md` - канон для всех агентов (Codex, Cursor, Claude, Copilot). **Всегда.**
+2. **Rule-файл агента, из которого запущен скилл** - определи текущего агента и создай/обнови его файл; **создай папку, если её нет** (таблица агент → файл в [project-rules.md](project-rules.md)).
+3. `.cursor/rules/dotcore-project.mdc` - Cursor rule, `alwaysApply: true`
+4. `CLAUDE.md` - обёртка → AGENTS.md
+5. `docs/portfolio-draft.md` - только если `audience=portfolio`
+
+В `AGENTS.md`, `CLAUDE.md` и `.mdc` встрой правило **README-sync**: при глобальных изменениях функционала агент обновляет README параллельно (пересчёт LoC, команды, стек, архитектура) через этот скилл. Что считать глобальным - см. [project-rules.md](project-rules.md).
 
 Fresh regeneration: не копируй устаревшие блоки. Уникальные инструкции из старого CLAUDE.md/AGENTS.md - слей в AGENTS.md.
 
@@ -117,13 +122,16 @@ code-counter .
 
 ## Счётчик строк кода
 
-LoC - **под cover**, перед intro. Только `<img>`, не `![]()`.
+LoC - **4-й бейдж в строке header**, на одном уровне с Runtime · Platform · Category (а не под cover). Чтобы все четыре были в один ряд, **все header-бейджи делаются `<img style=flat>`** на соседних строках (не `![]()`) - иначе LoC уезжает на отдельную строку (см. [stack-badges.md](stack-badges.md)). LoC - последним, перед обложкой.
 
 ```markdown
+<img src="https://img.shields.io/badge/Runtime-...-339933?style=flat" alt="Runtime" />
+<img src="https://img.shields.io/badge/Platform-...-555?style=flat" alt="Platform" />
+<img src="https://img.shields.io/badge/Category-...-orange?style=flat" alt="Category" />
 <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-{N}-lightgrey?style=flat" alt="{N} lines of code" /><!-- loc:end -->
 ```
 
-Если `code-counter` недоступен - посчитай по git и укажи метод. Не выдумывай.
+Маркеры `<!-- loc:start -->` / `<!-- loc:end -->` обязательны - по ним идёт обновление LoC, не удаляй их. Если `code-counter` недоступен - посчитай по git и укажи метод. Не выдумывай.
 
 ## Чего не делать
 
@@ -144,7 +152,7 @@ LoC - **под cover**, перед intro. Только `<img>`, не `![]()`.
 
 ## Чего не включать в README
 
-- Contributing / License - только если уже значимы в репо
+- Contributing - только если уже значим в репо (Лицензия - всегда, футером, см. license.md)
 - Roadmap, бенчмарки, star-hunting
 - Длинные operational-инструкции для агентов (они в AGENTS.md)
 - Бейджи технологий без deps
@@ -155,13 +163,16 @@ LoC - **под cover**, перед intro. Только `<img>`, не `![]()`.
 
 - [ ] Русский (или EN-only); тон internal doc
 - [ ] Cover по режиму; SVG tagline на русском; нет битых img
-- [ ] Header flat ×3; LoC под cover в маркерах
-- [ ] Команды из scripts; стек из deps; архитектура последняя
+- [ ] Header: 4 бейджа `<img style=flat>` (не `![]()`) на соседних строках - Runtime · Platform · Category · **LoC (4-й, в маркерах)** - рендерятся одним рядом, перед cover
+- [ ] Команды из scripts; стек из deps; архитектура - последняя содержательная
+- [ ] `## Лицензия` футером (строгий All Rights Reserved), есть файл `LICENSE`
 - [ ] `## Что внутри` уместна и с числами
 
 **Project rules**
 
 - [ ] `AGENTS.md` перегенерирован, команды проверены
+- [ ] Rule-файл агента запуска создан (папка создана, если её не было)
+- [ ] `AGENTS.md`/`CLAUDE.md`/`.mdc` содержат правило README-sync (обновлять README при глобальных изменениях)
 - [ ] `.cursor/rules/dotcore-project.mdc` существует
 - [ ] `CLAUDE.md` → AGENTS.md, без дубля
 - [ ] `docs/portfolio-draft.md` только для portfolio
@@ -176,9 +187,10 @@ LoC - **под cover**, перед intro. Только `<img>`, не `![]()`.
 |------|------------|
 | [SKILL.md](SKILL.md) | Workflow (этот файл) |
 | [project-classify.md](project-classify.md) | Тип, аудитория, cover mode |
-| [project-rules.md](project-rules.md) | AGENTS.md, .mdc, CLAUDE.md, portfolio |
+| [project-rules.md](project-rules.md) | AGENTS.md, .mdc, CLAUDE.md, portfolio, агент запуска, README-sync |
+| [license.md](license.md) | Лицензия (строгий All Rights Reserved), LICENSE + футер |
 | [logo-cover.md](logo-cover.md) | SVG DotBioSite |
-| [stack-badges.md](stack-badges.md) | Shields, LoC |
+| [stack-badges.md](stack-badges.md) | Shields, LoC в header |
 | [audit.md](audit.md) | Оценка 1-10 |
 | [reference.md](reference.md) | Пример README (DotLearn) |
 | [PROMPT.md](PROMPT.md) | Standalone без skills |

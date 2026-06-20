@@ -4,38 +4,42 @@
 
 | Место | Стиль | Кол-во |
 |-------|-------|--------|
-| Под `# {brand}` | flat (без `for-the-badge`) | 3: Runtime, Platform, Category |
+| Под `# {brand}` | `<img style=flat>` (без `for-the-badge`), все на соседних строках | 4: Runtime, Platform, Category, **LoC** (4-й, в маркерах) |
 | `## Стек` | только `<img>` for-the-badge, один визуальный стиль | все ключевые технологии из репо (обычно 6-12) |
 
 Только технологии, реально присутствующие в `dependencies` / `docker` / CI / dev deps секции «Стек». Не декор.
 
-## Header (3-4 flat)
+## Header (4 flat: Runtime · Platform · Category · LoC)
 
 | Бейдж | Откуда брать | Пример значения |
 |-------|--------------|-----------------|
 | Runtime | `engines`, `.nvmrc`, `pyproject`, `go.mod` | `Node.js-20%2B`, `Python-3.12` |
 | Platform | где работает | `Web`, `Windows%20%7C%20Linux%20%7C%20macOS`, `Docker`, `Telegram` |
 | Category | тип проекта | `Learning`, `Bot`, `CLI`, `API` |
+| **LoC** | `code-counter` → `TOTAL` | 4-й бейдж, `<img>` в маркерах (см. ниже) |
+
+**Все четыре бейджа - `<img>` (не `![]()`), на соседних строках, без пустой строки между ними.** Так они образуют один HTML-блок и рендерятся в один ряд. LoC - последний, перед cover.
 
 ```markdown
-![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933)
-![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Docker-lightgrey)
-![Category](https://img.shields.io/badge/Category-Learning-orange)
+<img src="https://img.shields.io/badge/Node.js-20%2B-339933?style=flat" alt="Node.js" />
+<img src="https://img.shields.io/badge/Platform-Web%20%7C%20Docker-lightgrey?style=flat" alt="Platform" />
+<img src="https://img.shields.io/badge/Category-Learning-orange?style=flat" alt="Category" />
+<!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-211875-lightgrey?style=flat" alt="211875 lines of code" /><!-- loc:end -->
 
 <img src="docs/cover.svg" width="720" alt="DotLearn">
-
-<!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-211875-lightgrey?style=flat" alt="211875 lines of code" /><!-- loc:end -->
 ```
 
-## Lines of code (под cover)
+**Важно (один ряд):** не смешивай `![]()` и `<img>` в группе header. Три markdown-бейджа `![]()` - это абзац, а строка LoC начинается с `<!--`/`<img>` и для CommonMark/GitHub становится отдельным HTML-блоком → LoC уезжает на вторую строку. Поэтому все header-бейджи делаем `<img style=flat>`.
 
-**Не** в строке header-бейджей. Сразу **после** cover (`<img>` или inline `<svg>`), **перед** intro-абзацем.
+## Lines of code (4-й header-бейдж)
+
+**В** строке header-бейджей, 4-м, сразу после Category и **перед** cover. Не под cover.
 
 | Источник | `code-counter` → `TOTAL`, без запятых в URL |
-| Маркеры | `<!-- loc:start -->` … `<!-- loc:end -->` |
+| Маркеры | `<!-- loc:start -->` … `<!-- loc:end -->` (обязательны, не удалять) |
 | Формат | `<img src=".../lines_of_code-{N}-lightgrey?style=flat">` |
 
-LoC-бейдж - **`<img>`**, не `![]()`. Label: `lines_of_code`. Цвет: `lightgrey`.
+LoC-бейдж - **`<img>`** в маркерах, не `![]()`. Label: `lines_of_code`. Цвет: `lightgrey`. Между ним и тремя первыми бейджами нет пустой строки - иначе разорвётся на две строки при рендере.
 
 ---
 
@@ -129,6 +133,6 @@ Markdown `![]()` допустим, но **`<img>` предпочтительне
 
 - [ ] В `## Стек` **только** for-the-badge `<img>`, без plain-строки через `·`.
 - [ ] Каждый бейдж = реальная зависимость.
-- [ ] `for-the-badge` только в `## Стек`; header flat (3-4 шт.).
-- [ ] LoC в маркерах, обновлён через `code-counter`.
+- [ ] Header - 4 бейджа `<img style=flat>` (не `![]()`) на соседних строках: Runtime · Platform · Category · LoC; `for-the-badge` только в `## Стек`.
+- [ ] LoC - 4-й бейдж в header, в маркерах, обновлён через `code-counter`; нет пустой строки перед ним → один ряд.
 - [ ] Нет centered `<p>`.

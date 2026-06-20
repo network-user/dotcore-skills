@@ -1,0 +1,33 @@
+---
+description: DotCore контекст проекта - установка, конвенции скиллов. Читай AGENTS.md для деталей.
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# DotCore Project Context
+
+Канонические инструкции: [AGENTS.md](../../AGENTS.md) в корне репозитория.
+
+## Кратко
+
+- **Тип:** monorepo-tool (каталог Agent Skills + установщики)
+- **Установка:** `.\scripts\install.ps1` / `./scripts/install.sh`
+- **В проект:** `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents`
+- **Тесты:** нет; CI валидирует frontmatter (`validate-skills.yml`)
+
+## Правила
+
+- Источник правды - код и `scripts/agents.targets.json`, не устаревший README.
+- Скилл - только `skills/<kebab-name>/`; имя папки == `name` во frontmatter (проверяет CI).
+- Пути агентов меняй в `agents.targets.json`, не хардкодь в скриптах.
+- PowerShell и bash держи согласованными; `_`-папки не устанавливаются.
+- README в стандарте DotCore: без marketing, `<details>`, centered hero; LoC между `<!-- loc:start -->` и `<!-- loc:end -->`.
+- Обложка: inline SVG (репозиторий local-only, без git remote).
+- Минимальный scope изменений.
+
+## README
+
+Человеческая документация: [README.md](../../README.md). Не дублируй её в чат - ссылайся на секции.
+
+Перегенерация: скилл `generate-readme` (обновляет README + AGENTS.md + этот rule).

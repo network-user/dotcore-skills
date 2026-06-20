@@ -1,66 +1,88 @@
 # dotcore-skills
 
-Monorepo Agent Skills для экосистемы **DotCore** ([Agent Skills spec](https://agentskills.io/specification)). Скиллы ставятся в **10+ coding-агентов** (Cursor, Claude Code, Codex, Gemini CLI, OpenCode, Goose, Roo Code, Junie, Amp, universal `.agents/`) и синхронизируются в проекты.
+<img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
+<img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
+<img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
+<!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-582-lightgrey?style=flat" alt="582 lines of code" /><!-- loc:end -->
+
+<!-- cover: DotBioSite, inline -->
+<svg xmlns="http://www.w3.org/2000/svg" width="720" viewBox="0 0 1600 900" role="img" aria-label="dotcore-skills">
+  <defs>
+    <linearGradient id="ds-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0b0d"/>
+      <stop offset="1" stop-color="#14161a"/>
+    </linearGradient>
+    <radialGradient id="ds-glow" cx="72%" cy="22%" r="60%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#ds-bg)"/>
+  <rect width="1600" height="900" fill="url(#ds-glow)"/>
+  <g opacity="0.05" stroke="#ffffff" stroke-width="1">
+    <path d="M0 300H1600M0 600H1600M533 0V900M1067 0V900"/>
+  </g>
+  <svg x="980" y="250" width="400" height="400" viewBox="0 0 48 48">
+    <g opacity="0.1" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="11" width="36" height="26" rx="3"/>
+      <path d="M13 21 l5 4 l-5 4"/>
+      <path d="M25 30 h6"/>
+    </g>
+  </svg>
+  <svg x="140" y="120" width="86" height="86" viewBox="0 0 48 48">
+    <g fill="none" stroke="#f3f3f1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="11" width="36" height="26" rx="3"/>
+      <path d="M13 21 l5 4 l-5 4"/>
+      <path d="M25 30 h6"/>
+    </g>
+  </svg>
+  <text x="138" y="408" font-family="Inter, Arial, sans-serif" font-size="132" font-weight="800" fill="#f3f3f1" letter-spacing="-3">.skills</text>
+  <text x="146" y="470" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#f3f3f1">dotcore-skills</text>
+  <text x="146" y="516" font-family="Inter, Arial, sans-serif" font-size="26" fill="#a6a7ab">Один набор скиллов - десять coding-агентов</text>
+</svg>
+
+Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Скиллы ставятся user-level (глобально для агента) или копируются в конкретный репозиторий self-contained.
 
 ## Скиллы
 
 | Скилл | Назначение | Триггеры |
 |-------|------------|----------|
-| [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` | «обнови README», «настрой правила проекта» |
+| [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` из фактов репозитория | «обнови README», «настрой правила проекта» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
-Новый скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
+Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
 
-## Быстрая установка
+## Установка
 
-Клонируй репозиторий и установи все скиллы в user-level каталоги агентов:
+Из корня локального клона. Windows:
 
 ```powershell
-git clone https://github.com/network-user/dotcore-skills.git
-cd dotcore-skills
 .\scripts\install.ps1
 ```
 
-macOS / Linux:
+macOS / Linux (нужен Python 3):
 
 ```bash
-git clone https://github.com/network-user/dotcore-skills.git
-cd dotcore-skills
 chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
 
-Один скилл:
+Выборочно - один скилл, отдельные агенты, junction вместо копии:
 
 ```powershell
 .\scripts\install.ps1 -Skill generate-readme
-```
-
-Только нужные агенты:
-
-```powershell
 .\scripts\install.ps1 -Agent cursor,claude,agents
-.\scripts\install.ps1 -ListAgents
-```
-
-Junction/symlink вместо копии (удобно при разработке скиллов):
-
-```powershell
 .\scripts\install.ps1 -Link
 ```
 
 ```bash
+AGENTS=cursor,claude,agents ./scripts/install.sh
 LINK=1 ./scripts/install.sh
 ```
 
-```bash
-AGENTS=cursor,claude,agents ./scripts/install.sh
-./scripts/install.sh --list-agents
-```
+### Куда ставится (user-level)
 
-### Куда ставится
-
-Полная таблица: [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md). Кратко (user-level):
+Полная таблица: [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md). Кратко:
 
 | ID | Агент | Каталог |
 |----|-------|---------|
@@ -68,76 +90,84 @@ AGENTS=cursor,claude,agents ./scripts/install.sh
 | `claude` | Claude Code | `~/.claude/skills/<name>/` |
 | `codex` | OpenAI Codex | `~/.codex/skills/<name>/` + `~/.codex/prompts/<name>.md` |
 | `gemini` | Gemini CLI | `~/.gemini/skills/<name>/` |
-| `agents` | Universal | `~/.agents/skills/<name>/` (Gemini, OpenCode, Amp, …) |
-| `opencode` | OpenCode | `~/.config/opencode/skills/<name>/` |
-| `goose` | Goose | `~/.config/goose/skills/<name>/` |
-| `roo` | Roo Code | `~/.roo/skills/<name>/` |
-| `junie` | Junie | `~/.junie/skills/<name>/` |
+| `agents` | Universal | `~/.agents/skills/<name>/` (OpenCode, Amp, Kimi, Replit) |
+| `opencode` / `goose` | OpenCode, Goose | `~/.config/<agent>/skills/<name>/` |
+| `roo` / `junie` | Roo Code, Junie | `~/.roo`, `~/.junie` `/skills/<name>/` |
 | `amp` | Amp | `~/.config/agents/skills/<name>/` |
 
-Конфиг путей: [scripts/agents.targets.json](scripts/agents.targets.json).
+### В проект
 
-### Установка в проект
-
-Скопируй нужную папку в репозиторий (self-contained для клонов):
-
-```text
-your-repo/.cursor/skills/generate-readme/
-```
-
-Скрипт из monorepo:
+Скопировать нужные папки в каталоги агентов целевого репозитория (self-contained для клонов):
 
 ```powershell
-.\scripts\sync-to-project.ps1 -Target C:\path\to\your-repo
+.\scripts\sync-to-project.ps1 -Target C:\path\to\repo
 .\scripts\sync-to-project.ps1 -Target . -AllAgents -Link
 .\scripts\sync-to-project.ps1 -Target . -Agent cursor,agents -Skill generate-readme
 ```
 
 ```bash
-./scripts/sync-to-project.sh /path/to/your-repo generate-readme
+./scripts/sync-to-project.sh /path/to/repo generate-readme
 ALL_AGENTS=1 LINK=1 ./scripts/sync-to-project.sh .
-AGENTS=cursor,claude,agents ./scripts/sync-to-project.sh .
 ```
 
 По умолчанию `sync-to-project` ставит только в `.cursor/skills/`. Флаг `-AllAgents` / `ALL_AGENTS=1` - во все project-level каталоги из [agents.targets.json](scripts/agents.targets.json).
 
-## Структура репозитория
+## Команды
+
+| Команда | Назначение |
+|---------|------------|
+| `.\scripts\install.ps1` | Установить все скиллы во всех агентов (user-level) |
+| `.\scripts\install.ps1 -Agent cursor,claude` | Только выбранные агенты по ID |
+| `.\scripts\install.ps1 -Skill generate-readme` | Один скилл |
+| `.\scripts\install.ps1 -Link` | Junction/symlink вместо копии (разработка) |
+| `.\scripts\install.ps1 -ListAgents` | Список ID агентов и путей |
+| `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents` | Скиллы в project-level каталоги репозитория |
+
+Bash-эквиваленты: `./scripts/install.sh`, фильтры через переменные окружения (`AGENTS=`, `LINK=1`, `ALL_AGENTS=1`), список - `--list-agents`. Имя скилла - первым позиционным аргументом.
+
+## Стек
+
+<img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell" />
+<img src="https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white" alt="Bash" />
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+<img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white" alt="JSON" />
+<img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
+
+## CI
+
+`.github/workflows/validate-skills.yml` запускается на изменения в `skills/**` и проверяет каждый скилл (кроме `_*`): наличие `SKILL.md`, YAML-frontmatter, поля `name`/`description`, совпадение имени папки с `name`.
+
+## Архитектура
+
+Монорепо без сборки и пакетного менеджера: контент - markdown-скиллы, логика - два параллельных установщика (PowerShell и bash+Python) поверх общего JSON-конфига путей. Каждый скилл self-contained, поэтому одну папку можно скопировать в любой агент или репозиторий без зависимостей.
 
 ```text
 dotcore-skills/
-├── AGENTS.md
-├── CHANGELOG.md
-├── LICENSE
-├── README.md
+├── skills/
+│   ├── generate-readme/      # SKILL.md + references (.md), codex-prompt.md
+│   └── _template/            # заготовка, в установку не попадает
+├── scripts/
+│   ├── agents.targets.json   # user/project пути всех агентов - источник правды
+│   ├── install.ps1           # user-level установка (Windows)
+│   ├── install.sh            # то же на Unix, читает JSON через Python 3
+│   ├── sync-to-project.ps1   # копия скиллов в .<agent>/skills/ репозитория
+│   └── sync-to-project.sh
 ├── docs/
 │   ├── ADDING_SKILL.md
 │   └── AGENTS_PATHS.md
-├── scripts/
-│   ├── agents.targets.json   # пути всех агентов
-│   ├── install.ps1
-│   ├── install.sh
-│   ├── sync-to-project.ps1
-│   └── sync-to-project.sh
-├── skills/
-│   ├── _template/            # заготовка нового скилла
-│   └── generate-readme/
-└── .github/workflows/
-    └── validate-skills.yml
+├── .github/workflows/
+│   └── validate-skills.yml   # CI: frontmatter и имя папки == name
+├── AGENTS.md
+└── README.md
 ```
 
-## Разработка
-
-1. Правь файлы в `skills/<name>/`.
-2. `.\scripts\install.ps1 -Link` - изменения сразу видны агентам.
-3. Тестируй в целевом DotCore-репозитории: «обнови README и правила проекта».
-4. Коммит + push; CI проверит frontmatter.
-
-## Связанные стандарты
-
-- [Agent Skills](https://agentskills.io/specification)
-- [AGENTS.md](https://agents.md/) - генерируется скиллом `generate-readme`
-- [Cursor Skills](https://cursor.com/docs/skills)
+- **Один конфиг путей**: `agents.targets.json` читают и PowerShell, и Python - расхождений между установщиками нет.
+- **Скилл self-contained**: папка `skills/<name>/` копируется целиком; клон работает без monorepo.
+- **`_`-папки не ставятся**: фильтр в обоих установщиках и пропуск в CI.
+- **Имя папки == `name`** во frontmatter `SKILL.md` - инвариант, который проверяет CI.
+- **README и `AGENTS.md` генерируются** скиллом `generate-readme`, не правятся вручную.
 
 ## Лицензия
 
-MIT - см. [LICENSE](LICENSE).
+© 2026 DotCore. Все права защищены. Использование, копирование, изменение и распространение запрещены без письменного разрешения автора. Исходный код открыт только для ознакомления. См. [LICENSE](LICENSE).
