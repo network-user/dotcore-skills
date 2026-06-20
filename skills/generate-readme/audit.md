@@ -18,13 +18,13 @@
 
 - [ ] Тон internal doc, русский (или EN-only проект)
 - [ ] Нет `<details>`, centered hero, emoji, LLM-маркеров, длинного тире
-- [ ] Header: 4 бейджа `<img style=flat>` (не `![]()`) в один ряд - Runtime · Platform · Category · **LoC (4-й, в маркерах)**; стек for-the-badge
+- [ ] Header: 4 бейджа `<img style=flat>` внутри `<p>` (не `![]()`) - один ряд на GitHub - Runtime · Platform · Category · **LoC (4-й, в маркерах)**; стек - `<img>` for-the-badge тоже в `<p>`
 - [ ] Архитектура - последняя содержательная секция; `## Лицензия` - футер после неё
 
 ### 3. Обложка и визуал (0-2)
 
-- [ ] Cover mode корректен (GitHub → file, IDE → inline)
-- [ ] `docs/cover.svg` создан если `<img>` ссылается на него
+- [ ] Cover mode = `file` по умолчанию (GitHub-first); `docs/cover.svg` + `<img>`. inline `<svg>` - только IDE-only по запросу
+- [ ] `docs/cover.svg` создан, `<img src="docs/cover.svg">` ссылается на него; нет inline `<svg>` для GitHub-репозитория
 - [ ] SVG: monochrome DotBioSite, tagline на русском, префикс id
 - [ ] Нет битых `<img>`
 
@@ -67,8 +67,9 @@ Cover: {file|inline|preview}
 | Проблема | Исправление |
 |----------|-------------|
 | LoC под cover | Перенести в header, 4-м бейджем (в маркерах) |
-| LoC на отдельной строке от header | Сделать все 4 header-бейджа `<img style=flat>` (не `![]()`) |
-| Пустая строка перед LoC-бейджем | Убрать - иначе бейдж уходит на отдельную строку |
+| Бейджи/стек разъезжаются по строкам на GitHub | Обернуть группу в один `<p>` |
+| Обложки нет на GitHub | inline `<svg>` → `docs/cover.svg` + `<img src="docs/cover.svg" width="720">` |
+| LoC на отдельной строке от header | Все 4 header-бейджа `<img style=flat>` в одном `<p>` |
 | Нет `LICENSE` / футера лицензии | Создать по [license.md](license.md) (строгий All Rights Reserved) |
 | Rule-файл агента запуска не создан | Создать файл и папку по таблице в project-rules.md |
 | Команда не в package.json | Удалить или найти реальный script |

@@ -1,45 +1,13 @@
 # dotcore-skills
 
-<img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
-<img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
-<img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
-<!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-582-lightgrey?style=flat" alt="582 lines of code" /><!-- loc:end -->
+<p>
+  <img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
+  <img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
+  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-582-lightgrey?style=flat" alt="582 lines of code" /><!-- loc:end -->
+</p>
 
-<!-- cover: DotBioSite, inline -->
-<svg xmlns="http://www.w3.org/2000/svg" width="720" viewBox="0 0 1600 900" role="img" aria-label="dotcore-skills">
-  <defs>
-    <linearGradient id="ds-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a0b0d"/>
-      <stop offset="1" stop-color="#14161a"/>
-    </linearGradient>
-    <radialGradient id="ds-glow" cx="72%" cy="22%" r="60%">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1600" height="900" fill="url(#ds-bg)"/>
-  <rect width="1600" height="900" fill="url(#ds-glow)"/>
-  <g opacity="0.05" stroke="#ffffff" stroke-width="1">
-    <path d="M0 300H1600M0 600H1600M533 0V900M1067 0V900"/>
-  </g>
-  <svg x="980" y="250" width="400" height="400" viewBox="0 0 48 48">
-    <g opacity="0.1" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="6" y="11" width="36" height="26" rx="3"/>
-      <path d="M13 21 l5 4 l-5 4"/>
-      <path d="M25 30 h6"/>
-    </g>
-  </svg>
-  <svg x="140" y="120" width="86" height="86" viewBox="0 0 48 48">
-    <g fill="none" stroke="#f3f3f1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="6" y="11" width="36" height="26" rx="3"/>
-      <path d="M13 21 l5 4 l-5 4"/>
-      <path d="M25 30 h6"/>
-    </g>
-  </svg>
-  <text x="138" y="408" font-family="Inter, Arial, sans-serif" font-size="132" font-weight="800" fill="#f3f3f1" letter-spacing="-3">.skills</text>
-  <text x="146" y="470" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#f3f3f1">dotcore-skills</text>
-  <text x="146" y="516" font-family="Inter, Arial, sans-serif" font-size="26" fill="#a6a7ab">Один набор скиллов - десять coding-агентов</text>
-</svg>
+<img src="docs/cover.svg" width="720" alt="dotcore-skills" />
 
 Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Скиллы ставятся user-level (глобально для агента) или копируются в конкретный репозиторий self-contained.
 
@@ -127,12 +95,14 @@ Bash-эквиваленты: `./scripts/install.sh`, фильтры через �
 
 ## Стек
 
-<img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell" />
-<img src="https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white" alt="Bash" />
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
-<img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white" alt="JSON" />
-<img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
+<p>
+  <img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell" />
+  <img src="https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white" alt="Bash" />
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white" alt="JSON" />
+  <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
+</p>
 
 ## CI
 

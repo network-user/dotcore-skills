@@ -14,7 +14,12 @@
 - README перегенерирован по стандарту DotCore: inline SVG-обложка, flat-бейджи, LoC-бейдж, ASCII-архитектура
 - `AGENTS.md` перегенерирован (профиль monorepo-tool, команды из `scripts/`)
 - LoC-бейдж перенесён в строку header (4-м), пересчитан честно: 582
-- Скилл `generate-readme`: LoC в header, строгая лицензия (LICENSE + футер), файл правил агента запуска, правило README-sync на глобальные изменения
+- GitHub-first: бейджи header и стек обёрнуты в `<p>` (один ряд на GitHub), обложка - `docs/cover.svg` + `<img>` вместо inline `<svg>`
+- Скилл `generate-readme`: LoC в header (`<p>`), GitHub-first обложка/бейджи, строгая лицензия (LICENSE + футер), файл правил агента запуска, правило README-sync на глобальные изменения
+
+### Added (docs)
+
+- `docs/cover.svg` - SVG-обложка DotBioSite (terminal-глиф)
 
 ### Removed
 

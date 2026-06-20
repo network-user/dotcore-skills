@@ -39,10 +39,12 @@
 
 ## Среда просмотра README → cover mode
 
+**Дефолт - `file` (GitHub-first).** README обычно попадает на GitHub, где inline `<svg>` вырезается. Поэтому по умолчанию `docs/cover.svg` + `<img>` - даже если git remote ещё нет.
+
 | Условие | Cover mode |
 |---------|------------|
-| `distribution=github` или есть `origin` на github/gitlab | `file` → `docs/cover.svg` |
-| только IDE / портфолио / нет git remote | `inline` |
+| `distribution=github`, есть `origin`, или remote ещё не настроен (дефолт) | `file` → `docs/cover.svg` |
+| пользователь явно сказал «только IDE, GitHub не будет» | `inline` |
 | есть `docs/preview.png` | `preview` → не перегенерировать SVG |
 
 ## Быстрый черновик (для агента)

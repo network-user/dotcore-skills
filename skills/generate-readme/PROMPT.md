@@ -49,7 +49,7 @@
 ## Лицензия        футер: © {year} {author}, все права защищены + ссылка на LICENSE
 ```
 
-LoC-бейдж стоит 4-м в строке header (та же строка, что Runtime · Platform · Category), не под cover. Все четыре - `<img style=flat>` на соседних строках (не `![]()`), иначе LoC уезжает на отдельную строку.
+LoC-бейдж стоит 4-м в группе header (с Runtime · Platform · Category), не под cover. GitHub-first: все четыре - `<img style=flat>` внутри одного `<p>` (иначе на GitHub бейджи разъезжаются по строкам). Стек - тоже `<img>` в `<p>`. Обложка - `docs/cover.svg` + `<img src="docs/cover.svg" width="720">` (inline `<svg>` GitHub вырезает).
 
 ## AGENTS.md (кратко)
 
