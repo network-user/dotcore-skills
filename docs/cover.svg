@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="dotcore-skills">
+  <title>dotcore-skills</title>
+  <defs>
+    <linearGradient id="ds-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0b0d"/>
+      <stop offset="0.5" stop-color="#14161a"/>
+      <stop offset="1" stop-color="#0b0c0e"/>
+    </linearGradient>
+    <radialGradient id="ds-glow" cx="70%" cy="20%" r="62%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ds-halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#ds-bg)"/>
+  <rect width="1600" height="900" fill="url(#ds-glow)"/>
+  <g opacity="0.045" stroke="#ffffff" stroke-width="1">
+    <path d="M0 225 H1600 M0 450 H1600 M0 675 H1600 M400 0 V900 M800 0 V900 M1200 0 V900"/>
+  </g>
+  <circle cx="1180" cy="460" r="330" fill="url(#ds-halo)"/>
+  <svg x="965" y="245" width="430" height="430" viewBox="0 0 48 48">
+    <g opacity="0.1" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="11" width="36" height="26" rx="3"/>
+      <path d="M13 21 l5 4 l-5 4"/>
+      <path d="M25 30 h6"/>
+    </g>
+  </svg>
+  <svg x="140" y="118" width="86" height="86" viewBox="0 0 48 48">
+    <g fill="none" stroke="#f3f3f1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="11" width="36" height="26" rx="3"/>
+      <path d="M13 21 l5 4 l-5 4"/>
+      <path d="M25 30 h6"/>
+    </g>
+  </svg>
+  <text x="138" y="408" font-family="Inter, Arial, sans-serif" font-size="132" font-weight="800" fill="#f3f3f1" letter-spacing="-3">.skills</text>
+  <text x="146" y="470" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#f3f3f1">dotcore-skills</text>
+  <text x="146" y="516" font-family="Inter, Arial, sans-serif" font-size="26" fill="#a6a7ab">Один набор скиллов - десять coding-агентов</text>
+</svg>
