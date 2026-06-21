@@ -6,11 +6,13 @@
 
 ### Added
 
+- Скилл `sync-project-rules` - лёгкая регенерация только правил проекта (`AGENTS.md` + `.cursor/rules/dotcore-project.mdc` + `CLAUDE.md` + `GEMINI.md`), без README, обложки, LoC и аудита
 - `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - правила проекта для агентов
 - `skills/generate-readme/license.md` - политика строгой лицензии в скилле
 
 ### Changed
 
+- `generate-readme` делегирует правила проекта подскиллу `sync-project-rules` (шаг 5); `project-rules.md` оставлен зеркалом-fallback
 - README перегенерирован по стандарту DotCore: inline SVG-обложка, flat-бейджи, LoC-бейдж, ASCII-архитектура
 - `AGENTS.md` перегенерирован (профиль monorepo-tool, команды из `scripts/`)
 - LoC-бейдж перенесён в строку header (4-м), пересчитан честно: 582
