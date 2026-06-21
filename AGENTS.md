@@ -86,7 +86,8 @@ dotcore-skills/
 - [README.md](README.md) - установка, команды, стек, архитектура
 - [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md) - как добавить новый скилл
 - [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md) - пути всех поддерживаемых агентов
-- [skills/generate-readme/SKILL.md](skills/generate-readme/SKILL.md) - первый скилл
+- [skills/generate-readme/SKILL.md](skills/generate-readme/SKILL.md) - README + правила (делегирует sync-project-rules)
+- [skills/sync-project-rules/SKILL.md](skills/sync-project-rules/SKILL.md) - только правила проекта (AGENTS.md + rule-файлы)
 
 ## DotCore
 
