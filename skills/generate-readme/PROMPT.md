@@ -38,6 +38,7 @@
 # {brand}
 [4 flat badges: Runtime, Platform, Category, LoC]   LoC = 4-й, в маркерах, без пустой строки перед ним
 [cover]
+[audit badges]   ОПЦ. - блок <!-- audit:start -->…<!-- audit:end --> от pre-deploy-audit; если был в старом README, перенести дословно
 {intro - до 3 предложений}
 
 ## Что внутри     ОПЦ. для UX-богатых проектов, факты и числа
@@ -50,6 +51,8 @@
 ```
 
 LoC-бейдж стоит 4-м в группе header (с Runtime · Platform · Category), не под cover. GitHub-first: все четыре - `<img style=flat>` внутри одного `<p>` (иначе на GitHub бейджи разъезжаются по строкам). Стек - тоже `<img>` в `<p>`. Обложка - `docs/cover.svg` + `<img src="docs/cover.svg" width="720">` (inline `<svg>` GitHub вырезает).
+
+**Бейджи аудита (обратная совместимость).** Если в текущем README есть блок `<!-- audit:start -->…<!-- audit:end -->` (его ставит скилл аудита `pre-deploy-audit` на PASS), перенеси его **дословно вместе с маркерами** после обложки, перед intro. Перегенерация README не должна стирать бейджи аудита. Не выдумывай этот блок и не меняй его содержимое (статус, уровень, охват, модель, дата) - только перенос. Нет блока - ничего не добавляй.
 
 ## AGENTS.md (кратко)
 
@@ -138,6 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 - [ ] README + AGENTS.md + mdc + CLAUDE.md + файл агента запуска созданы/обновлены
 - [ ] Команды и пути существуют; LoC обновлён, стоит 4-м бейджем в header
 - [ ] Cover по среде; нет битых img; архитектура - последняя содержательная, лицензия - футер
+- [ ] Блок аудита `<!-- audit:start -->…<!-- audit:end -->` (если был в старом README) перенесён дословно после обложки
 - [ ] `LICENSE` создан (строгий All Rights Reserved); прежняя лицензия заменена
 - [ ] AGENTS.md не дублирует README; CLAUDE.md - обёртка; есть правило README-sync
 - [ ] Аудит ≥ 8/10

@@ -45,6 +45,35 @@ LoC-бейдж - **`<img>`** в маркерах, не `![]()`. Label: `lines_of
 
 ---
 
+## Чужой блок: бейджи аудита (только сохранять)
+
+Бейджи security-аудита (`security_audit`, `level`, `scope`, `model`, `date`) выдаёт **другой** скилл - `pre-deploy-audit`. Он кладёт их в README отдельным `<p>` в маркерах `<!-- audit:start -->` … `<!-- audit:end -->` сразу после обложки/шапки.
+
+generate-readme их **не генерирует и не правит** - только **переносит дословно** при перегенерации README (как сохраняет SVG-обложку). Логика - та же, что с loc-маркерами: маркеры обязательны, по ним владелец-скилл обновляет блок на месте.
+
+| Маркеры | `<!-- audit:start -->` … `<!-- audit:end -->` (чужие, не удалять, не дублировать) |
+| Владелец | `pre-deploy-audit` (см. `skills/pre-deploy-audit/badge.md`) |
+| Действие generate-readme | был в старом README → перенести verbatim после cover; не было → ничего не добавлять |
+| Запрещено | выдумывать блок, менять статус/уровень/охват/модель/дату, удалять при регенерации |
+
+Целостность: бейджи заявляют «аудит уровня X пройден на дату Y». Перенося их, не трогай дату - это дата прошлого прогона. Если регенерация вызвана крупным изменением кода, бейджи могли устареть - отметь это в отчёте и предложи перезапустить `pre-deploy-audit`, но сам блок не стирай.
+
+```markdown
+<img src="docs/cover.svg" width="720" alt="Brand">
+
+<!-- audit:start -->
+<p>
+  <img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed" />
+  <img src="https://img.shields.io/badge/level-full-8957e5?style=flat" alt="level full" />
+  <img src="https://img.shields.io/badge/scope-leaks_%2B_code-bf3989?style=flat" alt="scope leaks and code" />
+  <img src="https://img.shields.io/badge/model-Claude_Opus_4.8-555?style=flat" alt="model" />
+  <img src="https://img.shields.io/badge/date-2026--06--27-555?style=flat" alt="date" />
+</p>
+<!-- audit:end -->
+```
+
+---
+
 ## `## Стек` - единый формат (важно)
 
 **Запрещено смешивать:** картинки-бейджи + plain-текст `Git · setuptools · mypy` в одной секции. Выглядит рвано.
@@ -141,3 +170,4 @@ LoC-бейдж - **`<img>`** в маркерах, не `![]()`. Label: `lines_of
 - [ ] LoC - 4-й бейдж в `<p>`-группе header, в маркерах, обновлён через `code-counter` → один ряд на GitHub.
 - [ ] Cover для GitHub - `docs/cover.svg` + `<img>` (inline `<svg>` GitHub вырезает).
 - [ ] `<p>` без `align`; центрирование (`align="center"`) запрещено.
+- [ ] Блок `<!-- audit:start -->…<!-- audit:end -->` (если был) перенесён дословно после cover; не выдуман и не изменён.

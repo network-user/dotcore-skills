@@ -9,6 +9,16 @@
 
 <img src="docs/cover.svg" width="720" alt="dotcore-skills" />
 
+<!-- audit:start -->
+<p>
+  <img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed" />
+  <img src="https://img.shields.io/badge/level-full-8957e5?style=flat" alt="level full" />
+  <img src="https://img.shields.io/badge/scope-leaks_%2B_code-bf3989?style=flat" alt="scope leaks and code" />
+  <img src="https://img.shields.io/badge/model-Claude_Opus_4.8-555?style=flat" alt="model" />
+  <img src="https://img.shields.io/badge/date-2026--06--27-555?style=flat" alt="date" />
+</p>
+<!-- audit:end -->
+
 Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Скиллы ставятся user-level (глобально для агента) или копируются в конкретный репозиторий self-contained.
 
 ## Скиллы
@@ -17,6 +27,7 @@
 |-------|------------|----------|
 | [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` из фактов репозитория; правила делегирует `sync-project-rules` | «обнови README», «настрой правила проекта» |
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
+| [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, цветные бейджи аудита на PASS | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -118,6 +129,7 @@ dotcore-skills/
 ├── skills/
 │   ├── generate-readme/      # README + правила (делегирует sync-project-rules)
 │   ├── sync-project-rules/   # только AGENTS.md + rule-файлы агентов
+│   ├── pre-deploy-audit/     # аудит перед деплоем: утечки + код, 3 уровня, бейдж
 │   └── _template/            # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды
