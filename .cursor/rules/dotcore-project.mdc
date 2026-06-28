@@ -23,7 +23,8 @@ alwaysApply: true
 - Пути агентов меняй в `agents.targets.json`, не хардкодь в скриптах.
 - PowerShell и bash держи согласованными; `_`-папки не устанавливаются.
 - README в стандарте DotCore: без marketing, `<details>`, centered hero; LoC между `<!-- loc:start -->` и `<!-- loc:end -->`.
-- Обложка: inline SVG (репозиторий local-only, без git remote).
+- Обложка: `docs/cover.svg` + `<img width=720>` (GitHub-first); remote - GitHub.
+- Аудит перед деплоем/публикацией - скилл `pre-deploy-audit` (утечки + код); его бейджи в README между `<!-- audit:start -->` и `<!-- audit:end -->` не удалять.
 - Минимальный scope изменений.
 
 ## README

@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/level-full-8957e5?style=flat" alt="level full" />
   <img src="https://img.shields.io/badge/scope-leaks_%2B_code-bf3989?style=flat" alt="scope leaks and code" />
   <img src="https://img.shields.io/badge/model-Claude_Opus_4.8-555?style=flat" alt="model" />
-  <img src="https://img.shields.io/badge/date-2026--06--27-555?style=flat" alt="date" />
+  <img src="https://img.shields.io/badge/date-2026--06--28-555?style=flat" alt="date" />
 </p>
 <!-- audit:end -->
 
@@ -151,6 +151,7 @@ dotcore-skills/
 - **`_`-папки не ставятся**: фильтр в обоих установщиках и пропуск в CI.
 - **Имя папки == `name`** во frontmatter `SKILL.md` - инвариант, который проверяет CI.
 - **README и `AGENTS.md` генерируются** скиллом `generate-readme`, не правятся вручную.
+- **Блок `<!-- audit:start/end -->`** - бейджи аудита от `pre-deploy-audit`; `generate-readme` переносит его дословно при перегенерации.
 
 ## Лицензия
 

@@ -6,12 +6,14 @@
 
 ### Added
 
+- Скилл `pre-deploy-audit` - аудит репозитория перед деплоем/публикацией: два трека (утечки - секреты/ключи/PII/история git; код - инъекции, eval/exec, десериализация, authz, крипто), три уровня глубины, severity-гейт (Critical/High = провал), цветные бейджи аудита в README на PASS (блок `<!-- audit:start/end -->`)
 - Скилл `sync-project-rules` - лёгкая регенерация только правил проекта (`AGENTS.md` + `.cursor/rules/dotcore-project.mdc` + `CLAUDE.md` + `GEMINI.md`), без README, обложки, LoC и аудита
 - `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - правила проекта для агентов
 - `skills/generate-readme/license.md` - политика строгой лицензии в скилле
 
 ### Changed
 
+- `generate-readme` сохраняет блок бейджей аудита `<!-- audit:start/end -->` при перегенерации README (интеграция с `pre-deploy-audit`: переносит чужой блок дословно, не выдумывает и не правит)
 - `generate-readme` делегирует правила проекта подскиллу `sync-project-rules` (шаг 5); `project-rules.md` оставлен зеркалом-fallback
 - README перегенерирован по стандарту DotCore: inline SVG-обложка, flat-бейджи, LoC-бейдж, ASCII-архитектура
 - `AGENTS.md` перегенерирован (профиль monorepo-tool, команды из `scripts/`)
