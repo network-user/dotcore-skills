@@ -11,11 +11,8 @@
 
 <!-- audit:start -->
 <p>
-  <img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed" />
-  <img src="https://img.shields.io/badge/level-full-8957e5?style=flat" alt="level full" />
-  <img src="https://img.shields.io/badge/scope-leaks_%2B_code-bf3989?style=flat" alt="scope leaks and code" />
-  <img src="https://img.shields.io/badge/model-Claude_Opus_4.8-555?style=flat" alt="model" />
-  <img src="https://img.shields.io/badge/date-2026--06--28-555?style=flat" alt="date" />
+  <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed_with_warnings-dbab09?style=flat" alt="security audit passed with warnings - full, leaks + code" /></a>
+  <img src="https://img.shields.io/badge/date-2026--07--01-555?style=flat" alt="audit date" />
 </p>
 <!-- audit:end -->
 
@@ -27,7 +24,7 @@
 |-------|------------|----------|
 | [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` из фактов репозитория; правила делегирует `sync-project-rules` | «обнови README», «настрой правила проекта» |
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
-| [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, цветные бейджи аудита на PASS | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
+| [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, на PASS - отчёт в `docs/audit/` и кликабельный бейдж | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -129,7 +126,7 @@ dotcore-skills/
 ├── skills/
 │   ├── generate-readme/      # README + правила (делегирует sync-project-rules)
 │   ├── sync-project-rules/   # только AGENTS.md + rule-файлы агентов
-│   ├── pre-deploy-audit/     # аудит перед деплоем: утечки + код, 3 уровня, бейдж
+│   ├── pre-deploy-audit/     # аудит перед деплоем: утечки + код, 3 уровня, бейдж + отчёт
 │   └── _template/            # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды
@@ -138,6 +135,7 @@ dotcore-skills/
 │   ├── sync-to-project.ps1   # копия скиллов в .<agent>/skills/ репозитория
 │   └── sync-to-project.sh
 ├── docs/
+│   ├── audit/                # отчёты pre-deploy-audit: снимки по дате + latest.md
 │   ├── ADDING_SKILL.md
 │   └── AGENTS_PATHS.md
 ├── .github/workflows/
@@ -151,7 +149,7 @@ dotcore-skills/
 - **`_`-папки не ставятся**: фильтр в обоих установщиках и пропуск в CI.
 - **Имя папки == `name`** во frontmatter `SKILL.md` - инвариант, который проверяет CI.
 - **README и `AGENTS.md` генерируются** скиллом `generate-readme`, не правятся вручную.
-- **Блок `<!-- audit:start/end -->`** - бейджи аудита от `pre-deploy-audit`; `generate-readme` переносит его дословно при перегенерации.
+- **Блок `<!-- audit:start/end -->`** - бейдж аудита от `pre-deploy-audit` (кликает в `docs/audit/latest.md`); `generate-readme` переносит его дословно при перегенерации, `docs/audit/` не трогает.
 
 ## Лицензия
 

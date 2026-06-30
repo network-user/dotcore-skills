@@ -24,7 +24,7 @@ alwaysApply: true
 - PowerShell и bash держи согласованными; `_`-папки не устанавливаются.
 - README в стандарте DotCore: без marketing, `<details>`, centered hero; LoC между `<!-- loc:start -->` и `<!-- loc:end -->`.
 - Обложка: `docs/cover.svg` + `<img width=720>` (GitHub-first); remote - GitHub.
-- Аудит перед деплоем/публикацией - скилл `pre-deploy-audit` (утечки + код); его бейджи в README между `<!-- audit:start -->` и `<!-- audit:end -->` не удалять.
+- Аудит перед деплоем/публикацией - скилл `pre-deploy-audit` (утечки + код); его бейдж в README между `<!-- audit:start -->` и `<!-- audit:end -->` и отчёты в `docs/audit/` не удалять.
 - Минимальный scope изменений.
 
 ## README

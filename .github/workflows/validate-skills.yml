@@ -3,9 +3,16 @@ on:
   push:
     paths:
       - "skills/**"
+      - "README.md"
+      - "docs/audit/**"
   pull_request:
     paths:
       - "skills/**"
+      - "README.md"
+      - "docs/audit/**"
+
+permissions:
+  contents: read
 
 jobs:
   validate:
@@ -36,3 +43,22 @@ jobs:
             fi
             echo "OK: $skill"
           done
+
+      - name: Check audit badge links to an existing report
+        run: |
+          set -e
+          if [[ -f README.md ]] && grep -q '<!-- audit:start -->' README.md; then
+            line=$(grep 'security_audit' README.md | head -1)
+            href=$(printf '%s' "$line" | sed -nE 's/.*href="([^"]+)".*/\1/p')
+            if [[ -z "$href" ]]; then
+              echo "FAIL: audit block present but security_audit badge has no href link"
+              exit 1
+            fi
+            if [[ ! -f "$href" ]]; then
+              echo "FAIL: audit badge points to a missing report: $href"
+              exit 1
+            fi
+            echo "OK: audit badge -> $href"
+          else
+            echo "No audit block in README - nothing to check"
+          fi

@@ -1,6 +1,6 @@
 # pre-deploy-audit
 
-Скилл DotCore из monorepo [dotcore-skills](../../README.md): **аудит репозитория перед деплоем или сменой видимости на public**. Три уровня глубины, два независимых трека, цветные бейджи аудита в README на PASS.
+Скилл DotCore из monorepo [dotcore-skills](../../README.md): **аудит репозитория перед деплоем или сменой видимости на public**. Три уровня глубины, два независимых трека, на PASS - бейдж аудита в README (кликабельный) и отчёт в `docs/audit/`.
 
 Различает две разные задачи и не смешивает их:
 
@@ -21,21 +21,20 @@
 
 | Файл | Назначение |
 |------|------------|
-| блок `<!-- audit:start/end -->` в `README.md` | Цветные flat-бейджи аудита: статус, уровень, охват, модель, дата (additive, в маркерах) |
+| `docs/audit/{дата}.md` | Снимок прогона: статус, уровень, охват, модель, дата, сводка находок (без секретов). Накапливается - видимая история аудитов |
+| `docs/audit/latest.md` | Копия последнего снимка - стабильная цель кликабельного бейджа |
+| блок `<!-- audit:start/end -->` в `README.md` | Кликабельный бейдж `security_audit` (→ `latest.md`) + бейдж `date` (additive, в маркерах) |
 
-На FAILED бейджи не создаются; устаревший блок снимается. Картинки нет, только бейджи.
+На FAILED бейдж не создаётся; устаревший блок снимается, `latest.md` от провала не пишется. Картинки нет.
 
-Так выглядит ряд бейджей аудита:
+Так выглядит блок бейджа аудита:
 
 <p>
-  <img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed" />
-  <img src="https://img.shields.io/badge/level-full-8957e5?style=flat" alt="level full" />
-  <img src="https://img.shields.io/badge/scope-leaks_%2B_code-bf3989?style=flat" alt="scope leaks and code" />
-  <img src="https://img.shields.io/badge/model-Claude_Opus_4.8-555?style=flat" alt="model" />
-  <img src="https://img.shields.io/badge/date-2026--06--27-555?style=flat" alt="date" />
+  <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed - full, leaks + code" /></a>
+  <img src="https://img.shields.io/badge/date-2026--06--28-555?style=flat" alt="audit date" />
 </p>
 
-Цвет кодирует смысл: статус зелёный, уровень и охват - свой цвет по значению (таблица в [badge.md](badge.md)), модель и дата - серые.
+Бейдж `security_audit` кликабелен и ведёт на отчёт; уровень и охват - в его `alt`-тексте и в файле отчёта. `date` - серый. Цвет статуса: passed зелёный, passed_with_warnings жёлтый (таблица в [badge.md](badge.md)).
 
 ## Файлы скилла
 
@@ -47,7 +46,7 @@
 | [track-code.md](track-code.md) | Трек B: уязвимости кода по категориям |
 | [orchestration.md](orchestration.md) | Подагенты: веер, схема находок, adversarial-проверка |
 | [report.md](report.md) | Severity, готовность, гейт, формат отчёта |
-| [badge.md](badge.md) | Цветные flat-бейджи аудита, вставка в README |
+| [badge.md](badge.md) | Бейдж аудита (кликабельный) + файлы отчётов `docs/audit/`, вставка в README, миграция |
 | [codex-prompt.md](codex-prompt.md) | Промпт `/pre-deploy-audit` для Codex |
 
 ## Установка

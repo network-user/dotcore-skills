@@ -6,10 +6,12 @@
 
 ### Added
 
-- Скилл `pre-deploy-audit` - аудит репозитория перед деплоем/публикацией: два трека (утечки - секреты/ключи/PII/история git; код - инъекции, eval/exec, десериализация, authz, крипто), три уровня глубины, severity-гейт (Critical/High = провал), цветные бейджи аудита в README на PASS (блок `<!-- audit:start/end -->`)
+- Скилл `pre-deploy-audit` - аудит репозитория перед деплоем/публикацией: два трека (утечки - секреты/ключи/PII/история git; код - инъекции, eval/exec, десериализация, authz, крипто), три уровня глубины, severity-гейт (Critical/High = провал); на PASS - отчёт в `docs/audit/` (снимок по дате + `latest.md`) и кликабельный на него бейдж аудита в README (блок `<!-- audit:start/end -->`)
 - Скилл `sync-project-rules` - лёгкая регенерация только правил проекта (`AGENTS.md` + `.cursor/rules/dotcore-project.mdc` + `CLAUDE.md` + `GEMINI.md`), без README, обложки, LoC и аудита
 - `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - правила проекта для агентов
 - `skills/generate-readme/license.md` - политика строгой лицензии в скилле
+- `docs/audit/` - отчёты `pre-deploy-audit` (снимки по дате + `latest.md`); первый полный аудит репозитория от 2026-07-01: PASSED WITH WARNINGS (Critical/High = 0; два Medium path-traversal в установщиках - defense-in-depth)
+- CI: шаг проверки, что бейдж аудита в README ссылается на существующий отчёт; `permissions: contents: read` в `validate-skills.yml`
 
 ### Changed
 

@@ -88,7 +88,7 @@ dotcore-skills/
 - [docs/AGENTS_PATHS.md](docs/AGENTS_PATHS.md) - пути всех поддерживаемых агентов
 - [skills/generate-readme/SKILL.md](skills/generate-readme/SKILL.md) - README + правила (делегирует sync-project-rules)
 - [skills/sync-project-rules/SKILL.md](skills/sync-project-rules/SKILL.md) - только правила проекта (AGENTS.md + rule-файлы)
-- [skills/pre-deploy-audit/SKILL.md](skills/pre-deploy-audit/SKILL.md) - аудит перед деплоем/публикацией: утечки + код, 3 уровня, бейдж на PASS
+- [skills/pre-deploy-audit/SKILL.md](skills/pre-deploy-audit/SKILL.md) - аудит перед деплоем/публикацией: утечки + код, 3 уровня; на PASS - отчёт в `docs/audit/` и кликабельный бейдж в README
 
 ## DotCore
 
