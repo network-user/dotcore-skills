@@ -47,7 +47,7 @@ LoC-бейдж - **`<img>`** в маркерах, не `![]()`. Label: `lines_of
 
 ## Чужой блок: бейдж аудита (только сохранять)
 
-Бейдж security-аудита выдаёт **другой** скилл - `pre-deploy-audit`. Он кладёт в README отдельный `<p>` в маркерах `<!-- audit:start -->` … `<!-- audit:end -->` сразу после обложки/шапки: один кликабельный бейдж `security_audit` (ведёт на `docs/audit/latest.md`) + серый бейдж `date`. Сами отчёты он держит в `docs/audit/`.
+Бейдж security-аудита выдаёт **другой** скилл - `pre-deploy-audit`. Он кладёт в README отдельный `<p>` в маркерах `<!-- audit:start -->` … `<!-- audit:end -->` сразу после обложки/шапки: два кликабельных бейджа - `security_audit` (ведёт на `docs/audit/latest.md`) и серый `date` (ведёт на датированный снимок `docs/audit/{дата}-{слово}.md`). Сами отчёты он держит в `docs/audit/`.
 
 generate-readme блок **не генерирует и не правит** - только **переносит дословно** при перегенерации README (как сохраняет SVG-обложку), и **не трогает каталог `docs/audit/`**. Логика - та же, что с loc-маркерами: маркеры обязательны, по ним владелец-скилл обновляет блок на месте.
 
@@ -66,7 +66,7 @@ generate-readme блок **не генерирует и не правит** - т
 <!-- audit:start -->
 <p>
   <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed - full, leaks + code" /></a>
-  <img src="https://img.shields.io/badge/date-2026--06--28-555?style=flat" alt="audit date" />
+  <a href="docs/audit/2026-07-01-swift-harbor.md"><img src="https://img.shields.io/badge/date-2026--07--01-555?style=flat" alt="audit date" /></a>
 </p>
 <!-- audit:end -->
 ```

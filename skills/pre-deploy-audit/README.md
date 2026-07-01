@@ -21,9 +21,9 @@
 
 | Файл | Назначение |
 |------|------------|
-| `docs/audit/{дата}.md` | Снимок прогона: статус, уровень, охват, модель, дата, сводка находок (без секретов). Накапливается - видимая история аудитов |
-| `docs/audit/latest.md` | Копия последнего снимка - стабильная цель кликабельного бейджа |
-| блок `<!-- audit:start/end -->` в `README.md` | Кликабельный бейдж `security_audit` (→ `latest.md`) + бейдж `date` (additive, в маркерах) |
+| `docs/audit/{дата}-{слово}.md` | Снимок прогона: статус, уровень, охват, модель, дата, сводка находок (без секретов). Имя = дата + кодовое слово (несколько прогонов за день не затирают друг друга). Накапливается - видимая история аудитов |
+| `docs/audit/latest.md` | Копия последнего снимка - стабильная цель бейджа `security_audit` |
+| блок `<!-- audit:start/end -->` в `README.md` | Два кликабельных бейджа: `security_audit` (→ `latest.md`) + `date` (→ снимок `{дата}.md`), additive, в маркерах |
 
 На FAILED бейдж не создаётся; устаревший блок снимается, `latest.md` от провала не пишется. Картинки нет.
 
@@ -31,10 +31,10 @@
 
 <p>
   <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed - full, leaks + code" /></a>
-  <img src="https://img.shields.io/badge/date-2026--06--28-555?style=flat" alt="audit date" />
+  <a href="docs/audit/2026-07-01-swift-harbor.md"><img src="https://img.shields.io/badge/date-2026--07--01-555?style=flat" alt="audit date" /></a>
 </p>
 
-Бейдж `security_audit` кликабелен и ведёт на отчёт; уровень и охват - в его `alt`-тексте и в файле отчёта. `date` - серый. Цвет статуса: passed зелёный, passed_with_warnings жёлтый (таблица в [badge.md](badge.md)).
+Оба бейджа кликабельны: `security_audit` → `docs/audit/latest.md` (последний прогон), `date` → снимок этого прогона `docs/audit/{дата}-{слово}.md`. Уровень и охват - в `alt`-тексте `security_audit` и в файле отчёта. Цвет статуса: passed зелёный, passed_with_warnings жёлтый (таблица в [badge.md](badge.md)).
 
 ## Файлы скилла
 

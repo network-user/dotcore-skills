@@ -17,7 +17,7 @@ description: DotCore pre-deploy-audit - аудит репозитория пер
 3. **Audit** - трек A ([track-leaks.md](track-leaks.md)) и/или трек B ([track-code.md](track-code.md)) по уровню. Средний/полный - подагенты веером по измерениям ([orchestration.md](orchestration.md)); Codex без подагентов - последовательно, схема находок та же.
 4. **Verify** - adversarial-проверка каждой находки Critical/High.
 5. **Verdict** - severity + готовность + гейт ([report.md](report.md)). Critical/High = FAILED.
-6. **Stamp** - только на PASS: запиши отчёт `docs/audit/{дата}.md` + `docs/audit/latest.md` и впиши в README блок `<!-- audit:start/end -->` - кликабельный бейдж `security_audit` (→ `latest.md`) + бейдж `date` ([badge.md](badge.md)), без картинки. Старый 5-бейджевый блок мигрируй в новый формат.
+6. **Stamp** - только на PASS: запиши отчёт `docs/audit/{дата}-{слово}.md` + `docs/audit/latest.md` и впиши в README блок `<!-- audit:start/end -->` - кликабельный `security_audit` (→ `latest.md`) + кликабельный `date` (→ снимок) ([badge.md](badge.md)), без картинки. Старый 5-бейджевый блок мигрируй в новый формат.
 
 Жёстко: не выводи значения секретов (маска); не правь историю git и не удаляй файлы автоматически (только рекомендация); минимальный diff - кроме блока бейджа в README и файлов `docs/audit/` на PASS код не трогать.
 

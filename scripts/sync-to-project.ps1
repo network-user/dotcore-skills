@@ -33,7 +33,36 @@ if ($ListAgents) {
     exit 0
 }
 
-$TargetRoot = Resolve-Path $Target
+if ($Skill -and $Skill -notmatch '^[A-Za-z0-9._-]+$') {
+    Write-Error "Invalid skill name '$Skill'. Allowed: letters, digits, '.', '_', '-'."
+}
+
+$TargetRoot = (Resolve-Path $Target).Path
+
+# Reject a target dir that escapes the target repo root (path traversal).
+function Test-WithinBoundary {
+    param([string]$Path, [string]$Boundary)
+    try {
+        $full = [IO.Path]::GetFullPath($Path)
+        $base = [IO.Path]::GetFullPath($Boundary)
+    } catch {
+        return $false
+    }
+    $sep = [IO.Path]::DirectorySeparatorChar
+    if (-not $base.EndsWith($sep)) { $base += $sep }
+    return $full.StartsWith($base, [StringComparison]::OrdinalIgnoreCase)
+}
+
+# Reject dir values that are absolute, drive-qualified, or contain traversal.
+function Test-SafeRelativeDir {
+    param([string]$Dir)
+    if ([string]::IsNullOrWhiteSpace($Dir)) { return $false }
+    if ($Dir -match '(^|[\\/])\.\.([\\/]|$)') { return $false }
+    if ($Dir -match '^[\\/]') { return $false }
+    if ($Dir -match ':') { return $false }
+    if ([IO.Path]::IsPathRooted($Dir)) { return $false }
+    return $true
+}
 
 $selectedTargets = if ($AllAgents) {
     @($config.projectTargets)
@@ -64,7 +93,13 @@ Write-Host "  skills: $($SkillNames -join ', ')"
 Write-Host ""
 
 foreach ($target in $selectedTargets) {
+    if (-not (Test-SafeRelativeDir $target.dir)) {
+        Write-Error "Unsafe dir '$($target.dir)' for agent '$($target.id)' - aborting."
+    }
     $destSkills = Join-Path $TargetRoot ($target.dir -replace '/', [IO.Path]::DirectorySeparatorChar)
+    if (-not (Test-WithinBoundary $destSkills $TargetRoot)) {
+        Write-Error "dir '$($target.dir)' for agent '$($target.id)' escapes target root - aborting."
+    }
     New-Item -ItemType Directory -Force -Path $destSkills | Out-Null
     Write-Host "$($target.name) -> $($target.dir)"
 
@@ -74,6 +109,9 @@ foreach ($target in $selectedTargets) {
         if (-not (Test-Path $src)) {
             Write-Warning "Skip $name - not found"
             continue
+        }
+        if (-not (Test-WithinBoundary $dst $destSkills)) {
+            Write-Error "Skill '$name' resolves outside target dir - aborting."
         }
         if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
         if ($Link) {

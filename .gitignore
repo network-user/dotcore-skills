@@ -11,3 +11,15 @@ desktop.ini
 
 # Local install logs
 .install-log.txt
+
+# Secrets / credentials (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets*.json
+credentials*.json
+service-account*.json

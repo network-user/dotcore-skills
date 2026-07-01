@@ -18,7 +18,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Check SKILL.md exists and has frontmatter
         run: |
@@ -44,21 +44,27 @@ jobs:
             echo "OK: $skill"
           done
 
-      - name: Check audit badge links to an existing report
+      - name: Check audit badge links resolve to existing reports
         run: |
           set -e
           if [[ -f README.md ]] && grep -q '<!-- audit:start -->' README.md; then
-            line=$(grep 'security_audit' README.md | head -1)
-            href=$(printf '%s' "$line" | sed -nE 's/.*href="([^"]+)".*/\1/p')
-            if [[ -z "$href" ]]; then
-              echo "FAIL: audit block present but security_audit badge has no href link"
+            block=$(sed -n '/<!-- audit:start -->/,/<!-- audit:end -->/p' README.md)
+            hrefs=$(printf '%s\n' "$block" | grep -o 'href="[^"]*"' | sed -E 's/href="([^"]*)"/\1/')
+            if [[ -z "$hrefs" ]]; then
+              echo "FAIL: audit block present but contains no linked badges"
               exit 1
             fi
-            if [[ ! -f "$href" ]]; then
-              echo "FAIL: audit badge points to a missing report: $href"
-              exit 1
-            fi
-            echo "OK: audit badge -> $href"
+            rc=0
+            while IFS= read -r href; do
+              [[ -z "$href" ]] && continue
+              if [[ -f "$href" ]]; then
+                echo "OK: audit link -> $href"
+              else
+                echo "FAIL: audit badge points to a missing report: $href"
+                rc=1
+              fi
+            done <<< "$hrefs"
+            exit $rc
           else
             echo "No audit block in README - nothing to check"
           fi

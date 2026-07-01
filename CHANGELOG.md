@@ -10,8 +10,13 @@
 - Скилл `sync-project-rules` - лёгкая регенерация только правил проекта (`AGENTS.md` + `.cursor/rules/dotcore-project.mdc` + `CLAUDE.md` + `GEMINI.md`), без README, обложки, LoC и аудита
 - `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - правила проекта для агентов
 - `skills/generate-readme/license.md` - политика строгой лицензии в скилле
-- `docs/audit/` - отчёты `pre-deploy-audit` (снимки по дате + `latest.md`); первый полный аудит репозитория от 2026-07-01: PASSED WITH WARNINGS (Critical/High = 0; два Medium path-traversal в установщиках - defense-in-depth)
-- CI: шаг проверки, что бейдж аудита в README ссылается на существующий отчёт; `permissions: contents: read` в `validate-skills.yml`
+- `docs/audit/` - отчёты `pre-deploy-audit`: снимки по схеме `{дата}-{кодовое-слово}.md` (несколько прогонов за день не затирают друг друга) + `latest.md`. Полный аудит репозитория 2026-07-01: `first-pass` → PASSED WITH WARNINGS (2 Medium path-traversal), после фикса `iron-gate` → PASSED
+- CI: шаг проверки, что все ссылки бейджа аудита в README ведут на существующие отчёты; `permissions: contents: read` и пиннинг `actions/checkout` по SHA в `validate-skills.yml`
+
+### Security
+
+- Установщики (`install.ps1`/`install.sh`/`sync-to-project.ps1`/`sync-to-project.sh`): закрыт path-traversal через поле `dir` из `agents.targets.json` и через имя скилла из CLI - нормализация целевого пути + строгая проверка вхождения в границу (`$HOME`/`$TargetRoot`) до любого рекурсивного удаления, whitelist имени скилла `^[A-Za-z0-9._-]+$`
+- `.gitignore` расширен паттернами секретов (`.env*`, `*.pem`, `*.key`, `*.p12`, `*.pfx`, `secrets*.json`, `credentials*.json`, `service-account*.json`)
 
 ### Changed
 

@@ -39,6 +39,11 @@ if [[ -n "$SKILL_FILTER" && "$SKILL_FILTER" == --* ]]; then
   exit 1
 fi
 
+if [[ -n "$SKILL_FILTER" && ! "$SKILL_FILTER" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "Invalid skill name: '$SKILL_FILTER' (allowed: letters, digits, '.', '_', '-')" >&2
+  exit 1
+fi
+
 user_home() {
   local rel="$1"
   echo "$HOME/${rel//\//\/}"
@@ -51,6 +56,10 @@ install_skill() {
   local src="$SKILLS_SRC/$name"
   local dst="$target_dir/$name"
 
+  if [[ ! "$name" =~ ^[A-Za-z0-9._-]+$ ]]; then
+    echo "  Skip $name - invalid skill name" >&2
+    return
+  fi
   [[ -d "$src" ]] || { echo "  Skip $name - not found"; return; }
   mkdir -p "$target_dir"
   rm -rf "$dst"
@@ -82,6 +91,24 @@ skill_names = sys.argv[5:]
 link = link_flag == "1"
 home = os.path.expanduser("~")
 
+
+def is_safe_rel(rel):
+    """Reject dir values that are absolute or contain traversal."""
+    if not rel or rel.startswith("/") or rel.startswith("\\"):
+        return False
+    if os.path.isabs(rel) or ":" in rel:
+        return False
+    parts = rel.replace("\\", "/").split("/")
+    return ".." not in parts
+
+
+def within(path, boundary):
+    """True only if realpath(path) stays inside boundary."""
+    base = os.path.realpath(boundary)
+    full = os.path.realpath(path)
+    return full == base or full.startswith(base + os.sep)
+
+
 cfg = json.load(open(config_path, encoding="utf-8"))
 targets = cfg["userTargets"]
 if agents_filter:
@@ -91,7 +118,13 @@ if not targets:
     raise SystemExit("No matching agents. Use --list-agents for IDs.")
 
 for target in targets:
+    if not is_safe_rel(target["dir"]):
+        print(f"  Skip {target['id']} - unsafe dir '{target['dir']}'")
+        continue
     target_dir = os.path.join(home, *target["dir"].split("/"))
+    if not within(target_dir, home):
+        print(f"  Skip {target['id']} - dir '{target['dir']}' escapes home boundary")
+        continue
     print(f"{target['name']} ({target['id']}):")
     os.makedirs(target_dir, exist_ok=True)
     for name in skill_names:
@@ -99,6 +132,9 @@ for target in targets:
         dst = os.path.join(target_dir, name)
         if not os.path.isdir(src):
             print(f"  Skip {name} - not found")
+            continue
+        if not within(dst, target_dir):
+            print(f"  Skip {name} - resolves outside target dir")
             continue
         if os.path.lexists(dst):
             if os.path.islink(dst) or os.path.isdir(dst):
@@ -112,8 +148,12 @@ for target in targets:
 
     prompts_dir = target.get("promptsDir")
     prompt_source = target.get("promptSource")
-    if prompts_dir and prompt_source:
+    if prompts_dir and prompt_source and is_safe_rel(prompts_dir):
         pdir = os.path.join(home, *prompts_dir.split("/"))
+        if not within(pdir, home):
+            print(f"  Skip prompts for {target['id']} - promptsDir escapes home boundary")
+            print()
+            continue
         os.makedirs(pdir, exist_ok=True)
         for name in skill_names:
             src = os.path.join(skills_src, name, prompt_source)
