@@ -24,16 +24,14 @@
   <circle cx="1180" cy="460" r="330" fill="url(#ds-halo)"/>
   <svg x="965" y="245" width="430" height="430" viewBox="0 0 48 48">
     <g opacity="0.1" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="6" y="11" width="36" height="26" rx="3"/>
-      <path d="M13 21 l5 4 l-5 4"/>
-      <path d="M25 30 h6"/>
+      <rect x="8" y="8" width="24" height="24" rx="4"/>
+      <rect x="16" y="16" width="24" height="24" rx="4"/>
     </g>
   </svg>
   <svg x="140" y="118" width="86" height="86" viewBox="0 0 48 48">
     <g fill="none" stroke="#f3f3f1" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="6" y="11" width="36" height="26" rx="3"/>
-      <path d="M13 21 l5 4 l-5 4"/>
-      <path d="M25 30 h6"/>
+      <rect x="8" y="8" width="24" height="24" rx="4"/>
+      <rect x="16" y="16" width="24" height="24" rx="4"/>
     </g>
   </svg>
   <text x="138" y="408" font-family="Inter, Arial, sans-serif" font-size="132" font-weight="800" fill="#f3f3f1" letter-spacing="-3">.skills</text>
