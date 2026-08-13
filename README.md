@@ -25,6 +25,7 @@
 | [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` из фактов репозитория; правила делегирует `sync-project-rules` | «обнови README», «настрой правила проекта» |
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, на PASS - отчёт в `docs/audit/` и кликабельный бейдж | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
+| [generate-dotcore-image](skills/generate-dotcore-image/) | Иллюстрации в стиле DotCore: генерация с нуля или restyle любого референса; raster если есть модель, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -124,10 +125,11 @@ Bash-эквиваленты: `./scripts/install.sh`, фильтры через �
 ```text
 dotcore-skills/
 ├── skills/
-│   ├── generate-readme/      # README + правила (делегирует sync-project-rules)
-│   ├── sync-project-rules/   # только AGENTS.md + rule-файлы агентов
-│   ├── pre-deploy-audit/     # аудит перед деплоем: утечки + код, 3 уровня, бейдж + отчёт
-│   └── _template/            # заготовка, в установку не попадает
+│   ├── generate-readme/         # README + правила (делегирует sync-project-rules)
+│   ├── sync-project-rules/      # только AGENTS.md + rule-файлы агентов
+│   ├── pre-deploy-audit/        # аудит перед деплоем: утечки + код, 3 уровня, бейдж + отчёт
+│   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore, restyle референсов
+│   └── _template/               # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды
 │   ├── install.ps1           # user-level установка (Windows)

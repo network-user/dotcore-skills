@@ -141,6 +141,8 @@ Standalone-файл не ограничен длиной README, поэтому 
 
 Только по явной просьбе («скриншот», «фото UI»): PNG → `docs/preview.png` → `<img src="docs/preview.png" width="720">`. Иначе SVG - дешевле и самодостаточен.
 
+Произвольные иллюстрации в стиле DotCore (не обложка README) - скилл `generate-dotcore-image`.
+
 Raster prompt (fallback):
 
 ```
