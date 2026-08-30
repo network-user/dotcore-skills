@@ -26,6 +26,7 @@
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, на PASS - отчёт в `docs/audit/` и кликабельный бейдж | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Иллюстрации в стиле DotCore: генерация с нуля или restyle любого референса; raster если есть модель, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
+| [sepia](skills/sepia/) | De-AI writing: архитектура художественного текста + правила жанра для README, коммитов, чата, PR, релиз-нот (порт Nanako0129/sepia) | «убери ИИ-слог», «humanize», «перепиши по-человечески» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -129,6 +130,7 @@ dotcore-skills/
 │   ├── sync-project-rules/      # только AGENTS.md + rule-файлы агентов
 │   ├── pre-deploy-audit/        # аудит перед деплоем: утечки + код, 3 уровня, бейдж + отчёт
 │   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore, restyle референсов
+│   ├── sepia/                   # de-AI writing: fiction + проф. проза, русский слой
 │   └── _template/               # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды

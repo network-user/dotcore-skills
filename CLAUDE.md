@@ -14,6 +14,7 @@
 - «Обнови README» / «сгенерируй README» → скилл `generate-readme`
 - «Проверь перед деплоем» / «аудит безопасности» / «утечки» / «репо в public» → скилл `pre-deploy-audit`
 - «Картинка в стиле dotcore» / «перерисуй в .ядро» / иллюстрация PNG/SVG → скилл `generate-dotcore-image`
+- «Убери ИИ-слог» / «humanize» / «de-AI» / «перепиши по-человечески» → скилл `sepia`
 - Правки документации → стандарт DotCore (см. AGENTS.md)
 - Новый агент или скилл → `agents.targets.json` + `docs/`, оба установщика
 

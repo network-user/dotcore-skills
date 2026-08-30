@@ -90,6 +90,7 @@ dotcore-skills/
 - [skills/sync-project-rules/SKILL.md](skills/sync-project-rules/SKILL.md) - только правила проекта (AGENTS.md + rule-файлы)
 - [skills/pre-deploy-audit/SKILL.md](skills/pre-deploy-audit/SKILL.md) - аудит перед деплоем/публикацией: утечки + код, 3 уровня; на PASS - отчёт в `docs/audit/` и кликабельный бейдж в README
 - [skills/generate-dotcore-image/SKILL.md](skills/generate-dotcore-image/SKILL.md) - изображения в стиле DotCore: генерация или restyle, raster либо SVG; обложки README не трогает
+- [skills/sepia/SKILL.md](skills/sepia/SKILL.md) - de-AI writing: humanize / review / refactor / recreate; художественный текст и проф. проза, русский регистр DotCore
 
 ## DotCore
 
