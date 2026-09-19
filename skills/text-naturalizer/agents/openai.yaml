@@ -1,0 +1,3 @@
+interface:
+  display_name: "Естественный текст"
+  short_description: "Редактирует текст без шаблонности"

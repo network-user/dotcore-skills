@@ -91,6 +91,8 @@ dotcore-skills/
 - [skills/pre-deploy-audit/SKILL.md](skills/pre-deploy-audit/SKILL.md) - аудит перед деплоем/публикацией: утечки + код, 3 уровня; на PASS - отчёт в `docs/audit/` и кликабельный бейдж в README
 - [skills/generate-dotcore-image/SKILL.md](skills/generate-dotcore-image/SKILL.md) - изображения в стиле DotCore: генерация или restyle, raster либо SVG; обложки README не трогает
 - [skills/sepia/SKILL.md](skills/sepia/SKILL.md) - de-AI writing: humanize / review / refactor / recreate; художественный текст и проф. проза, русский регистр DotCore
+- [skills/author-voice/SKILL.md](skills/author-voice/SKILL.md) - сохраняемый профиль собственного авторского голоса: создание, обновление и применение по контексту
+- [skills/text-naturalizer/SKILL.md](skills/text-naturalizer/SKILL.md) - естественная редактура сообщений, статей и профессиональной прозы без обещаний обхода детекторов
 
 ## DotCore
 
