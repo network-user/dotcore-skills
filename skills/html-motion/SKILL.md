@@ -42,10 +42,14 @@ description: >-
 | Browser | один responsive HTML | читаемость, интеракция, плавность в реальном времени |
 | Video-ready | HTML + seekable timeline | одинаковый результат на каждом времени и кадре |
 
+Если нужны и browser preview, и запись, выбирай Video-ready: это источник истины,
+а preview должен вызывать тот же `renderAt(timeMs)` через play/pause/replay.
 Если формат не указан, делай Browser и оставляй timeline так, чтобы его можно
-было позднее синхронизировать с записью. Уточняй только решения, которые
-материально меняют результат: назначение, длительность/loop, viewport, наличие
-референсов, необходимость MP4 и ограничения проекта.
+было позднее перевести в Video-ready. Для записи без заданного формата используй
+16:9, capture viewport 1280×720 и responsive preview внутри этой сцены.
+Уточняй только решения, которые материально меняют результат: назначение,
+длительность/loop, viewport, наличие референсов, необходимость MP4 и ограничения
+проекта.
 
 ## Workflow
 
@@ -140,13 +144,19 @@ description: >-
 
 Для video-ready режима дополнительно:
 
+- сначала вынеси всю зависимость от времени в `renderAt(timeMs)`; browser RAF
+  передаёт ему текущее elapsed time, а `__seek(seconds)` - абсолютное время;
 - останови timeline перед ручным seek и только потом устанавливай время;
 - дождись шрифтов и изображений до первого кадра;
+- выставь `window.__ready` как Promise или явный readiness-флаг после загрузки
+  шрифтов, изображений и инициализации сцены; после каждого seek дождись хотя бы
+  двух `requestAnimationFrame`, прежде чем снимать кадр;
 - экспортируй фиксированный viewport и одну и ту же цветовую/seed-конфигурацию;
 - экспортер должен обращаться к `window.__seek(seconds)` и
-  `window.__duration`, а не пытаться «поймать» CSS-анимацию по wall-clock;
+- `window.__duration`, а не пытаться «поймать» CSS-анимацию по wall-clock;
 - если пользователь просит MP4, проверь кодек, размер, fps, длительность и
-  хотя бы один промежуточный кадр. Подробный контракт - в
+  хотя бы один промежуточный кадр. Подробный API-контракт - в
+  [references/api_reference.md](references/api_reference.md), общий QA - в
   [references/qa.md](references/qa.md).
 
 ### 5. Проверь в браузере
@@ -204,4 +214,5 @@ description: >-
 | [SKILL.md](SKILL.md) | Workflow и контракт результата |
 | [references/motion-craft.md](references/motion-craft.md) | Визуальная система, motion language и режиссура |
 | [references/qa.md](references/qa.md) | Browser QA, reduced motion, performance и export contract |
+| [references/api_reference.md](references/api_reference.md) | `__ready`, `renderAt`, `__seek` и handoff для capture |
 | [agents/openai.yaml](agents/openai.yaml) | Метаданные для интерфейса агента |

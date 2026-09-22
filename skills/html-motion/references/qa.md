@@ -47,8 +47,10 @@
 
 ```js
 window.__duration = 8.4;
+window.__ready = Promise.resolve();
+window.__renderAt = (timeMs) => {};
 window.__seek = (seconds) => {
-  // pause every running animation first, then set the exact time
+  // pause every running animation first, then call __renderAt(seconds * 1000)
 };
 ```
 
@@ -59,15 +61,17 @@ window.__seek = (seconds) => {
 - CSS/WAAPI animation не должна свободно играть во время screenshot;
 - Canvas рендерится от `t`, а не от количества вызовов `requestAnimationFrame`;
 - seed, viewport, fonts и assets фиксированы;
+- exporter ждёт `__ready`, затем после каждого seek ждёт минимум два RAF;
 - дождись `document.fonts.ready` и загрузки изображений до первого seek;
 - не используй screenshot option, которая «отключает анимации» и фактически
   переводит их в end state: timeline должна управляться собственным seek.
 
 До экспорта проверь минимум `t=0`, начало каждого beat, середину transition,
-финал и один повторный вызов того же времени. Для MP4 проверь metadata: codec,
-width/height, fps и duration; для web-раздачи обычно нужны `yuv420p` и
-`+faststart`, а silent audio track добавляй только если это требование целевой
-платформы.
+финал и один повторный вызов того же времени. Smoke-test должен снять хотя бы
+три кадра, убедиться, что они не пустые, а повторный кадр того же `t` стабилен
+по геометрии и цветовым токенам. Для MP4 проверь metadata: codec, width/height,
+fps и duration; для web-раздачи обычно нужны `yuv420p` и `+faststart`, а silent
+audio track добавляй только если это требование целевой платформы.
 
 ## Проверка содержания
 
