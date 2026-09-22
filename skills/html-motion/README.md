@@ -1,9 +1,10 @@
 # html-motion
 
 Скилл DotCore из [dotcore-skills](../../README.md) для генерации и доработки
-автономных HTML-анимаций. Базовое направление - плавный минимализм: узкая
-монохромная палитра, один-два акцента, точная типографика, воздух и один
-предметный motion-мотив. Скилл не навязывает сетку, точки или маркировку DotCore.
+автономных HTML-анимаций. Режим по умолчанию - DotCore: тёмная
+near-monochrome палитра, line-art, тонкая сетка, узлы, trace и локальный мягкий
+glow. Это визуальная грамматика, а не обязательная маркировка или копирование
+одной композиции.
 
 ## Что создаёт
 
@@ -12,6 +13,9 @@
 - responsive сцену с inline CSS/JS без обязательного build step;
 - по запросу - video-ready timeline с детерминированным `__seek`/`__duration`
   контрактом для покадровой записи и экспорта.
+
+Режим можно явно переопределить в prompt: `mode: quiet-monochrome`, `editorial`,
+`chromatic`, `playful` или `custom`. Если режим не назван, используется DotCore.
 
 ## Установка
 
@@ -45,6 +49,8 @@ HTML-анимации», `animation page`, `kinetic typography`, `explainer HTML
   video-ready QA;
 - [references/api_reference.md](references/api_reference.md) - контракт seekable
   timeline для покадрового экспорта;
+- [references/visual-modes.md](references/visual-modes.md) - DotCore default,
+  альтернативные визуальные режимы и правила выбора;
 - [demo/index.html](demo/index.html) - автономная анимация, которая объясняет
   сам скилл и демонстрирует его video-ready контракт;
 - [agents/openai.yaml](agents/openai.yaml) - UI-метаданные скилла.

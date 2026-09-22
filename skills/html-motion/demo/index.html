@@ -7,18 +7,18 @@
   <title>HTML Motion / Field Note 01</title>
   <style>
     :root {
-      --paper: #ebe8e1;
-      --paper-deep: #d9d5cb;
-      --ink: #1b1c1a;
-      --muted: #74766f;
-      --line: rgba(27, 28, 26, .16);
-      --line-soft: rgba(27, 28, 26, .08);
-      --accent: #b9573d;
-      --accent-soft: rgba(185, 87, 61, .13);
-      --frame-shadow: rgba(28, 29, 25, .14);
-      color-scheme: light;
+      --paper: #080b10;
+      --paper-deep: #111720;
+      --ink: #edf4f7;
+      --muted: #84919a;
+      --line: rgba(213, 231, 241, .16);
+      --line-soft: rgba(213, 231, 241, .08);
+      --accent: #9ddcff;
+      --accent-soft: rgba(157, 220, 255, .14);
+      --frame-shadow: rgba(0, 0, 0, .46);
+      color-scheme: dark;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #c9c6be;
+      background: #05070a;
       color: var(--ink);
     }
 
@@ -38,8 +38,8 @@
       display: grid;
       place-items: center;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, .14), transparent 52%),
-        #c9c6be;
+        radial-gradient(circle at 74% 25%, rgba(157, 220, 255, .07), transparent 28%),
+        #05070a;
       color: var(--ink);
     }
 
@@ -59,9 +59,9 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      border: 1px solid rgba(27, 28, 26, .28);
+      border: 1px solid rgba(213, 231, 241, .25);
       background: var(--paper);
-      box-shadow: 0 22px 55px var(--frame-shadow);
+      box-shadow: 0 22px 55px var(--frame-shadow), 0 0 80px rgba(157, 220, 255, .05);
       isolation: isolate;
     }
 
@@ -76,14 +76,21 @@
     .frame::before {
       inset: 0;
       background:
-        linear-gradient(90deg, transparent 7.5%, rgba(27, 28, 26, .06) 7.5%, rgba(27, 28, 26, .06) calc(7.5% + 1px), transparent calc(7.5% + 1px)),
-        linear-gradient(90deg, transparent 91.5%, rgba(27, 28, 26, .06) 91.5%, rgba(27, 28, 26, .06) calc(91.5% + 1px), transparent calc(91.5% + 1px));
+        linear-gradient(90deg, transparent 7.5%, rgba(213, 231, 241, .09) 7.5%, rgba(213, 231, 241, .09) calc(7.5% + 1px), transparent calc(7.5% + 1px)),
+        linear-gradient(90deg, transparent 91.5%, rgba(213, 231, 241, .09) 91.5%, rgba(213, 231, 241, .09) calc(91.5% + 1px), transparent calc(91.5% + 1px)),
+        linear-gradient(rgba(213, 231, 241, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(213, 231, 241, .035) 1px, transparent 1px);
+      background-size: auto, auto, 32px 32px, 32px 32px;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     }
 
     .frame::after {
       inset: auto 0 0;
       height: 22%;
-      background: linear-gradient(0deg, rgba(27, 28, 26, .045), transparent);
+      background:
+        radial-gradient(circle at 79% 42%, rgba(157, 220, 255, .09), transparent 30%),
+        linear-gradient(0deg, rgba(0, 0, 0, .24), transparent);
     }
 
     .topline,
@@ -186,9 +193,9 @@
     h1,
     h2 {
       max-width: 780px;
-      font-family: "Iowan Old Style", "Baskerville", Georgia, serif;
-      font-weight: 400;
-      letter-spacing: -.055em;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 500;
+      letter-spacing: -.072em;
     }
 
     h1 {
@@ -204,6 +211,7 @@
     h1 em {
       color: var(--accent);
       font-style: normal;
+      text-shadow: 0 0 22px var(--accent-soft);
     }
 
     h2 {
@@ -280,7 +288,7 @@
     .token__swatch {
       display: block;
       height: clamp(22px, 2.3vw, 34px);
-      border: 1px solid rgba(27, 28, 26, .18);
+      border: 1px solid rgba(213, 231, 241, .18);
       background: var(--token-color);
     }
 
@@ -504,6 +512,7 @@
       stroke-width: 1.4;
       stroke-dasharray: 1;
       stroke-dashoffset: 1;
+      filter: drop-shadow(0 0 4px rgba(157, 220, 255, .38));
     }
 
     .route-map__node {
@@ -511,6 +520,7 @@
       stroke: var(--paper);
       stroke-width: 1.2;
       vector-effect: non-scaling-stroke;
+      filter: drop-shadow(0 0 5px rgba(157, 220, 255, .55));
     }
 
     .route-map__caption {
@@ -580,9 +590,9 @@
     .control-button {
       min-width: 54px;
       padding: 8px 11px;
-      border: 1px solid rgba(27, 28, 26, .28);
+      border: 1px solid rgba(213, 231, 241, .25);
       border-radius: 0;
-      background: rgba(235, 232, 225, .55);
+      background: rgba(17, 23, 32, .82);
       color: var(--ink);
       cursor: pointer;
       font-size: 10px;
@@ -774,17 +784,17 @@
   <main class="demo-shell">
     <section class="frame" id="stage" aria-label="Демонстрация скилла html-motion">
       <div class="topline" aria-hidden="true">
-        <span class="topline__brand">HTML MOTION / FIELD NOTE 01</span>
+        <span class="topline__brand">DOTCORE / HTML MOTION 01</span>
         <span class="topline__mode"><i class="mode-dot" id="mode-dot"></i><span id="mode-label">VIDEO-READY</span></span>
       </div>
 
       <div class="scene-layer">
         <section class="scene scene--intro" data-scene="intro" aria-label="Вступление">
           <div class="scene__inner">
-            <p class="eyebrow">00 / один файл - одна сцена</p>
+            <p class="eyebrow">00 / dotcore default - one scene</p>
             <h1><span>HTML</span><span><em>motion</em></span></h1>
-            <p class="lede">Скилл для анимаций, где плавность начинается с режиссуры, а не с россыпи эффектов.</p>
-            <div class="hero-meta"><span>14 sec / 16:9</span><span>seekable by design</span></div>
+            <p class="lede">Скилл для анимаций, где плавность начинается с режиссуры, line-art и одного спокойного сигнала.</p>
+            <div class="hero-meta"><span>14 sec / 16:9</span><span>dotcore by default</span></div>
           </div>
         </section>
 
@@ -792,18 +802,18 @@
           <div class="scene__inner">
             <p class="eyebrow">01 / visual direction</p>
             <h2><span>Сначала -</span><span>язык.</span></h2>
-            <p class="copy-block">Скилл задаёт <strong>quiet monochrome</strong> как стартовую точку: узкая шкала нейтралей, один смысловой акцент и предметный мотив. Это грамматика, а не обязательный бренд.</p>
+            <p class="copy-block">Скилл задаёт <strong>DotCore</strong> как стартовую точку: тёмная near-monochrome база, тонкая сетка, line-art, узлы и один смысловой сигнал. Это грамматика, а не обязательный бренд.</p>
             <div class="token-strip" aria-label="Пять цветовых токенов">
-              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#ebe8e1"></i><span>surface</span></span>
-              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#d9d5cb"></i><span>plane</span></span>
-              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#74766f"></i><span>muted</span></span>
-              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#1b1c1a"></i><span>ink</span></span>
-              <span class="token token--accent" data-reveal="direction"><i class="token__swatch" style="--token-color:#b9573d"></i><span>signal</span></span>
+              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#080b10"></i><span>surface</span></span>
+              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#111720"></i><span>plane</span></span>
+              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#84919a"></i><span>muted</span></span>
+              <span class="token" data-reveal="direction"><i class="token__swatch" style="--token-color:#edf4f7"></i><span>ink</span></span>
+              <span class="token token--accent" data-reveal="direction"><i class="token__swatch" style="--token-color:#9ddcff"></i><span>signal</span></span>
             </div>
           </div>
           <aside class="direction-note" aria-hidden="true">
-            <strong>Не копировать форму</strong>
-            Сохранить ощущение точности, воздуха и мягкого сигнала - но собрать новый образ под задачу.
+            <strong>Не копировать вывеску</strong>
+            Сохранить точность, воздух и мягкий signal, но собрать собственную геометрию под задачу.
           </aside>
         </section>
 
@@ -853,8 +863,8 @@
           <div class="scene__inner">
             <p class="eyebrow">05 / handoff</p>
             <h2><span>Плавность</span><span>как система.</span></h2>
-            <p class="copy-block">В итоге остаётся автономный HTML: читаемый без движения, responsive в браузере и готовый к покадровой записи.</p>
-            <div class="outro-line"><span>browser preview</span><span>video-ready</span><span>reduced motion</span></div>
+            <p class="copy-block">В итоге остаётся автономный HTML: DotCore по умолчанию, читаемый без движения, responsive в браузере и готовый к покадровой записи.</p>
+            <div class="outro-line"><span>dotcore default</span><span>mode switch</span><span>video-ready</span></div>
           </div>
         </section>
       </div>

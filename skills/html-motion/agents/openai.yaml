@@ -1,4 +1,4 @@
 interface:
-  display_name: "HTML Motion"
-  short_description: "Плавные минималистичные HTML-анимации"
-  default_prompt: "Use $html-motion to create a smooth self-contained HTML animation."
+  display_name: "HTML Motion / DotCore"
+  short_description: "Плавные HTML-анимации в режиме DotCore"
+  default_prompt: "Use $html-motion in default DotCore mode to create a smooth self-contained HTML animation; switch modes only when the prompt asks."
