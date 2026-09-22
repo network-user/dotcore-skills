@@ -215,4 +215,5 @@ description: >-
 | [references/motion-craft.md](references/motion-craft.md) | Визуальная система, motion language и режиссура |
 | [references/qa.md](references/qa.md) | Browser QA, reduced motion, performance и export contract |
 | [references/api_reference.md](references/api_reference.md) | `__ready`, `renderAt`, `__seek` и handoff для capture |
+| [demo/index.html](demo/index.html) | Автономный explainer-демо самого скилла |
 | [agents/openai.yaml](agents/openai.yaml) | Метаданные для интерфейса агента |

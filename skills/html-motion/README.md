@@ -45,4 +45,6 @@ HTML-анимации», `animation page`, `kinetic typography`, `explainer HTML
   video-ready QA;
 - [references/api_reference.md](references/api_reference.md) - контракт seekable
   timeline для покадрового экспорта;
+- [demo/index.html](demo/index.html) - автономная анимация, которая объясняет
+  сам скилл и демонстрирует его video-ready контракт;
 - [agents/openai.yaml](agents/openai.yaml) - UI-метаданные скилла.
