@@ -6,7 +6,10 @@
 
 ## Browser pass
 
-Проверь в доступном браузере:
+Проверь в доступном браузере с временным изолированным профилем, без текущих
+cookies/storage/credentials и без внешней сети по умолчанию. Captures сохраняй
+только в отдельный scratch-каталог; loopback разрешай только для локального
+preview:
 
 1. Открытие напрямую или через простой локальный server. Нет ошибок в console.
 2. Wide viewport и narrow viewport. Нет случайного `document.body.scrollWidth`
