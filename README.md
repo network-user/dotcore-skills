@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
   <img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
-  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-582-lightgrey?style=flat" alt="582 lines of code" /><!-- loc:end -->
+  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1835-lightgrey?style=flat" alt="1835 lines of code" /><!-- loc:end -->
 </p>
 
 <img src="docs/cover.svg" width="720" alt="dotcore-skills" />
@@ -29,6 +29,7 @@
 | [sepia](skills/sepia/) | De-AI writing: архитектура художественного текста + правила жанра для README, коммитов, чата, PR, релиз-нот (порт Nanako0129/sepia) | «убери ИИ-слог», «humanize», «перепиши по-человечески» |
 | [author-voice](skills/author-voice/) | Сохраняемый профиль собственного авторского голоса: создание по корпусу, контекстные варианты, безопасное пополнение и применение | «сохрани мой стиль», «пиши как я», «добавь тексты к профилю» |
 | [text-naturalizer](skills/text-naturalizer/) | Нормализация сообщений, статей и профессиональной прозы: естественная редактура, P0-P2-приоритеты, защита фактов и голоса | «сделай текст живым», «убери шаблонность», «нормализуй текст» |
+| [html-motion](skills/html-motion/) | Автономные HTML-анимации с плавным motion-языком, near-monochrome базой, акцентными цветами и video-ready timeline | «сгенерируй HTML-анимацию», «сделай плавный animated hero», «анимация для записи в видео» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -135,6 +136,7 @@ dotcore-skills/
 │   ├── sepia/                   # de-AI writing: fiction + проф. проза, русский слой
 │   ├── author-voice/            # сохраняемый профиль голоса автора
 │   ├── text-naturalizer/        # естественная редактура сообщений и прозы
+│   ├── html-motion/              # автономные HTML-анимации и seekable timeline
 │   └── _template/               # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды

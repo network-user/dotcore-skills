@@ -93,6 +93,7 @@ dotcore-skills/
 - [skills/sepia/SKILL.md](skills/sepia/SKILL.md) - de-AI writing: humanize / review / refactor / recreate; художественный текст и проф. проза, русский регистр DotCore
 - [skills/author-voice/SKILL.md](skills/author-voice/SKILL.md) - сохраняемый профиль собственного авторского голоса: создание, обновление и применение по контексту
 - [skills/text-naturalizer/SKILL.md](skills/text-naturalizer/SKILL.md) - естественная редактура сообщений, статей и профессиональной прозы без обещаний обхода детекторов
+- [skills/html-motion/SKILL.md](skills/html-motion/SKILL.md) - автономные HTML-анимации: плавный минималистичный motion-язык, browser QA и video-ready timeline
 
 ## DotCore
 
