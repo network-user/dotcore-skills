@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Zero-dependency validator for the deterministic coverage ledger.
-// Usage: node validate-coverage-ledger.cjs <coverage-ledger.json>
+// Usage: node validate-coverage-ledger.cjs [--final] <coverage-ledger.json>
 
 const fs = require("node:fs");
 
@@ -63,13 +63,18 @@ function keys(value, allowed, location, errors) {
 }
 
 function encodePart(value) {
-  return encodeURIComponent(value).replace(/[!'()*]/gu, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`);
+  try {
+    return encodeURIComponent(value).replace(/[!'()*]/gu, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`);
+  } catch {
+    return null;
+  }
 }
 
 function expectedCoverageId(refs) {
   const fields = ["surface", "boundary", "subsystem", "attack_class"];
   const encoded = fields.map((field) => encodePart(refs[field]));
   if (Object.prototype.hasOwnProperty.call(refs, "lifecycle")) encoded.push(encodePart(refs.lifecycle));
+  if (encoded.some((part) => part === null)) return null;
   return encoded.join("::");
 }
 
@@ -116,6 +121,7 @@ function checkAttempts(value, location, errors) {
       add(errors, attemptLocation, "must be an object");
       return;
     }
+    keys(attempt, new Set(["wave", "status", "agent_id", "reviewed_paths", "local_checks", "result_fingerprints", "unresolved"]), attemptLocation, errors);
     required(attempt, ["wave", "status", "agent_id", "reviewed_paths", "local_checks", "result_fingerprints", "unresolved"], attemptLocation, errors);
     if (!Number.isInteger(attempt.wave) || attempt.wave < 1) add(errors, `${attemptLocation}.wave`, "must be a positive integer");
     if (!STATUSES.has(attempt.status) || attempt.status === "planned" || attempt.status === "in_progress") add(errors, `${attemptLocation}.status`, "archived attempt must be terminal or blocked");
@@ -159,7 +165,7 @@ function checkUnit(unit, index, errors) {
     if (Object.prototype.hasOwnProperty.call(refs, "lifecycle") && !visible(refs.lifecycle)) add(errors, `${location}.canonical_refs.lifecycle`, "must be visible canonical text");
     if (isObject(refs) && ["surface", "boundary", "subsystem", "attack_class"].every((field) => visible(refs[field]))) {
       const expected = expectedCoverageId(refs);
-      if (unit.coverage_id !== expected) add(errors, `${location}.coverage_id`, "does not match canonical references");
+      if (expected === null || unit.coverage_id !== expected) add(errors, `${location}.coverage_id`, "does not match canonical references");
     }
   }
   if (!visible(unit.coverage_id)) add(errors, `${location}.coverage_id`, "must be visible text");
@@ -254,23 +260,51 @@ function validate(value) {
   return errors;
 }
 
+function validateFinal(value) {
+  const errors = validate(value);
+  if (errors.length > 0 || !Array.isArray(value)) return errors;
+  value.forEach((unit, index) => {
+    if (isObject(unit) && ["planned", "in_progress", "candidate", "blocked"].includes(unit.status)) {
+      add(errors, `$[${index}].status`, "final ledger cannot contain an open status");
+    }
+  });
+  return errors;
+}
+
 function readInput(inputPath) {
-  let stat;
-  try { stat = fs.lstatSync(inputPath); } catch { throw new Error("cannot read coverage ledger input"); }
-  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error("coverage ledger input must be a regular file");
-  if (stat.size > MAX_BYTES) throw new Error("coverage ledger input exceeds size limit");
-  return fs.readFileSync(inputPath, "utf8");
+  let fd;
+  try {
+    const stat = fs.lstatSync(inputPath);
+    if (!stat.isFile() || stat.isSymbolicLink()) throw new Error("coverage ledger input must be a regular file");
+    const noFollow = fs.constants.O_NOFOLLOW || 0;
+    fd = fs.openSync(inputPath, fs.constants.O_RDONLY | noFollow);
+    const opened = fs.fstatSync(fd);
+    if (!opened.isFile()) throw new Error("coverage ledger input must be a regular file");
+    if (opened.size > MAX_BYTES) throw new Error("coverage ledger input exceeds size limit");
+    return fs.readFileSync(fd, "utf8");
+  } catch (error) {
+    if (error.message === "coverage ledger input exceeds size limit" || error.message === "coverage ledger input must be a regular file") throw error;
+    throw new Error("cannot read coverage ledger input");
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+  }
 }
 
 function main(argv) {
-  if (argv.length !== 3) {
-    console.error("Usage: node validate-coverage-ledger.cjs <coverage-ledger.json>");
+  if (argv.length !== 3 && argv.length !== 4) {
+    console.error("Usage: node validate-coverage-ledger.cjs [--final] <coverage-ledger.json>");
     return 2;
   }
+  const finalMode = argv.length === 4;
+  if (finalMode && argv[2] !== "--final") {
+    console.error("Usage: node validate-coverage-ledger.cjs [--final] <coverage-ledger.json>");
+    return 2;
+  }
+  const inputPath = finalMode ? argv[3] : argv[2];
   let value;
-  try { value = JSON.parse(readInput(argv[2])); }
+  try { value = JSON.parse(readInput(inputPath)); }
   catch (error) { console.error(`Failed to read coverage ledger: ${error.message}`); return 1; }
-  const errors = validate(value);
+  const errors = finalMode ? validateFinal(value) : validate(value);
   if (errors.length > 0) {
     console.error(`Invalid coverage-ledger.json (${errors.length} error${errors.length === 1 ? "" : "s"})`);
     errors.slice(0, 100).forEach((error) => console.error(error));
@@ -282,4 +316,4 @@ function main(argv) {
 }
 
 if (require.main === module) process.exitCode = main(process.argv);
-module.exports = { validate, expectedCoverageId };
+module.exports = { validate, validateFinal, expectedCoverageId };

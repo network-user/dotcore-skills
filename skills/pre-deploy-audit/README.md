@@ -61,7 +61,7 @@ coverage-ledger, hunting waves, независимую проверку candidat
 | [ATTACK-CLASSES.md](ATTACK-CLASSES.md) | Ordinary и domain-specific классы атак |
 | [report-schema.json](report-schema.json) | Контракт `confirmed` / `needs_validation` / `rejected` |
 | [validate-findings.cjs](validate-findings.cjs) | Zero-dependency validator `findings.json` |
-| [validate-coverage-ledger.cjs](validate-coverage-ledger.cjs) | Zero-dependency validator coverage ledger |
+| [validate-coverage-ledger.cjs](validate-coverage-ledger.cjs) | Zero-dependency validator coverage ledger; `--final` closes open units |
 | [NOTICE.md](NOTICE.md) | MIT-атрибуция Cloudflare |
 | [codex-prompt.md](codex-prompt.md) | Промпт `/pre-deploy-audit` для Codex |
 

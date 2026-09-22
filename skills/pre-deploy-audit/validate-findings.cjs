@@ -22,7 +22,11 @@ function isObject(value) {
 }
 
 function isVisible(value) {
-  return typeof value === "string" && value.trim().length > 0 && !/[\u0000-\u001f\u007f]/u.test(value);
+  return typeof value === "string"
+    && value.trim().length > 0
+    && value.normalize("NFC") === value
+    && !/[\u0000-\u001f\u007f\u2028\u2029\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/iu.test(value)
+    && !/\p{Default_Ignorable_Code_Point}/u.test(value);
 }
 
 function isRepoPath(value) {
@@ -129,7 +133,7 @@ function checkExecution(value, location, errors) {
   required(value, ["attacker_perspective", "payloads", "instructions", "observed_result"], location, errors);
   checkText(value.attacker_perspective, `${location}.attacker_perspective`, errors);
   if (!Array.isArray(value.payloads) || value.payloads.length === 0) add(errors, `${location}.payloads`, "must be a non-empty array");
-  else value.payloads.forEach((item, index) => { if (typeof item !== "string") add(errors, `${location}.payloads[${index}]`, "must be a string"); });
+  else value.payloads.forEach((item, index) => checkText(item, `${location}.payloads[${index}]`, errors));
   if (!Array.isArray(value.instructions) || value.instructions.length === 0) add(errors, `${location}.instructions`, "must be a non-empty array");
   else value.instructions.forEach((item, index) => checkText(item, `${location}.instructions[${index}]`, errors));
   checkText(value.observed_result, `${location}.observed_result`, errors);
@@ -271,11 +275,22 @@ function validate(value) {
 }
 
 function readInput(inputPath) {
-  let stat;
-  try { stat = fs.lstatSync(inputPath); } catch { throw new Error("cannot read findings input"); }
-  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error("findings input must be a regular file");
-  if (stat.size > MAX_BYTES) throw new Error("findings input exceeds size limit");
-  return fs.readFileSync(inputPath, "utf8");
+  let fd;
+  try {
+    const stat = fs.lstatSync(inputPath);
+    if (!stat.isFile() || stat.isSymbolicLink()) throw new Error("findings input must be a regular file");
+    const noFollow = fs.constants.O_NOFOLLOW || 0;
+    fd = fs.openSync(inputPath, fs.constants.O_RDONLY | noFollow);
+    const opened = fs.fstatSync(fd);
+    if (!opened.isFile()) throw new Error("findings input must be a regular file");
+    if (opened.size > MAX_BYTES) throw new Error("findings input exceeds size limit");
+    return fs.readFileSync(fd, "utf8");
+  } catch (error) {
+    if (error.message === "findings input exceeds size limit" || error.message === "findings input must be a regular file") throw error;
+    throw new Error("cannot read findings input");
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+  }
 }
 
 function main(argv) {

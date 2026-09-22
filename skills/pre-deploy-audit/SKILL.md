@@ -105,7 +105,9 @@ artifact promotion и безопасность запуска подробно �
 1. **Recon** - parent фиксирует `run-metadata.json`, source ref, dirty state,
    scope, profile и budget; четыре независимых прохода строят `architecture.md`.
 2. **Coverage** - parent создаёт и валидирует `coverage-ledger.json` с unit'ами
-   `surface × boundary × subsystem × attack_class`.
+   `surface × boundary × subsystem × attack_class`. Перед promotion запускай
+   `validate-coverage-ledger.cjs --final`: открытые `planned`, `in_progress`,
+   `candidate` и `blocked` units запрещены.
 3. **Hunting** - hunter waves проверяют units, coverage critic находит пропуски и
    возвращает незакрытые области в очередь или в `deferred`.
 4. **Candidate validation** - свежий verifier решает `confirmed`,

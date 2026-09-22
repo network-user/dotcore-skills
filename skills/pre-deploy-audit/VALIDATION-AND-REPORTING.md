@@ -27,7 +27,11 @@ Parent единолично пишет `findings.json`, сортирует за�
 ```text
 node <skill-dir>/validate-findings.cjs <run-dir>/findings.json
 node <skill-dir>/validate-coverage-ledger.cjs <run-dir>/coverage-ledger.json
+node <skill-dir>/validate-coverage-ledger.cjs --final <run-dir>/coverage-ledger.json
 ```
+
+Обычная проверка нужна после каждого изменения ledger. `--final` обязателен перед
+продвижением отчёта: он отклоняет `planned`, `in_progress`, `candidate` и `blocked`.
 
 Контракт описан в [report-schema.json](report-schema.json). Ветки не смешиваются:
 

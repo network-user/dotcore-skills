@@ -63,4 +63,6 @@ assert.doesNotThrow(() => validate([{ verdict: "confirmed", trace: [null, null] 
 assert.notEqual(validate([confirmed({ needs_validation: true })]).length, 0);
 assert.notEqual(validate([confirmed(), confirmed()]).length, 0);
 assert.notEqual(validate([needsValidation(), { ...needsValidation(), severity: { overall_severity: "high" } }]).length, 0);
+assert.notEqual(validate([confirmed({ title: "Bidi\u202ehidden" })]).length, 0);
+assert.notEqual(validate([confirmed({ execution: { ...confirmed().execution, payloads: ["\u200b"] } })]).length, 0);
 console.log("validate-findings.test.cjs: ok");

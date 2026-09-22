@@ -45,7 +45,7 @@ description: >-
 | Runtime | `engines`, `.nvmrc`, `pyproject.toml`, `go.mod`, `Cargo.toml` |
 | Команды | `scripts`, `Makefile`, `pyproject` scripts, CI `.github/workflows/` |
 | Зависимости | `dependencies`, `devDependencies`, `requirements` |
-| Окружение | `docker-compose.yml`, `Dockerfile`, `.env.example` (имена, не значения) |
+| Окружение | `docker-compose.yml`, `Dockerfile`; `.env*` не открывать, имена переменных принимать только из явно переданного sanitized списка |
 | Тесты / lint | CI, `pytest.ini`, `eslint.config`, `vitest.config` |
 | Структура | `apps/`, `packages/`, `src/` - модули по факту |
 | Существующие правила | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/`, `GEMINI.md` |

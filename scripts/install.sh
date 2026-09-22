@@ -44,9 +44,13 @@ if [[ -n "$SKILL_FILTER" && ! "$SKILL_FILTER" =~ ^[A-Za-z0-9._-]+$ ]]; then
   exit 1
 fi
 
-user_home() {
-  local rel="$1"
-  echo "$HOME/${rel//\//\/}"
+contains_links() {
+  local root="$1"
+  [[ -L "$root" ]] && return 0
+  while IFS= read -r -d '' link; do
+    [[ -n "$link" ]] && return 0
+  done < <(find "$root" -type l -print0)
+  return 1
 }
 
 install_skill() {
@@ -61,6 +65,10 @@ install_skill() {
     return
   fi
   [[ -d "$src" ]] || { echo "  Skip $name - not found"; return; }
+  if contains_links "$src"; then
+    echo "  Skip $name - source contains a symlink" >&2
+    return
+  fi
   mkdir -p "$target_dir"
   rm -rf "$dst"
   if [[ "$LINK" == "1" ]]; then
@@ -148,7 +156,7 @@ for target in targets:
 
     prompts_dir = target.get("promptsDir")
     prompt_source = target.get("promptSource")
-    if prompts_dir and prompt_source and is_safe_rel(prompts_dir):
+    if prompts_dir and prompt_source and is_safe_rel(prompts_dir) and is_safe_rel(prompt_source):
         pdir = os.path.join(home, *prompts_dir.split("/"))
         if not within(pdir, home):
             print(f"  Skip prompts for {target['id']} - promptsDir escapes home boundary")
@@ -156,11 +164,14 @@ for target in targets:
             continue
         os.makedirs(pdir, exist_ok=True)
         for name in skill_names:
-            src = os.path.join(skills_src, name, prompt_source)
-            if os.path.isfile(src):
-                dst = os.path.join(pdir, f"{name}.md")
-                shutil.copy2(src, dst)
-                print(f"  [{target['name']} prompt] {name}.md -> {pdir}")
+            skill_root = os.path.join(skills_src, name)
+            src = os.path.join(skill_root, prompt_source)
+            dst = os.path.join(pdir, f"{name}.md")
+            if not os.path.isfile(src) or os.path.islink(src) or not within(src, skill_root) or not within(dst, pdir):
+                print(f"  Skip {name} prompt - source or destination is outside the safe boundary")
+                continue
+            shutil.copy2(src, dst)
+            print(f"  [{target['name']} prompt] {name}.md -> {pdir}")
     print()
 print("Done.")
 PY

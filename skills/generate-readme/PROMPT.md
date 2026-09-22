@@ -19,7 +19,7 @@
 ## Правила
 
 - Язык русский (если проект не EN-only). Тон internal doc, не marketing.
-- Читай репозиторий: команды из package.json/Makefile/pyproject, deps из манифестов, env-имена из .env.example/docker-compose. Ничего не выдумывай. Код важнее старого README.
+- Читай репозиторий: команды из package.json/Makefile/pyproject, deps из манифестов и env-имена только из явно переданного sanitized списка или безопасной конфигурации. Не открывай `.env*`, включая `.env.example`; значения не запрашивай и не выводи. Ничего не выдумывай. Код важнее старого README.
 - Запрещено в README: `<details>`, centered hero, emoji, длинное тире, LLM-маркеры, mermaid вместо ASCII-дерева, marketing-буллеты.
 
 ## Workflow
