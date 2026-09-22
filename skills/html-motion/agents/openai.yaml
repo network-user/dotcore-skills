@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Motion"
+  short_description: "Smooth minimalist HTML animations"
+  default_prompt: "Use $html-motion to create a smooth self-contained HTML animation."
