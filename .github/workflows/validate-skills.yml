@@ -68,3 +68,11 @@ jobs:
           else
             echo "No audit block in README - nothing to check"
           fi
+
+      - name: Check pre-deploy audit contracts
+        run: |
+          set -e
+          node --check skills/pre-deploy-audit/validate-findings.cjs
+          node --check skills/pre-deploy-audit/validate-coverage-ledger.cjs
+          node skills/pre-deploy-audit/validate-findings.test.cjs
+          node skills/pre-deploy-audit/validate-coverage-ledger.test.cjs
