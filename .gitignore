@@ -12,6 +12,12 @@ desktop.ini
 # Local install logs
 .install-log.txt
 
+# Local agent and generated artifacts
+.claude/
+_tmp_whisper_stills.py
+docs/internal-cloud-platform.svg
+skills/sepia.zip
+
 # Secrets / credentials (never commit)
 .env
 .env.*
