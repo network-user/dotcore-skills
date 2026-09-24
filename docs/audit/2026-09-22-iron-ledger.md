@@ -1,5 +1,3 @@
-> Последний прогон: iron-ledger · 2026-09-22. Снимок: [2026-09-22-iron-ledger.md](2026-09-22-iron-ledger.md) · история: [docs/audit/](.)
-
 # Security Audit · Iron Ledger · 2026-09-22
 
 | Поле | Значение |
@@ -18,14 +16,14 @@
 ## Сводка
 
 ```
-Трек A · Секреты/ключи:          0  (Crit 0 / High 0)
-Трек A · PII/экспозиция:         0  (high-confidence pattern scan)
-Трек A · История git (28):       0  (high-confidence secret matches)
-Трек B · Инъекции/exec:          0
-Трек B · Path/reparse/traversal: 0  подтверждённых
-Трек B · Authz/крипто:           0
-Трек B · Зависимости:            1  hardening warning
-Инфра/CI:                        1  hardening warning
+Трек A · Секреты/ключи:        0  (Crit 0 / High 0)
+Трек A · PII/экспозиция:       0  (high-confidence pattern scan)
+Трек A · История git (28):     0  (high-confidence secret matches)
+Трек B · Инъекции/exec:        0
+Трек B · Path/reparse/traversal: 0 подтверждённых
+Трек B · Authz/крипто:         0
+Трек B · Зависимости:          1 hardening warning
+Инфра/CI:                      1 hardening warning
 
 Severity: Crit 0 · High 0 · Med 1 · Low 1 · Info 0
 Readiness: 9/10
@@ -98,3 +96,4 @@ Findings: confirmed 2 · needs_validation 2 · rejected 0
 - Из-за лимита agent threads веер full-аудита выполнен Codex последовательно по тому же coverage contract; target-controlled build, tests, browser и live network не запускались.
 - Реальные GitHub permissions, release provenance, hosted-runner image и runtime sandbox нельзя доказать локальным исходным кодом; они оставлены в `needs_validation`.
 - Untracked-файлы из шапки не входят в этот verdict. Если любой из них попадёт в release, нужен отдельный прогон по фактическому release tree.
+

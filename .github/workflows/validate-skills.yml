@@ -1,15 +1,7 @@
 name: Validate DotCore Skills
 on:
   push:
-    paths:
-      - "skills/**"
-      - "README.md"
-      - "docs/audit/**"
   pull_request:
-    paths:
-      - "skills/**"
-      - "README.md"
-      - "docs/audit/**"
 
 permissions:
   contents: read
@@ -19,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Check SKILL.md exists and has frontmatter
         run: |
@@ -68,3 +62,11 @@ jobs:
           else
             echo "No audit block in README - nothing to check"
           fi
+
+      - name: Check pre-deploy audit contracts
+        run: |
+          set -e
+          node --check skills/pre-deploy-audit/validate-findings.cjs
+          node --check skills/pre-deploy-audit/validate-coverage-ledger.cjs
+          node skills/pre-deploy-audit/validate-findings.test.cjs
+          node skills/pre-deploy-audit/validate-coverage-ledger.test.cjs

@@ -1,11 +1,18 @@
 # pre-deploy-audit
 
-Скилл DotCore из monorepo [dotcore-skills](../../README.md): **аудит репозитория перед деплоем или сменой видимости на public**. Три уровня глубины, два независимых трека, на PASS - бейдж аудита в README (кликабельный) и отчёт в `docs/audit/`.
+Скилл DotCore из monorepo [dotcore-skills](../../README.md): **единый аудит репозитория перед деплоем, релизом или сменой видимости на public**. Три уровня глубины, два независимых трека и полный source-first security engine с coverage ledger. На PASS - кликабельный бейдж в README и отчёт в `docs/audit/`.
 
 Различает две разные задачи и не смешивает их:
 
 - **Трек A - утечки**: секреты, ключи, credentials, PII, история git. Паттерн-скан, не требует понимания логики. Это «проверка на утечки» и подготовка к публикации.
 - **Трек B - код**: уязвимости в логике (инъекции, eval/exec, десериализация, SSRF, authz, крипто). Семантический разбор кода. Это «аудит всего кода на проблемы с безопасностью».
+
+Полный security-аудит добавляет шесть фаз Cloudflare-подобного workflow: recon,
+coverage-ledger, hunting waves, независимую проверку candidates, машинный
+`findings.json` и финальную проверку records. `confirmed`, `needs_validation` и
+`rejected` не смешиваются; два zero-dependency Node.js-валидатора проверяют
+структуру. Промежуточные артефакты находятся вне target, если пользователь не
+выбрал явно ignored-каталог.
 
 ## Уровни
 
@@ -13,7 +20,7 @@
 |---------|-----------------|--------------|-----------|
 | Поверхностный | working tree, секреты, `.gitignore` | явные флаги (`eval`/`exec`, creds) | нет |
 | Средний | + экспозиция, дефолты | критичные области + зависимости | 2-4 |
-| Полный | + **история git**, PII, supply chain | **вся кодовая база** + инфра/CI | веер + verify |
+| Полный | + **история git**, PII, supply chain | coverage-led вся кодовая база + инфра/CI | веер + candidate/record verify |
 
 Полный уровень трека A - режим «перед сменой видимости на public» (с проверкой истории git).
 
@@ -23,9 +30,9 @@
 |------|------------|
 | `docs/audit/{дата}-{слово}.md` | Снимок прогона: статус, уровень, охват, модель, дата, сводка находок (без секретов). Имя = дата + кодовое слово (несколько прогонов за день не затирают друг друга). Накапливается - видимая история аудитов |
 | `docs/audit/latest.md` | Копия последнего снимка - стабильная цель бейджа `security_audit` |
-| блок `<!-- audit:start/end -->` в `README.md` | Два кликабельных бейджа: `security_audit` (→ `latest.md`) + `date` (→ снимок `{дата}.md`), additive, в маркерах |
+| блок `<!-- audit:start/end -->` в `README.md` | Два кликабельных бейджа: `security_audit` (→ `latest.md`) + `date` (→ снимок `{дата}-{слово}.md`), additive, в маркерах |
 
-На FAILED бейдж не создаётся; устаревший блок снимается, `latest.md` от провала не пишется. Картинки нет.
+На FAILED или INCOMPLETE бейдж не создаётся; устаревший блок снимается, `latest.md` от провала не пишется. Картинки нет.
 
 Так выглядит блок бейджа аудита:
 
@@ -47,6 +54,15 @@
 | [orchestration.md](orchestration.md) | Подагенты: веер, схема находок, adversarial-проверка |
 | [report.md](report.md) | Severity, готовность, гейт, формат отчёта |
 | [badge.md](badge.md) | Бейдж аудита (кликабельный) + файлы отчётов `docs/audit/`, вставка в README, миграция |
+| [RECONNAISSANCE.md](RECONNAISSANCE.md) | Full: архитектура, trust boundaries, prior runs, coverage ledger |
+| [HUNTING.md](HUNTING.md) | Full: hunting waves, structured hunter contract, coverage critic |
+| [VALIDATION-AND-REPORTING.md](VALIDATION-AND-REPORTING.md) | Full: candidate/record verification, artifacts и target-neutral reports |
+| [execution-safety.md](execution-safety.md) | Sandbox, scratch и запрет live-проверок |
+| [ATTACK-CLASSES.md](ATTACK-CLASSES.md) | Ordinary и domain-specific классы атак |
+| [report-schema.json](report-schema.json) | Контракт `confirmed` / `needs_validation` / `rejected` |
+| [validate-findings.cjs](validate-findings.cjs) | Zero-dependency validator `findings.json` |
+| [validate-coverage-ledger.cjs](validate-coverage-ledger.cjs) | Zero-dependency validator coverage ledger; `--final` closes open units |
+| [NOTICE.md](NOTICE.md) | MIT-атрибуция Cloudflare |
 | [codex-prompt.md](codex-prompt.md) | Промпт `/pre-deploy-audit` для Codex |
 
 ## Установка
@@ -85,4 +101,4 @@ your-repo/.cursor/skills/pre-deploy-audit/
 
 1. Открой целевой репозиторий.
 2. «Проведи аудит перед деплоем» (уровень - поверхностный/средний/полный) или «проверь на утечки перед публикацией».
-3. Проверь: уровень и трек(и) выбраны по запросу; Critical/High прошли verify; значения секретов не выведены; вердикт по [report.md](report.md); бейдж - только на PASS.
+3. Проверь: уровень и трек(и) выбраны по запросу; Critical/High и full candidates прошли verify; значения секретов не выведены; validators успешны; incomplete run не получил бейдж; вердикт по [report.md](report.md).

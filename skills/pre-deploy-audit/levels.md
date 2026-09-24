@@ -62,3 +62,24 @@
 | «полный аудит / весь код» | A + B | полный |
 
 Неоднозначно между «утечки» и «весь код» - уточни одним вопросом. Не подменяй дешёвый запрос дорогим и наоборот.
+
+## Профили полного security-аудита
+
+Полный режим Cloudflare-подобного engine дополнительно фиксирует профиль в
+`run-metadata.json` и строит coverage ledger. Профиль меняет ширину и число
+повторных проходов, но не снижает доказательную планку:
+
+| Профиль | Покрытие | Проверка |
+|---|---|---|
+| `quick` | небольшая repo, повторный прогон или ограниченный scope; units крупнее | одна hunter wave, один critic, один свежий verifier на candidate/record; результат partial |
+| `standard` | дефолт, units по surface/boundary/subsystem/attack class | hunter waves, post-wave critic, отдельные candidate и final record verifier'ы |
+| `deep` | high-stakes или большая codebase; lifecycle и приоритетные revalidation units | critic waves до clean pass, независимые candidate и final record проверки, второй проход для prior-covered areas |
+
+Budget считает все reconnaissance, critic и verifier вызовы. Сначала резервируй
+обязательные critics и валидацию, затем назначай hunter'ов. Если budget не
+позволяет закрыть обязательный critic или verifier, пометь run `incomplete`,
+units `deferred`, а не выдавай clean PASS.
+
+Машинные артефакты и переходы состояний описаны в
+[RECONNAISSANCE.md](RECONNAISSANCE.md), [HUNTING.md](HUNTING.md) и
+[VALIDATION-AND-REPORTING.md](VALIDATION-AND-REPORTING.md).

@@ -14,6 +14,23 @@
 
 Делегируй подагенту, когда: измерение независимо от других; поиск займёт 3+ запросов инструментов; результат - большой объём выдержек, который незачем тянуть в основной контекст. Не делегируй, когда шаг зависит от предыдущего или задача - один греп.
 
+## Full engine: роли и границы записи
+
+В полном security-аудите parent сохраняет общий state и единолично пишет
+`run-metadata.json`, `architecture.md`, `coverage-ledger.json`, `findings.json` и
+три итоговых отчёта. Hunter, candidate verifier и final record verifier получают
+разные каталоги `agents/<agent-id>/scratch/` и не могут писать в общий ledger,
+исходники или retained `artifacts/`.
+
+Каждый agent ID канонический: lowercase `^[a-z0-9][a-z0-9_-]{0,63}$`, без Windows
+device names. Повторное назначение unit'а получает свежий ID и сохраняет старую
+попытку в `attempts`; evidence старого owner не смешивается с новым.
+
+Target-controlled execution допустим только в sandbox: no external network,
+empty allowlisted environment, read-only target/toolchain, scratch-only writes и
+явные resource limits. Если parent не может обеспечить эти условия, agent не
+запускает target code, а возвращает blocker для `needs_validation`.
+
 ## Деление на измерения
 
 Одно измерение = один подагент. Измерения независимы, поэтому идут в одном сообщении параллельно.
@@ -59,6 +76,11 @@
 - `evidence`: **маскированная** выдержка. Значение секрета не выводить - первые/последние 2 символа, остальное `…`.
 - `confidence`: насколько уверенно (для приоритета на проверке).
 
+В полном режиме этот компактный формат - только промежуточный результат. Parent
+переводит его в строгий record из [report-schema.json](report-schema.json) и
+назначает fingerprint. Record обязан иметь source trace, evidence, conditions,
+bounded observed result и remediation; `needs_validation` severity не получает.
+
 ## Синтез
 
 Собери массивы всех подагентов, **дедуп** по `file + line + category`, отсортируй по severity. Дубли из разных измерений - одна находка с максимальной severity.
@@ -71,7 +93,9 @@
 2. Полный уровень - 2-3 скептика с разными линзами (достижимость, санитизация, реальный impact); решение большинством.
 3. Опровергнуто - понизь severity или отбрось; подтверждено - оставь с пометкой «verified».
 
-Не выдавай PASS/FAIL и тем более бейдж по непроверенным Critical/High.
+Не выдавай PASS/FAIL и тем более бейдж по непроверенным Critical/High. В полном
+режиме непроверенный candidate, незакрытый обязательный unit или пропущенный
+verifier дают `INCOMPLETE`, даже если подтвержденных Critical/High нет.
 
 ## По агентам
 
@@ -80,3 +104,19 @@
 - **Codex / прочие** - последовательный fallback, схема находок и проверка не меняются.
 
 Независимо от агента итог одинаков: структурированные находки → дедуп → проверка Critical/High → вердикт ([report.md](report.md)).
+
+## Два независимых verifier-прохода
+
+Для standard/deep не объединяй проверку candidate и проверку финального record:
+
+1. fresh general verifier пытается опровергнуть каждый уникальный candidate;
+2. parent валидирует `findings.json` и ledger;
+3. fresh research verifier перепроверяет каждый retained `confirmed` и
+   `needs_validation` уже как структурированную запись;
+4. material replacement получает нового verifier, не участвовавшего в предыдущих
+   шагах.
+
+`quick` может объединить первые два verifier-роли для экономии бюджета, но не
+   отменяет независимую проверку каждого retained record. Нельзя считать
+   `needs_validation` безопасной находкой: это unresolved lead, который должен
+   остаться отдельно в отчёте.

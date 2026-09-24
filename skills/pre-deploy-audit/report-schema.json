@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Machine-readable contract for full pre-deploy-audit findings.json.",
+  "title": "Unified security audit findings",
+  "type": "array",
+  "maxItems": 1000,
+  "items": {
+    "oneOf": [
+      { "$ref": "#/$defs/confirmed" },
+      { "$ref": "#/$defs/needsValidation" },
+      { "$ref": "#/$defs/rejected" }
+    ]
+  },
+  "$defs": {
+    "fingerprint": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/@+-]*$"
+    },
+    "visible": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*[\\u0000-\\u001F\\u007F\\u2028\\u2029\\u200B-\\u200F\\u202A-\\u202E\\u2060-\\u206F\\uFEFF]).+$"
+    },
+    "repoPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(^|/)\\.\\.(/|$))(?!.*\\\\).+$"
+    },
+    "traceStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "file", "line", "scope", "description"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["entrypoint", "propagation", "sink"] },
+        "file": { "$ref": "#/$defs/repoPath" },
+        "line": { "type": "integer", "minimum": 1 },
+        "scope": { "$ref": "#/$defs/visible" },
+        "description": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "line", "description"],
+      "properties": {
+        "file": { "$ref": "#/$defs/repoPath" },
+        "line": { "type": "integer", "minimum": 1 },
+        "description": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "description"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "authentication_level",
+            "authorization_role",
+            "user_interaction",
+            "system_configuration",
+            "network_routing",
+            "environmental_dependency",
+            "data_state",
+            "timing_dependency",
+            "third_party_dependency"
+          ]
+        },
+        "description": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attacker_perspective", "payloads", "instructions", "observed_result"],
+      "properties": {
+        "attacker_perspective": { "$ref": "#/$defs/visible" },
+        "payloads": {
+          "type": "array",
+          "minItems": 1,
+            "items": { "$ref": "#/$defs/visible" }
+        },
+        "instructions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/visible" }
+        },
+        "observed_result": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "remediation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy"],
+      "properties": {
+        "strategy": { "$ref": "#/$defs/visible" },
+        "code_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["file_name", "fixed_code"],
+            "properties": {
+              "file_name": { "$ref": "#/$defs/repoPath" },
+              "fixed_code": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "reason"],
+      "properties": {
+        "score": {
+          "type": "string",
+          "enum": ["informational", "low", "medium", "high", "critical"]
+        },
+        "reason": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "severity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["likelihood", "impact", "overall_severity"],
+      "properties": {
+        "likelihood": { "$ref": "#/$defs/score" },
+        "impact": { "$ref": "#/$defs/score" },
+        "overall_severity": {
+          "type": "string",
+          "enum": ["informational", "low", "medium", "high", "critical"]
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "reason"],
+      "properties": {
+        "score": { "type": "string", "enum": ["low", "medium", "high"] },
+        "reason": { "$ref": "#/$defs/visible" }
+      }
+    },
+    "confirmed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict", "fingerprint", "title", "description", "root_cause",
+        "intended_behavior", "trace", "evidence", "conditions", "execution",
+        "remediation", "severity", "confidence"
+      ],
+      "properties": {
+        "verdict": { "const": "confirmed" },
+        "fingerprint": { "$ref": "#/$defs/fingerprint" },
+        "title": { "$ref": "#/$defs/visible" },
+        "description": { "$ref": "#/$defs/visible" },
+        "root_cause": { "$ref": "#/$defs/visible" },
+        "intended_behavior": { "$ref": "#/$defs/visible" },
+        "trace": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/traceStep" }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "conditions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/condition" }
+        },
+        "execution": { "$ref": "#/$defs/execution" },
+        "remediation": { "$ref": "#/$defs/remediation" },
+        "severity": { "$ref": "#/$defs/severity" },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      }
+    },
+    "validationPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "local": { "$ref": "#/$defs/visible" },
+        "deployment": { "$ref": "#/$defs/visible" }
+      },
+      "anyOf": [
+        { "required": ["local"] },
+        { "required": ["deployment"] }
+      ]
+    },
+    "needsValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict", "fingerprint", "title", "description", "claimed_root_cause",
+        "trace", "evidence", "blockers", "validation_plan"
+      ],
+      "properties": {
+        "verdict": { "const": "needs_validation" },
+        "fingerprint": { "$ref": "#/$defs/fingerprint" },
+        "title": { "$ref": "#/$defs/visible" },
+        "description": { "$ref": "#/$defs/visible" },
+        "claimed_root_cause": { "$ref": "#/$defs/visible" },
+        "trace": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/traceStep" }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "blockers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/visible" }
+        },
+        "validation_plan": { "$ref": "#/$defs/validationPlan" }
+      }
+    },
+    "rejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verdict", "fingerprint", "title", "description", "claimed_root_cause",
+        "trace", "evidence", "reason"
+      ],
+      "properties": {
+        "verdict": { "const": "rejected" },
+        "fingerprint": { "$ref": "#/$defs/fingerprint" },
+        "title": { "$ref": "#/$defs/visible" },
+        "description": { "$ref": "#/$defs/visible" },
+        "claimed_root_cause": { "$ref": "#/$defs/visible" },
+        "trace": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/traceStep" }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "reason": { "$ref": "#/$defs/visible" }
+      }
+    }
+  }
+}

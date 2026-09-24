@@ -4,6 +4,13 @@
 
 Дорогой трек. Не запускай вглубь, когда просили только утечки (трек A). На полном уровне - веер подагентов по модулям и категориям ([orchestration.md](orchestration.md)).
 
+В полном режиме это coverage-led source-first аудит, а не длинный grep. Сначала
+зафиксируй lower-trust principal, accepted input/action, intended control,
+crossed boundary, affected resource и concrete result. Затем создай unit
+`surface × boundary × subsystem × attack_class` и выбери применимые companion
+правила из [ATTACK-CLASSES.md](ATTACK-CLASSES.md). Prompt injection, crash,
+mutable dependency или missing header без boundary impact остаются hardening.
+
 ## Подход: source → sink
 
 Уязвимость = недоверенный ввод (**source**) доходит до опасной операции (**sink**) без санитизации. Для каждой категории ищи sink, затем трассируй назад до source.
@@ -63,11 +70,46 @@
 - **Dockerfile**: запуск от root, секреты в `ARG`/слоях/`ENV`, `latest`-теги, лишние пакеты, проброс `.env` в образ.
 - **CI**: `pull_request_target` с checkout кода PR, эхо секретов в лог, инъекция в `run:` через `${{ github.event.* }}` от недоверенного источника, избыточные права `GITHUB_TOKEN`.
 
+### 11. Бизнес-логика и state machine
+
+- обход intended workflow через повтор, пропуск шага, смену статуса или replay;
+- second-order/chained path: безопасный на входе объект становится опасным после
+  storage, import, preview, export, search или webhook;
+- feature abuse: массовый экспорт, приглашение, восстановление, preview, dry-run,
+  bulk и fallback выполняют действие с другой authority;
+- race между проверкой и side effect, queue/retry/resume, duplicate operation и
+  stale authorization.
+
+Не называй бизнес-правило уязвимостью без affected principal/resource и
+наблюдаемого нарушения intended invariant.
+
+### 12. Специализированные поверхности
+
+Если recon показывает соответствующую границу, добавь companion-файл:
+
+- AI/LLM/RAG/tool/MCP - [AI-AND-LLM.md](AI-AND-LLM.md);
+- browser/DOM/webview - [CLIENT-SIDE.md](CLIENT-SIDE.md);
+- HTTP parser/cache/auth - [WEB-PROTOCOL-AND-AUTH.md](WEB-PROTOCOL-AND-AUTH.md);
+- RPC/queue/broker/webhook - [PROTOCOLS-RPC-AND-MESSAGING.md](PROTOCOLS-RPC-AND-MESSAGING.md);
+- dependencies/CI/release/update - [SUPPLY-CHAIN-AND-RELEASE.md](SUPPLY-CHAIN-AND-RELEASE.md);
+- cloud/IAM/IaC/container/serverless - [CLOUD-AND-DEPLOYMENT.md](CLOUD-AND-DEPLOYMENT.md);
+- data isolation/lifecycle - [DATA-ISOLATION-AND-LIFECYCLE.md](DATA-ISOLATION-AND-LIFECYCLE.md);
+- native/binary/FFI - [MEMORY-SAFETY-AND-BINARY.md](MEMORY-SAFETY-AND-BINARY.md);
+- desktop/mobile/local IPC - [DESKTOP-MOBILE-AND-LOCAL-IPC.md](DESKTOP-MOBILE-AND-LOCAL-IPC.md).
+
 ## Уровни трека B
 
 - **Поверхностный**: только греп явных sink (категории 1-2, 6-7 - hardcoded/`eval`/`shell=True`/`verify=False`). Без трассировки.
 - **Средний**: ревью **критичных и изменённых** областей (точки входа, auth, ввод, БД/файлы/сеть) по категориям 1-8 + зависимости (9).
 - **Полный**: **вся кодовая база** по модулям, трассировка source→sink по всем категориям + инфра/CI (10). Веер подагентов, затем adversarial-проверка находок Critical/High.
+
+В полном security-аудите результат не считается complete без ledger: каждый unit
+имеет terminal status, `reviewed_paths` и `local_checks`, а deferred/blocked/
+out_of_scope раскрыты в отчёте. Уникальные candidates получают
+`confirmed`/`needs_validation`/`rejected`, затем финальные records проходят
+отдельную проверку. Контракт и валидаторы: [report-schema.json](report-schema.json),
+[validate-findings.cjs](validate-findings.cjs),
+[validate-coverage-ledger.cjs](validate-coverage-ledger.cjs).
 
 ## Замечания
 

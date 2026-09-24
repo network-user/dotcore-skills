@@ -65,6 +65,15 @@ def within(path, boundary):
     return full == base or full.startswith(base + os.sep)
 
 
+def contains_links(root):
+    if os.path.islink(root):
+        return True
+    for current, dirs, files in os.walk(root, followlinks=False):
+        if any(os.path.islink(os.path.join(current, name)) for name in [*dirs, *files]):
+            return True
+    return False
+
+
 target = os.path.realpath(target)
 
 cfg = json.load(open(config_path, encoding="utf-8"))
@@ -113,6 +122,8 @@ for target_def in targets:
         if not os.path.isdir(src):
             print(f"  Skip {name} - not found")
             continue
+        if contains_links(src):
+            raise SystemExit(f"Skill '{name}' contains a symlink - aborting.")
         if not within(dst, dest_skills):
             raise SystemExit(f"Skill '{name}' resolves outside target dir - aborting.")
         if os.path.lexists(dst):

@@ -31,22 +31,33 @@
 ## Гейт
 
 ```
-если есть открытые Critical или High  -> FAILED          (бейджа нет)
-иначе если есть открытые Medium        -> PASSED WITH WARNINGS
-иначе                                  -> PASSED
+если есть подтверждённые Critical/High или Track A Critical -> FAILED (бейджа нет)
+иначе если run incomplete, есть unvalidated candidate или обязательный unit не закрыт -> INCOMPLETE (бейджа нет)
+иначе если есть подтверждённые Medium или финальные needs_validation -> PASSED WITH WARNINGS
+иначе                                                           -> PASSED
 ```
 
-- **FAILED** - бейдж и файл отчёта не выдаются. Если в README уже есть блок от прошлого PASS - **снять его** вместе с `SECURITY-AUDIT.md` (не оставлять устаревшее заявление о пройденном аудите).
+- **FAILED** - бейдж и новый файл отчёта не выдаются. Если в README уже есть блок от прошлого PASS - снять его, не оставляя устаревшее заявление о пройденном аудите.
+- **INCOMPLETE** - coverage или независимая проверка не завершены. Бейдж не выдаётся, `latest.md` от такого прогона не записывается; run-артефакты остаются во внешнем каталоге.
 - **PASSED WITH WARNINGS** - бейдж выдаётся (жёлтый), в отчёте перечислены Medium; для public рекомендуется устранить и перепроверить.
 - **PASSED** - бейдж выдаётся (зелёный).
 
 Охват фиксируется в файле отчёта и в `alt`-тексте бейджа (`утечки`, `код`, `утечки + код`) - PASS по треку A не заявляет аудит кода.
+
+В полном режиме `confirmed`, `needs_validation` и `rejected` - разные состояния.
+`needs_validation` не получает severity и не считается подтвержденной уязвимостью,
+но blocker, затрагивающий обязательный охват, делает run `INCOMPLETE`. Финальный
+`needs_validation`, прошедший обе независимые проверки, остаётся отдельной
+предупреждающей секцией и не превращается в зелёное заявление «всё безопасно».
 
 ## Формат отчёта (вывести пользователю)
 
 ```
 Pre-Deploy Audit - {уровень}, охват: {утечки | код | утечки + код}
 ──────────────────────────────────────────────
+Run status:                 {complete | incomplete}
+Profile / source ref:       {quick | standard | deep} / {commit-or-dirty}
+Coverage units:             {covered} / {candidate} / {blocked} / {deferred} / {out_of_scope}
 Трек A · Секреты/ключи:   {n}  (Crit {x} / High {y})
 Трек A · PII/экспозиция:   {n}
 Трек A · История git:      {n}            (полный)
@@ -57,7 +68,8 @@ Pre-Deploy Audit - {уровень}, охват: {утечки | код | уте
 ──────────────────────────────────────────────
 Severity: Crit {} · High {} · Med {} · Low {} · Info {}
 Готовность: X/10
-Вердикт: PASSED | PASSED WITH WARNINGS | FAILED
+Findings: confirmed {} · needs_validation {} · rejected {}
+Вердикт: PASSED | PASSED WITH WARNINGS | FAILED | INCOMPLETE
 
 Артефакты: блок audit в README + docs/audit/{дата}-{слово}.md + latest.md | не выданы - {причина}
 ```
@@ -72,6 +84,12 @@ Severity: Crit {} · High {} · Med {} · Low {} · Info {}
 ## Материализация на PASS
 
 На PASS этот же отчёт записывается в **`docs/audit/{дата}-{слово}.md`** (снимок прогона: дата + кодовое слово, чтобы несколько прогонов за день не затирали друг друга - видимая история) и копируется в **`docs/audit/latest.md`** (стабильная цель бейджа `security_audit`). Markdown-версия: шапка статус/уровень/охват/модель/дата + сводка + таблица находок. Формат файлов, бейдж и миграция со старого 5-бейджевого формата - в [badge.md](badge.md). В файлы отчётов, как и в вывод, **значения секретов не идут** - только `file:line` и маски.
+
+Полный run сначала создаёт target-neutral `REPORT.md`, `FINDINGS-DETAIL.md` и
+`NEEDS-VALIDATION.md` из проверенных JSON. В `docs/audit/` попадает только
+redacted summary после завершённого PASS или PASS WITH WARNINGS; промежуточные
+`run-metadata.json`, `architecture.md`, `coverage-ledger.json` и `findings.json`
+держи вне target либо в явно ignored каталоге.
 
 ## Приоритет ремедиации
 

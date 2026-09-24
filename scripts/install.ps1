@@ -74,16 +74,39 @@ function Get-UserPath {
     return $path
 }
 
+# Resolve the deepest existing path component so junctions/reparse points cannot
+# make a lexical in-bound path write outside the intended boundary.
+function Get-ResolvedExistingPath {
+    param([string]$Path)
+    try {
+        $candidate = [IO.Path]::GetFullPath($Path)
+        while (-not (Test-Path -LiteralPath $candidate)) {
+            $parent = Split-Path -LiteralPath $candidate -Parent
+            if ([string]::IsNullOrEmpty($parent) -or $parent -eq $candidate) { return $null }
+            $candidate = $parent
+        }
+        return (Resolve-Path -LiteralPath $candidate -ErrorAction Stop).Path
+    } catch {
+        return $null
+    }
+}
+
 # Reject a target dir that escapes the user's home boundary (path traversal).
 function Test-WithinBoundary {
     param([string]$Path, [string]$Boundary)
     try {
         $full = [IO.Path]::GetFullPath($Path)
-        $base = [IO.Path]::GetFullPath($Boundary)
+        $base = Get-ResolvedExistingPath $Boundary
+        $existing = Get-ResolvedExistingPath $Path
+        if (-not $base -or -not $existing) { return $false }
+        $base = [IO.Path]::GetFullPath($base)
+        $existing = [IO.Path]::GetFullPath($existing)
     } catch {
         return $false
     }
     $sep = [IO.Path]::DirectorySeparatorChar
+    if ($existing -ne $base -and -not $existing.StartsWith($base.TrimEnd($sep) + $sep, [StringComparison]::OrdinalIgnoreCase)) { return $false }
+    if ($full -eq $base) { return $true }
     if (-not $base.EndsWith($sep)) { $base += $sep }
     return $full.StartsWith($base, [StringComparison]::OrdinalIgnoreCase)
 }
@@ -99,6 +122,21 @@ function Test-SafeRelativeDir {
     return $true
 }
 
+function Test-NoReparsePoints {
+    param([string]$Path)
+    try {
+        $reparse = [IO.FileAttributes]::ReparsePoint
+        $root = Get-Item -LiteralPath $Path -Force
+        if (($root.Attributes -band $reparse) -ne 0) { return $false }
+        foreach ($item in @(Get-ChildItem -LiteralPath $Path -Recurse -Force -ErrorAction Stop)) {
+            if (($item.Attributes -band $reparse) -ne 0) { return $false }
+        }
+        return $true
+    } catch {
+        return $false
+    }
+}
+
 function Install-OneSkill {
     param(
         [string]$SkillName,
@@ -107,16 +145,22 @@ function Install-OneSkill {
     )
     $Src = Join-Path $SkillsSrc $SkillName
     $Dst = Join-Path $TargetDir $SkillName
-    if (-not (Test-Path $Src)) {
+    if (-not (Test-Path -LiteralPath $Src)) {
         Write-Warning "Skip $SkillName - source not found"
         return
     }
-    New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
-    if (-not (Test-WithinBoundary $Dst $TargetDir)) {
+    if (-not (Test-NoReparsePoints $Src)) {
+        Write-Warning "Skip $SkillName - source contains a reparse point"
+        return
+    }
+    if (-not (Test-WithinBoundary $TargetDir $HomeBoundary) -or
+        -not (Test-WithinBoundary $Dst $HomeBoundary) -or
+        -not (Test-WithinBoundary $Dst $TargetDir)) {
         Write-Warning "Skip $SkillName - resolved path escapes target dir"
         return
     }
-    if (Test-Path $Dst) { Remove-Item -Recurse -Force $Dst }
+    New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
+    if (Test-Path -LiteralPath $Dst) { Remove-Item -LiteralPath $Dst -Recurse -Force }
     if ($Link) {
         New-Item -ItemType Junction -Path $Dst -Target $Src | Out-Null
         Write-Host "  [$AgentName] junction -> $Dst"
@@ -150,8 +194,9 @@ foreach ($target in $selectedTargets) {
     }
 
     if ($target.promptsDir -and $target.promptSource) {
-        if (-not (Test-SafeRelativeDir $target.promptsDir)) {
-            Write-Warning "Skip prompts for $($target.id) - unsafe promptsDir '$($target.promptsDir)'"
+        if (-not (Test-SafeRelativeDir $target.promptsDir) -or
+            -not (Test-SafeRelativeDir $target.promptSource)) {
+            Write-Warning "Skip prompts for $($target.id) - unsafe prompt path"
             Write-Host ""
             continue
         }
@@ -163,11 +208,18 @@ foreach ($target in $selectedTargets) {
         }
         New-Item -ItemType Directory -Force -Path $PromptsDir | Out-Null
         foreach ($name in $SkillNames) {
-            $PromptSrc = Join-Path (Join-Path $SkillsSrc $name) $target.promptSource
-            if (Test-Path $PromptSrc) {
-                Copy-Item -Force $PromptSrc (Join-Path $PromptsDir "$name.md")
-                Write-Host "  [$($target.name) prompt] $name.md -> $PromptsDir"
+            $SkillRoot = Join-Path $SkillsSrc $name
+            $PromptSrc = Join-Path $SkillRoot $target.promptSource
+            $PromptDst = Join-Path $PromptsDir "$name.md"
+            if (-not (Test-Path -LiteralPath $PromptSrc) -or
+                -not (Test-WithinBoundary $PromptSrc $SkillRoot) -or
+                -not (Test-NoReparsePoints $PromptSrc) -or
+                -not (Test-WithinBoundary $PromptDst $HomeBoundary)) {
+                Write-Warning "Skip prompt for $name - source or destination is outside the safe boundary"
+                continue
             }
+            Copy-Item -LiteralPath $PromptSrc -Destination $PromptDst -Force
+            Write-Host "  [$($target.name) prompt] $name.md -> $PromptsDir"
         }
     }
     Write-Host ""

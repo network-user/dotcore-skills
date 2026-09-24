@@ -4,19 +4,19 @@
   <img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
   <img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
-  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-582-lightgrey?style=flat" alt="582 lines of code" /><!-- loc:end -->
+  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1835-lightgrey?style=flat" alt="1835 lines of code" /><!-- loc:end -->
 </p>
 
 <img src="docs/cover.svg" width="720" alt="dotcore-skills" />
 
 <!-- audit:start -->
 <p>
-  <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed-3fb950?style=flat" alt="security audit passed - full, leaks + code" /></a>
-  <a href="docs/audit/2026-07-01-iron-gate.md"><img src="https://img.shields.io/badge/date-2026--07--01-555?style=flat" alt="audit date" /></a>
+  <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed_with_warnings-dbab09?style=flat" alt="security audit passed with warnings - full, leaks + code" /></a>
+  <a href="docs/audit/2026-09-22-iron-ledger.md"><img src="https://img.shields.io/badge/date-2026--09--22-555?style=flat" alt="audit date" /></a>
 </p>
 <!-- audit:end -->
 
-Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Скиллы ставятся user-level (глобально для агента) или копируются в конкретный репозиторий self-contained.
+Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Полный `pre-deploy-audit` дополнительно содержит zero-dependency Node.js-валидаторы машинных findings и coverage ledger. Каждый скилл self-contained, поэтому одну папку можно скопировать в любой агент или репозиторий.
 
 ## Скиллы
 
@@ -24,10 +24,11 @@
 |-------|------------|----------|
 | [generate-readme](skills/generate-readme/) | README DotCore + `AGENTS.md`, Cursor rule, `CLAUDE.md` из фактов репозитория; правила делегирует `sync-project-rules` | «обнови README», «настрой правила проекта» |
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
-| [pre-deploy-audit](skills/pre-deploy-audit/) | Аудит перед деплоем/публикацией: утечки (секреты, ключи, PII, история git) + код (уязвимости), 3 уровня, на PASS - отчёт в `docs/audit/` и кликабельный бейдж | «проверь перед деплоем», «проверь на утечки», «делаю репо публичным» |
+| [pre-deploy-audit](skills/pre-deploy-audit/) | Единый аудит перед деплоем/релизом/public: утечки + source-first аудит кода, coverage ledger, независимая валидация `findings.json`, 3 уровня, на PASS - отчёт и бейдж | «аудит безопасности», «найди уязвимости», «проверь на утечки», «делаю репо публичным» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Иллюстрации в стиле DotCore: генерация с нуля или restyle любого референса; raster если есть модель, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
 | [sepia](skills/sepia/) | De-AI writing: архитектура художественного текста + правила жанра для README, коммитов, чата, PR, релиз-нот (порт Nanako0129/sepia) | «убери ИИ-слог», «humanize», «перепиши по-человечески» |
 | [text-naturalizer](skills/text-naturalizer/) | Нормализация сообщений, статей и профессиональной прозы: естественная редактура, P0-P2-приоритеты, защита фактов и голоса | «сделай текст живым», «убери шаблонность», «нормализуй текст» |
+| [html-motion](skills/html-motion/) | Автономные HTML-анимации: DotCore по умолчанию, selectable visual modes, плавный motion-язык и video-ready timeline | «сгенерируй HTML-анимацию», «сделай плавный animated hero», «анимация для записи в видео» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -113,12 +114,13 @@ Bash-эквиваленты: `./scripts/install.sh`, фильтры через �
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
   <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
   <img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white" alt="JSON" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
   <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown" />
 </p>
 
 ## CI
 
-`.github/workflows/validate-skills.yml` запускается на изменения в `skills/**` и проверяет каждый скилл (кроме `_*`): наличие `SKILL.md`, YAML-frontmatter, поля `name`/`description`, совпадение имени папки с `name`.
+`.github/workflows/validate-skills.yml` запускается на изменения в `skills/**` и проверяет каждый скилл (кроме `_*`): наличие `SKILL.md`, YAML-frontmatter, поля `name`/`description`, совпадение имени папки с `name`. Для полного `pre-deploy-audit` CI также запускает синтаксическую проверку и fixtures двух Node.js-валидаторов.
 
 ## Архитектура
 
@@ -129,10 +131,11 @@ dotcore-skills/
 ├── skills/
 │   ├── generate-readme/         # README + правила (делегирует sync-project-rules)
 │   ├── sync-project-rules/      # только AGENTS.md + rule-файлы агентов
-│   ├── pre-deploy-audit/        # аудит перед деплоем: утечки + код, 3 уровня, бейдж + отчёт
+│   ├── pre-deploy-audit/        # единый аудит: утечки + coverage-led code security, бейдж + отчёт
 │   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore, restyle референсов
 │   ├── sepia/                   # de-AI writing: fiction + проф. проза, русский слой
 │   ├── text-naturalizer/        # естественная редактура сообщений и прозы
+│   ├── html-motion/              # автономные HTML-анимации и seekable timeline
 │   └── _template/               # заготовка, в установку не попадает
 ├── scripts/
 │   ├── agents.targets.json   # user/project пути всех агентов - источник правды
@@ -152,6 +155,7 @@ dotcore-skills/
 
 - **Один конфиг путей**: `agents.targets.json` читают и PowerShell, и Python - расхождений между установщиками нет.
 - **Скилл self-contained**: папка `skills/<name>/` копируется целиком; клон работает без monorepo.
+- **Полный security-аудит**: `pre-deploy-audit` хранит coverage ledger и machine-readable findings; промежуточные run-артефакты не пишутся в target без явного ignored-каталога.
 - **`_`-папки не ставятся**: фильтр в обоих установщиках и пропуск в CI.
 - **Имя папки == `name`** во frontmatter `SKILL.md` - инвариант, который проверяет CI.
 - **README и `AGENTS.md` генерируются** скиллом `generate-readme`, не правятся вручную.

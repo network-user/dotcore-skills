@@ -14,7 +14,8 @@ alwaysApply: true
 - **Тип:** monorepo-tool (каталог Agent Skills + установщики)
 - **Установка:** `.\scripts\install.ps1` / `./scripts/install.sh`
 - **В проект:** `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents`
-- **Тесты:** нет; CI валидирует frontmatter (`validate-skills.yml`)
+- **Тесты:** Node.js fixtures для `pre-deploy-audit`; CI также валидирует frontmatter (`validate-skills.yml`)
+- **Full security-audit validators:** `node skills/pre-deploy-audit/validate-findings.test.cjs` и `node skills/pre-deploy-audit/validate-coverage-ledger.test.cjs`
 
 ## Правила
 
@@ -24,7 +25,7 @@ alwaysApply: true
 - PowerShell и bash держи согласованными; `_`-папки не устанавливаются.
 - README в стандарте DotCore: без marketing, `<details>`, centered hero; LoC между `<!-- loc:start -->` и `<!-- loc:end -->`.
 - Обложка: `docs/cover.svg` + `<img width=720>` (GitHub-first); remote - GitHub.
-- Аудит перед деплоем/публикацией - скилл `pre-deploy-audit` (утечки + код); его бейдж в README между `<!-- audit:start -->` и `<!-- audit:end -->` и отчёты в `docs/audit/` не удалять.
+- Аудит перед деплоем/публикацией - единый скилл `pre-deploy-audit` (утечки + coverage-led code security); полный режим использует ledger и независимые findings verifier'ы. Его бейдж в README между `<!-- audit:start -->` и `<!-- audit:end -->` и отчёты в `docs/audit/` не удалять.
 - Минимальный scope изменений.
 
 ## README

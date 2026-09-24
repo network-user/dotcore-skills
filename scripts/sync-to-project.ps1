@@ -37,18 +37,41 @@ if ($Skill -and $Skill -notmatch '^[A-Za-z0-9._-]+$') {
     Write-Error "Invalid skill name '$Skill'. Allowed: letters, digits, '.', '_', '-'."
 }
 
-$TargetRoot = (Resolve-Path $Target).Path
+$TargetRoot = (Resolve-Path -LiteralPath $Target).Path
+
+# Resolve the deepest existing path component so junctions/reparse points cannot
+# make a lexical in-bound path write outside the intended target root.
+function Get-ResolvedExistingPath {
+    param([string]$Path)
+    try {
+        $candidate = [IO.Path]::GetFullPath($Path)
+        while (-not (Test-Path -LiteralPath $candidate)) {
+            $parent = Split-Path -LiteralPath $candidate -Parent
+            if ([string]::IsNullOrEmpty($parent) -or $parent -eq $candidate) { return $null }
+            $candidate = $parent
+        }
+        return (Resolve-Path -LiteralPath $candidate -ErrorAction Stop).Path
+    } catch {
+        return $null
+    }
+}
 
 # Reject a target dir that escapes the target repo root (path traversal).
 function Test-WithinBoundary {
     param([string]$Path, [string]$Boundary)
     try {
         $full = [IO.Path]::GetFullPath($Path)
-        $base = [IO.Path]::GetFullPath($Boundary)
+        $base = Get-ResolvedExistingPath $Boundary
+        $existing = Get-ResolvedExistingPath $Path
+        if (-not $base -or -not $existing) { return $false }
+        $base = [IO.Path]::GetFullPath($base)
+        $existing = [IO.Path]::GetFullPath($existing)
     } catch {
         return $false
     }
     $sep = [IO.Path]::DirectorySeparatorChar
+    if ($existing -ne $base -and -not $existing.StartsWith($base.TrimEnd($sep) + $sep, [StringComparison]::OrdinalIgnoreCase)) { return $false }
+    if ($full -eq $base) { return $true }
     if (-not $base.EndsWith($sep)) { $base += $sep }
     return $full.StartsWith($base, [StringComparison]::OrdinalIgnoreCase)
 }
@@ -62,6 +85,21 @@ function Test-SafeRelativeDir {
     if ($Dir -match ':') { return $false }
     if ([IO.Path]::IsPathRooted($Dir)) { return $false }
     return $true
+}
+
+function Test-NoReparsePoints {
+    param([string]$Path)
+    try {
+        $reparse = [IO.FileAttributes]::ReparsePoint
+        $root = Get-Item -LiteralPath $Path -Force
+        if (($root.Attributes -band $reparse) -ne 0) { return $false }
+        foreach ($item in @(Get-ChildItem -LiteralPath $Path -Recurse -Force -ErrorAction Stop)) {
+            if (($item.Attributes -band $reparse) -ne 0) { return $false }
+        }
+        return $true
+    } catch {
+        return $false
+    }
 }
 
 $selectedTargets = if ($AllAgents) {
@@ -106,14 +144,18 @@ foreach ($target in $selectedTargets) {
     foreach ($name in $SkillNames) {
         $src = Join-Path $SkillsSrc $name
         $dst = Join-Path $destSkills $name
-        if (-not (Test-Path $src)) {
+        if (-not (Test-Path -LiteralPath $src)) {
             Write-Warning "Skip $name - not found"
             continue
         }
-        if (-not (Test-WithinBoundary $dst $destSkills)) {
+        if (-not (Test-NoReparsePoints $src)) {
+            Write-Error "Skill '$name' contains a reparse point - aborting."
+        }
+        if (-not (Test-WithinBoundary $dst $TargetRoot) -or
+            -not (Test-WithinBoundary $dst $destSkills)) {
             Write-Error "Skill '$name' resolves outside target dir - aborting."
         }
-        if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
+        if (Test-Path -LiteralPath $dst) { Remove-Item -LiteralPath $dst -Recurse -Force }
         if ($Link) {
             New-Item -ItemType Junction -Path $dst -Target $src | Out-Null
             Write-Host "  junction $name"
