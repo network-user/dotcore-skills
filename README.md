@@ -27,8 +27,10 @@
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Единый аудит перед деплоем/релизом/public: утечки + source-first аудит кода, coverage ledger, независимая валидация `findings.json`, 3 уровня, на PASS - отчёт и бейдж | «аудит безопасности», «найди уязвимости», «проверь на утечки», «делаю репо публичным» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Иллюстрации в стиле DotCore: генерация с нуля или restyle любого референса; raster если есть модель, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
 | [sepia](skills/sepia/) | De-AI writing: архитектура художественного текста + правила жанра для README, коммитов, чата, PR, релиз-нот (порт Nanako0129/sepia) | «убери ИИ-слог», «humanize», «перепиши по-человечески» |
+| [author-voice](skills/author-voice/) | Создание, обновление и применение сохраняемого профиля собственного авторского голоса | «сохрани мой стиль», «пиши как я», «добавь новые тексты к профилю» |
 | [text-naturalizer](skills/text-naturalizer/) | Нормализация сообщений, статей и профессиональной прозы: естественная редактура, P0-P2-приоритеты, защита фактов и голоса | «сделай текст живым», «убери шаблонность», «нормализуй текст» |
-| [html-motion](skills/html-motion/) | Автономные HTML-анимации: DotCore по умолчанию, selectable visual modes, плавный motion-язык и video-ready timeline | «сгенерируй HTML-анимацию», «сделай плавный animated hero», «анимация для записи в видео» |
+| [launch-video](skills/launch-video/) | Короткий ролик о проекте: исследование функций и стиля, раскадровка, видео, постер и подпись | «сделай launch video», «покажи приложение в ролике», «подготовь product demo» |
+| [html-motion](skills/html-motion/) | Автономные браузерные сцены и video-ready timeline: DotCore, selectable visual modes, постановка и browser QA | «сгенерируй HTML-анимацию», «сделай animated hero», «подготовь HTML-сцену для записи» |
 | [_template](skills/_template/) | Заготовка нового скилла (не устанавливается) | - |
 
 Как добавить скилл: [docs/ADDING_SKILL.md](docs/ADDING_SKILL.md).
@@ -135,6 +137,8 @@ dotcore-skills/
 │   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore, restyle референсов
 │   ├── sepia/                   # de-AI writing: fiction + проф. проза, русский слой
 │   ├── text-naturalizer/        # естественная редактура сообщений и прозы
+│   ├── author-voice/            # профиль собственного авторского голоса
+│   ├── launch-video/            # короткие ролики о реальных проектах
 │   ├── html-motion/              # автономные HTML-анимации и seekable timeline
 │   └── _template/               # заготовка, в установку не попадает
 ├── scripts/

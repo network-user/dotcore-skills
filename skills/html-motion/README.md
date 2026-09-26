@@ -40,6 +40,9 @@ cd path\to\dotcore-skills
 «монохромная motion-сцена», «анимация для записи в видео», «улучши плавность
 HTML-анимации», `animation page`, `kinetic typography`, `explainer HTML`.
 
+Для полноценного ролика о продукте с исследованием проекта, раскадровкой и
+подписью используй `launch-video`.
+
 ## Файлы
 
 - [SKILL.md](SKILL.md) - workflow и критерии результата;

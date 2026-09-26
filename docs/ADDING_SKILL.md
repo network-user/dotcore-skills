@@ -35,9 +35,10 @@ description: >-
 ## 4. Обнови monorepo
 
 1. Добавь строку в таблицу скиллов в [README.md](../README.md)
-2. Если нужен Codex slash - добавь `codex-prompt.md` и `promptSource` в [agents.targets.json](../scripts/agents.targets.json)
-3. Новый агент - пути в `agents.targets.json` и [AGENTS_PATHS.md](../docs/AGENTS_PATHS.md)
-4. Запусти `.\scripts\install.ps1` локально для проверки
+2. Добавь ссылку на `SKILL.md` в раздел «Документация» файла [AGENTS.md](../AGENTS.md)
+3. Если нужен Codex slash - добавь `codex-prompt.md` и `promptSource` в [agents.targets.json](../scripts/agents.targets.json)
+4. Новый агент - пути в `agents.targets.json` и [AGENTS_PATHS.md](../docs/AGENTS_PATHS.md)
+5. Запусти `.\scripts\install.ps1` локально для проверки
 
 ## 5. Шаблон для копирования
 
@@ -49,4 +50,5 @@ description: >-
 - [ ] `name` в frontmatter = имя папки
 - [ ] README скилла описывает триггеры и установку
 - [ ] Корневой README.md обновлён
+- [ ] `AGENTS.md` ссылается на новый скилл в разделе «Документация»
 - [ ] Нет секретов и machine-specific путей
