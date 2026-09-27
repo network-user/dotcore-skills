@@ -1,0 +1,4 @@
+interface:
+  display_name: "DotCore Design"
+  short_description: "Дизайн интерфейсов для сайтов и приложений"
+  default_prompt: "Используй $dotcore-design, чтобы спроектировать интерфейс под продукт и платформу."

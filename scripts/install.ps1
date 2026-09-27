@@ -81,7 +81,7 @@ function Get-ResolvedExistingPath {
     try {
         $candidate = [IO.Path]::GetFullPath($Path)
         while (-not (Test-Path -LiteralPath $candidate)) {
-            $parent = Split-Path -LiteralPath $candidate -Parent
+            $parent = Split-Path -Path $candidate -Parent
             if ([string]::IsNullOrEmpty($parent) -or $parent -eq $candidate) { return $null }
             $candidate = $parent
         }

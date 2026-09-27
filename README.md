@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
   <img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
-  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1835-lightgrey?style=flat" alt="1835 lines of code" /><!-- loc:end -->
+  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1902-lightgrey?style=flat" alt="1902 lines of code" /><!-- loc:end -->
 </p>
 
 <img src="docs/cover.svg" width="720" alt="dotcore-skills" />
@@ -26,6 +26,7 @@
 | [sync-project-rules](skills/sync-project-rules/) | Только правила: `AGENTS.md` + rule-файлы агентов (`.mdc`/`CLAUDE.md`/`GEMINI.md`), без README/обложки/LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Единый аудит перед деплоем/релизом/public: утечки + source-first аудит кода, coverage ledger, независимая валидация `findings.json`, 3 уровня, на PASS - отчёт и бейдж | «аудит безопасности», «найди уязвимости», «проверь на утечки», «делаю репо публичным» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Иллюстрации в стиле DotCore: генерация с нуля или restyle любого референса; raster если есть модель, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
+| [dotcore-design](skills/dotcore-design/) | UX/UI для web, mobile и desktop: визуальное направление DotCore, сценарии, дизайн-система, платформенная адаптация и ревью | «спроектируй интерфейс», «сделай дизайн сайта или приложения», «проверь UX/UI» |
 | [sepia](skills/sepia/) | De-AI writing: архитектура художественного текста + правила жанра для README, коммитов, чата, PR, релиз-нот (порт Nanako0129/sepia) | «убери ИИ-слог», «humanize», «перепиши по-человечески» |
 | [author-voice](skills/author-voice/) | Создание, обновление и применение сохраняемого профиля собственного авторского голоса | «сохрани мой стиль», «пиши как я», «добавь новые тексты к профилю» |
 | [text-naturalizer](skills/text-naturalizer/) | Нормализация сообщений, статей и профессиональной прозы: естественная редактура, P0-P2-приоритеты, защита фактов и голоса | «сделай текст живым», «убери шаблонность», «нормализуй текст» |
@@ -135,6 +136,7 @@ dotcore-skills/
 │   ├── sync-project-rules/      # только AGENTS.md + rule-файлы агентов
 │   ├── pre-deploy-audit/        # единый аудит: утечки + coverage-led code security, бейдж + отчёт
 │   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore, restyle референсов
+│   ├── dotcore-design/          # UX/UI-дизайн для web, mobile и desktop
 │   ├── sepia/                   # de-AI writing: fiction + проф. проза, русский слой
 │   ├── text-naturalizer/        # естественная редактура сообщений и прозы
 │   ├── author-voice/            # профиль собственного авторского голоса
