@@ -19,6 +19,6 @@ description: DotCore generate-readme - README + AGENTS.md + правила пр�
 7. Validate (audit.md, минимум 8/10)
 8. LoC через code-counter
 
-Факты только из кода. README перегенерируй целиком; правила проекта (AGENTS.md, CLAUDE.md, .mdc) - additive, не переписывая авторское. Сохрани SVG-обложку, LoC-бейдж (в header), строгую лицензию, правило README-sync и - если был в старом README - блок бейджей аудита `<!-- audit:start -->…<!-- audit:end -->` от `pre-deploy-audit` (перенеси дословно после обложки, не выдумывай и не меняй).
+Факты только из кода. README перегенерируй целиком; правила проекта (AGENTS.md, CLAUDE.md, .mdc) - additive, не переписывая авторское. Сохрани SVG-обложку, LoC-бейдж (в header), строгую лицензию, правило README-sync и - если был в старом README - блок бейджей аудита `<!-- audit:start -->…<!-- audit:end -->` от `pre-deploy-audit` (перенеси дословно после обложки, не выдумывай и не меняй). Прозу README прогони через text-naturalizer, затем sepia. Картинку вместо SVG не ставь, пока человек сам не попросил скриншот.
 
 В конце выведи отчёт аудита и список изменённых файлов.

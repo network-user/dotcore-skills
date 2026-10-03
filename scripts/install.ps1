@@ -6,12 +6,13 @@
 .EXAMPLE
   .\scripts\install.ps1
   .\scripts\install.ps1 -Skill generate-readme
+  .\scripts\install.ps1 -Skill generate-readme,sepia -Agent grok
   .\scripts\install.ps1 -Link
   .\scripts\install.ps1 -Agent cursor,claude,agents
   .\scripts\install.ps1 -ListAgents
 #>
 param(
-    [string]$Skill = "",
+    [string[]]$Skill = @(),
     [switch]$Link,
     [string[]]$Agent = @(),
     [switch]$ListAgents
@@ -52,12 +53,22 @@ if ($selectedTargets.Count -eq 0) {
     Write-Error "No matching agents. Use -ListAgents for IDs."
 }
 
-if ($Skill -and $Skill -notmatch '^[A-Za-z0-9._-]+$') {
-    Write-Error "Invalid skill name '$Skill'. Allowed: letters, digits, '.', '_', '-'."
+$skillTokens = @()
+foreach ($item in @($Skill)) {
+    if (-not $item) { continue }
+    foreach ($part in ($item -split ',')) {
+        $token = $part.Trim()
+        if ($token) { $skillTokens += $token }
+    }
+}
+foreach ($token in $skillTokens) {
+    if ($token -notmatch '^[A-Za-z0-9._-]+$') {
+        Write-Error "Invalid skill name '$token'. Allowed: letters, digits, '.', '_', '-'."
+    }
 }
 
-$SkillNames = if ($Skill) {
-    @($Skill)
+$SkillNames = if ($skillTokens.Count -gt 0) {
+    $skillTokens
 } else {
     Get-ChildItem $SkillsSrc -Directory |
         Where-Object { -not $_.Name.StartsWith('_') } |

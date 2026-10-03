@@ -4,6 +4,7 @@
 # Usage:
 #   ./scripts/install.sh
 #   ./scripts/install.sh generate-readme
+#   ./scripts/install.sh generate-readme,sepia
 #   LINK=1 ./scripts/install.sh
 #   AGENTS=cursor,claude,agents ./scripts/install.sh
 #   ./scripts/install.sh --list-agents
@@ -39,10 +40,13 @@ if [[ -n "$SKILL_FILTER" && "$SKILL_FILTER" == --* ]]; then
   exit 1
 fi
 
-if [[ -n "$SKILL_FILTER" && ! "$SKILL_FILTER" =~ ^[A-Za-z0-9._-]+$ ]]; then
-  echo "Invalid skill name: '$SKILL_FILTER' (allowed: letters, digits, '.', '_', '-')" >&2
-  exit 1
-fi
+validate_skill_name() {
+  local name="$1"
+  if [[ ! "$name" =~ ^[A-Za-z0-9._-]+$ ]]; then
+    echo "Invalid skill name: '$name' (allowed: letters, digits, '.', '_', '-')" >&2
+    exit 1
+  fi
+}
 
 contains_links() {
   local root="$1"
@@ -82,7 +86,19 @@ install_skill() {
 
 mapfile -t SKILLS < <(find "$SKILLS_SRC" -mindepth 1 -maxdepth 1 -type d ! -name '_*' -exec basename {} \; | sort)
 if [[ -n "$SKILL_FILTER" ]]; then
-  SKILLS=("$SKILL_FILTER")
+  SKILLS=()
+  IFS=',' read -ra _requested <<< "$SKILL_FILTER"
+  for name in "${_requested[@]}"; do
+    name="${name#"${name%%[![:space:]]*}"}"
+    name="${name%"${name##*[![:space:]]}"}"
+    [[ -z "$name" ]] && continue
+    validate_skill_name "$name"
+    SKILLS+=("$name")
+  done
+  if [[ ${#SKILLS[@]} -eq 0 ]]; then
+    echo "Invalid skill name: '$SKILL_FILTER'" >&2
+    exit 1
+  fi
 fi
 
 echo "dotcore-skills install"

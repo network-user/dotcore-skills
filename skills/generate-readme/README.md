@@ -2,7 +2,7 @@
 
 Скилл DotCore из monorepo [dotcore-skills](../../README.md): **README.md** (internal doc) + **правила проекта** (`AGENTS.md`, Cursor rule, `CLAUDE.md`) в каждом репозитории, где запущен.
 
-Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
+Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Прозу проводит через text-naturalizer и sepia, набор секций не режет. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
 
 ## Что создаётся в целевом проекте
 

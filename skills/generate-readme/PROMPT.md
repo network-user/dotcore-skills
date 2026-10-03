@@ -26,8 +26,8 @@
 
 1. **Scan** - runtime, scripts, deps, структура, CI, remote, существующие AGENTS.md/CLAUDE.md
 2. **Classify** - тип (learning/web-app/cli/library/bot/…), аудитория (internal/oss/portfolio), distribution (github/local/docker/…)
-3. **Cover** - GitHub → `docs/cover.svg` + `<img width="720">`; IDE → inline `<svg>`; есть preview.png → используй
-4. **Write README** - структура ниже
+3. **Cover** - GitHub → `docs/cover.svg` + `<img width="720">`; IDE → inline `<svg>`; есть preview.png → используй. Генерация изображений SVG-обложку не заменяет
+4. **Write README** - структура ниже. Связную прозу прогони text-naturalizer, затем sepia; таблицы, команды, дерево, бейджи и блок аудита не переписывай
 5. **Write rules** - AGENTS.md (80-150 строк), dotcore-project.mdc, CLAUDE.md (обёртка)
 6. **LoC** - `code-counter .` → TOTAL в бейдж между `<!-- loc:start -->` / `<!-- loc:end -->`
 7. **Audit** - оценка 1-10, минимум 8

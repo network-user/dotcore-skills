@@ -29,8 +29,8 @@ AGENTS=cursor,claude,agents ./scripts/install.sh   # нужен Python 3
 | Установка (Windows) | `.\scripts\install.ps1` |
 | Установка (Unix) | `./scripts/install.sh` |
 | Выборочно по агентам | `.\scripts\install.ps1 -Agent cursor,claude` / `AGENTS=… ./scripts/install.sh` |
-| Один скилл | `.\scripts\install.ps1 -Skill generate-readme` / `./scripts/install.sh generate-readme` |
-| В проект | `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents` / `ALL_AGENTS=1 ./scripts/sync-to-project.sh <path>` |
+| Один или несколько скиллов | `.\scripts\install.ps1 -Skill generate-readme,sepia` / `./scripts/install.sh generate-readme,sepia` |
+| В проект | `.\scripts\sync-to-project.ps1 -Target <path> -Skill a,b` / `./scripts/sync-to-project.sh <path> a,b`; все агенты: `-AllAgents` / `ALL_AGENTS=1` |
 | Список агентов | `.\scripts\install.ps1 -ListAgents` / `./scripts/install.sh --list-agents` |
 | Тесты | `node skills/pre-deploy-audit/validate-findings.test.cjs` / `validate-coverage-ledger.test.cjs`; CI также валидирует frontmatter |
 | Lint / build | — |

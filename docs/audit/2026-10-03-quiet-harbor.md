@@ -1,5 +1,3 @@
-> Последний прогон: quiet-harbor · 2026-10-03. Снимок: [2026-10-03-quiet-harbor.md](2026-10-03-quiet-harbor.md) · история: [docs/audit/](.)
-
 # Security Audit · Quiet Harbor · 2026-10-03
 
 | Поле | Значение |

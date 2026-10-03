@@ -3,7 +3,7 @@
 #
 # Usage:
 #   ./scripts/sync-to-project.sh /path/to/repo
-#   ./scripts/sync-to-project.sh . generate-readme
+#   ./scripts/sync-to-project.sh . generate-readme,sepia
 #   LINK=1 ./scripts/sync-to-project.sh .
 #   AGENTS=cursor,claude,agents ./scripts/sync-to-project.sh .
 #   ALL_AGENTS=1 LINK=1 ./scripts/sync-to-project.sh .
@@ -25,7 +25,7 @@ PY
 fi
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <target-project-path> [skill-name]" >&2
+  echo "Usage: $0 <target-project-path> [skill-names]" >&2
   exit 1
 fi
 
@@ -35,13 +35,33 @@ LINK="${LINK:-0}"
 AGENTS_FILTER="${AGENTS:-cursor}"
 ALL_AGENTS="${ALL_AGENTS:-0}"
 
-if [[ -n "$SKILL_FILTER" && ! "$SKILL_FILTER" =~ ^[A-Za-z0-9._-]+$ ]]; then
-  echo "Invalid skill name: '$SKILL_FILTER' (allowed: letters, digits, '.', '_', '-')" >&2
-  exit 1
+validate_skill_name() {
+  local name="$1"
+  if [[ ! "$name" =~ ^[A-Za-z0-9._-]+$ ]]; then
+    echo "Invalid skill name: '$name' (allowed: letters, digits, '.', '_', '-')" >&2
+    exit 1
+  fi
+}
+
+if [[ -n "$SKILL_FILTER" ]]; then
+  IFS=',' read -ra _requested <<< "$SKILL_FILTER"
+  _clean=()
+  for name in "${_requested[@]}"; do
+    name="${name#"${name%%[![:space:]]*}"}"
+    name="${name%"${name##*[![:space:]]}"}"
+    [[ -z "$name" ]] && continue
+    validate_skill_name "$name"
+    _clean+=("$name")
+  done
+  if [[ ${#_clean[@]} -eq 0 ]]; then
+    echo "Invalid skill name: '$SKILL_FILTER'" >&2
+    exit 1
+  fi
+  SKILL_FILTER=$(IFS=','; echo "${_clean[*]}")
 fi
 
 python3 - "$CONFIG" "$TARGET" "$SKILLS_SRC" "$LINK" "$ALL_AGENTS" "$AGENTS_FILTER" "$SKILL_FILTER" <<'PY'
-import json, os, shutil, sys
+import json, os, re, shutil, sys
 
 config_path, target, skills_src, link_flag, all_agents, agents_filter, skill_filter = sys.argv[1:8]
 link = link_flag == "1"
@@ -85,7 +105,18 @@ if not targets:
     raise SystemExit("No matching agents. Use --list-agents.")
 
 if skill_filter:
-    skills = [skill_filter]
+    skills = []
+    for part in skill_filter.split(","):
+        name = part.strip()
+        if not name:
+            continue
+        if not re.fullmatch(r"[A-Za-z0-9._-]+", name):
+            raise SystemExit(
+                "Invalid skill name: '%s' (allowed: letters, digits, '.', '_', '-')" % name
+            )
+        skills.append(name)
+    if not skills:
+        raise SystemExit("Invalid skill name: '%s'" % skill_filter)
 else:
     skills = sorted(
         name for name in os.listdir(skills_src)

@@ -4,8 +4,9 @@ description: >-
   Создаёт или обновляет README.md в стандарте DotCore (русский internal doc, SVG-обложка
   DotBioSite, flat-бейджи, LoC через code-counter, ASCII-архитектура) и обновляет
   правила проекта для агентов (additive, не переписывая авторское): AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md.
+  Прозу README проводит через text-naturalizer, затем sepia. Обложка остаётся SVG.
   Факты только из репозитория. Классификация типа проекта, аудит 1-10. Cursor, Claude Code,
-  Codex. Use when creating or updating README, AGENTS.md, or project documentation.
+  Codex, Grok. Use when creating or updating README, AGENTS.md, or project documentation.
 ---
 
 # Generate README + Project Rules
@@ -96,6 +97,23 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 - **Лицензия** - всегда присутствует; по умолчанию строгий All Rights Reserved + файл `LICENSE`. См. [license.md](license.md).
 - **Бейджи аудита** - если в старом README был блок `<!-- audit:start -->…<!-- audit:end -->` (артефакт `pre-deploy-audit`), перенеси его **дословно вместе с маркерами** сразу после обложки, перед intro. Это чужой блок: не выдумывай, не дополняй и не правь его (статус, уровень, охват, модель, дата) - только перенос. Нет блока в исходном README - ничего не добавляй. Если регенерация вызвана крупным изменением кода (новые модули/зависимости/архитектура), в отчёте отметь, что бейджи аудита могли устареть и стоит перезапустить `pre-deploy-audit`; сам блок при этом не удаляй. Детали маркеров - [stack-badges.md](stack-badges.md).
 
+Связную прозу (intro и абзацы секций) после черновика прогони дважды. Таблицы, команды, дерево, бейджи, маркеры LoC, блок аудита и футер лицензии стилем не трогай.
+
+1. `text-naturalizer`, режим `light-edit`, если секции уже совпадают со стандартом. Профиль `author-voice` или `VOICE.md` передай, только если такой файл уже есть.
+2. `sepia`, операция `refactor`. Маршрут: `professional-pass.md`, `references/domains/docs.md`, `ru-register.md`. Sepia чинит слог. Набор секций задаёт этот стандарт, не sepia.
+
+Нет этих скиллов - поставь их и прочитай `SKILL.md` до прозы:
+
+```powershell
+.\scripts\install.ps1 -Skill sepia,text-naturalizer
+```
+
+```bash
+./scripts/install.sh sepia,text-naturalizer
+```
+
+Корень `dotcore-skills` ищи по `scripts/install.ps1`. Нет клона - клонируй `https://github.com/network-user/dotcore-skills` во временный каталог и ставь оттуда. Текстовые скиллы не встали - README не выпускай.
+
 Бейджи и LoC: [stack-badges.md](stack-badges.md). Лицензия: [license.md](license.md). Эталон: [reference.md](reference.md).
 
 ### 5. Write project rules
@@ -124,11 +142,10 @@ Self-check (ниже) + аудит [audit.md](audit.md). Минимум **8/10**
 В конце сессии:
 
 ```bash
-pip install code-counter-ntwusr   # один раз, Python 3.12+ и git
 code-counter .
 ```
 
-Обнови `{N}` в LoC-бейдже между `<!-- loc:start -->` и `<!-- loc:end -->`. Число без запятых.
+Нет команды - один раз поставь `code-counter-ntwusr` (Python 3.12+ и git) и запусти счётчик снова. Обнови `{N}` в LoC-бейдже между `<!-- loc:start -->` и `<!-- loc:end -->`. Число без запятых, бери `TOTAL`.
 
 ## Счётчик строк кода
 
@@ -183,6 +200,7 @@ LoC - **4-й бейдж в группе header**, на одном уровне �
 - [ ] `## Лицензия` футером (строгий All Rights Reserved), есть файл `LICENSE`
 - [ ] `## Что внутри` уместна и с числами
 - [ ] Блок аудита `<!-- audit:start -->…<!-- audit:end -->` (если был в старом README) перенесён дословно после обложки, без правок
+- [ ] Связная проза прогнана через text-naturalizer и sepia; команды, дерево, бейджи и лицензия после этого те же
 
 **Project rules**
 

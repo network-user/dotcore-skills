@@ -18,6 +18,7 @@ DotCore-skills следует [Agent Skills spec](https://agentskills.io/specifi
 | `roo` | Roo Code | `~/.roo/skills/<name>/` | |
 | `junie` | Junie | `~/.junie/skills/<name>/` | |
 | `amp` | Amp | `~/.config/agents/skills/<name>/` | |
+| `grok` | Grok | `~/.grok/skills/<name>/` | также `.grok/skills/` в репозитории |
 
 Windows: `~` = `%USERPROFILE%`.
 
@@ -34,6 +35,7 @@ Windows: `~` = `%USERPROFILE%`.
 | `goose` | Goose | `.goose/skills/<name>/` |
 | `roo` | Roo Code | `.roo/skills/<name>/` |
 | `junie` | Junie | `.junie/skills/<name>/` |
+| `grok` | Grok | `.grok/skills/<name>/` |
 
 ## Установка
 

@@ -139,7 +139,7 @@ Standalone-файл не ограничен длиной README, поэтому 
 
 ## Если есть image generation
 
-Только по явной просьбе («скриншот», «фото UI»): PNG → `docs/preview.png` → `<img src="docs/preview.png" width="720">`. Иначе SVG - дешевле и самодостаточен.
+Умение модели рисовать картинки не меняет обложку README: её по-прежнему пишешь SVG-текстом. PNG только по явной просьбе («скриншот», «фото UI»): `docs/preview.png` и `<img src="docs/preview.png" width="720">`. Это не замена `docs/cover.svg`.
 
 Произвольные иллюстрации в стиле DotCore (не обложка README) - скилл `generate-dotcore-image`.
 

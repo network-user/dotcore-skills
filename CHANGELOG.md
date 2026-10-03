@@ -20,6 +20,13 @@
 
 ### Changed
 
+- `generate-readme` держит прежний каркас README: скиллы, установка, команды, стек, архитектура, SVG-обложка DotBioSite. Проза проходит `text-naturalizer`, затем `sepia`. Картинку вместо SVG не подставлять, пока человек сам не попросил скриншот
+- Установщик принимает несколько скиллов через запятую: `-Skill a,b` и `./install.sh a,b`
+- `sync-to-project` принимает несколько скиллов через запятую: `-Skill a,b` и `./sync-to-project.sh <target> a,b`
+- `sync-to-project.ps1`: цикл по агентам больше не затирает параметр `-Target`. В PowerShell имена без учёта регистра, прежняя переменная `$target` совпадала с ним
+- `sync-to-project.ps1`: поиск существующего родителя снова использует `Split-Path -Path`. Пара `-LiteralPath -Parent` в Windows PowerShell 5.1 не связывается и обрывала копирование в новый каталог
+- Полный аудит `quiet-harbor` от 2026-10-03: PASSED WITH WARNINGS. Снимок `docs/audit/2026-10-03-quiet-harbor.md`
+- Агент `grok`: user и project каталог `.grok/skills`
 - `generate-readme` сохраняет блок бейджей аудита `<!-- audit:start/end -->` при перегенерации README (интеграция с `pre-deploy-audit`: переносит чужой блок дословно, не выдумывает и не правит)
 - `generate-readme` делегирует правила проекта подскиллу `sync-project-rules` (шаг 5); `project-rules.md` оставлен зеркалом-fallback
 - README перегенерирован по стандарту DotCore: inline SVG-обложка, flat-бейджи, LoC-бейдж, ASCII-архитектура

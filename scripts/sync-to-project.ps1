@@ -5,14 +5,14 @@
 
 .EXAMPLE
   .\scripts\sync-to-project.ps1 -Target C:\path\to\DotCoreBot
-  .\scripts\sync-to-project.ps1 -Target . -Skill generate-readme -Link
+  .\scripts\sync-to-project.ps1 -Target . -Skill generate-readme,sepia -Link
   .\scripts\sync-to-project.ps1 -Target . -AllAgents -Link
   .\scripts\sync-to-project.ps1 -Target . -Agent cursor,claude,agents
 #>
 param(
     [Parameter(Mandatory = $true)]
     [string]$Target,
-    [string]$Skill = "",
+    [string[]]$Skill = @(),
     [switch]$Link,
     [switch]$AllAgents,
     [string[]]$Agent = @("cursor"),
@@ -33,8 +33,18 @@ if ($ListAgents) {
     exit 0
 }
 
-if ($Skill -and $Skill -notmatch '^[A-Za-z0-9._-]+$') {
-    Write-Error "Invalid skill name '$Skill'. Allowed: letters, digits, '.', '_', '-'."
+$skillTokens = @()
+foreach ($item in @($Skill)) {
+    if (-not $item) { continue }
+    foreach ($part in ($item -split ',')) {
+        $token = $part.Trim()
+        if ($token) { $skillTokens += $token }
+    }
+}
+foreach ($token in $skillTokens) {
+    if ($token -notmatch '^[A-Za-z0-9._-]+$') {
+        Write-Error "Invalid skill name '$token'. Allowed: letters, digits, '.', '_', '-'."
+    }
 }
 
 $TargetRoot = (Resolve-Path -LiteralPath $Target).Path
@@ -46,7 +56,7 @@ function Get-ResolvedExistingPath {
     try {
         $candidate = [IO.Path]::GetFullPath($Path)
         while (-not (Test-Path -LiteralPath $candidate)) {
-            $parent = Split-Path -LiteralPath $candidate -Parent
+            $parent = Split-Path -Path $candidate -Parent
             if ([string]::IsNullOrEmpty($parent) -or $parent -eq $candidate) { return $null }
             $candidate = $parent
         }
@@ -115,8 +125,8 @@ if ($selectedTargets.Count -eq 0) {
     Write-Error "No matching agents. Use -ListAgents."
 }
 
-$SkillNames = if ($Skill) {
-    @($Skill)
+$SkillNames = if ($skillTokens.Count -gt 0) {
+    $skillTokens
 } else {
     Get-ChildItem $SkillsSrc -Directory |
         Where-Object { -not $_.Name.StartsWith('_') } |
@@ -130,16 +140,16 @@ Write-Host "  agents: $($selectedTargets.id -join ', ')"
 Write-Host "  skills: $($SkillNames -join ', ')"
 Write-Host ""
 
-foreach ($target in $selectedTargets) {
-    if (-not (Test-SafeRelativeDir $target.dir)) {
-        Write-Error "Unsafe dir '$($target.dir)' for agent '$($target.id)' - aborting."
+foreach ($agentTarget in $selectedTargets) {
+    if (-not (Test-SafeRelativeDir $agentTarget.dir)) {
+        Write-Error "Unsafe dir '$($agentTarget.dir)' for agent '$($agentTarget.id)' - aborting."
     }
-    $destSkills = Join-Path $TargetRoot ($target.dir -replace '/', [IO.Path]::DirectorySeparatorChar)
+    $destSkills = Join-Path $TargetRoot ($agentTarget.dir -replace '/', [IO.Path]::DirectorySeparatorChar)
     if (-not (Test-WithinBoundary $destSkills $TargetRoot)) {
-        Write-Error "dir '$($target.dir)' for agent '$($target.id)' escapes target root - aborting."
+        Write-Error "dir '$($agentTarget.dir)' for agent '$($agentTarget.id)' escapes target root - aborting."
     }
     New-Item -ItemType Directory -Force -Path $destSkills | Out-Null
-    Write-Host "$($target.name) -> $($target.dir)"
+    Write-Host "$($agentTarget.name) -> $($agentTarget.dir)"
 
     foreach ($name in $SkillNames) {
         $src = Join-Path $SkillsSrc $name

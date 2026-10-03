@@ -54,6 +54,11 @@
       "id": "amp",
       "name": "Amp",
       "dir": ".config/agents/skills"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "dir": ".grok/skills"
     }
   ],
   "projectTargets": [
@@ -101,6 +106,11 @@
       "id": "junie",
       "name": "Junie",
       "dir": ".junie/skills"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "dir": ".grok/skills"
     }
   ]
 }

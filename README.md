@@ -4,7 +4,7 @@
   <img src="https://img.shields.io/badge/Shell-PowerShell%20%7C%20Bash-5391FE?style=flat" alt="Shell" />
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-555?style=flat" alt="Platform" />
   <img src="https://img.shields.io/badge/Category-Agent%20Skills-orange?style=flat" alt="Category" />
-  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1902-lightgrey?style=flat" alt="1902 lines of code" /><!-- loc:end -->
+  <!-- loc:start --><img src="https://img.shields.io/badge/lines_of_code-1959-lightgrey?style=flat" alt="1959 lines of code" /><!-- loc:end -->
 </p>
 
 <img src="docs/cover.svg" width="720" alt="dotcore-skills" />
@@ -12,11 +12,11 @@
 <!-- audit:start -->
 <p>
   <a href="docs/audit/latest.md"><img src="https://img.shields.io/badge/security_audit-passed_with_warnings-dbab09?style=flat" alt="security audit passed with warnings - full, leaks + code" /></a>
-  <a href="docs/audit/2026-09-22-iron-ledger.md"><img src="https://img.shields.io/badge/date-2026--09--22-555?style=flat" alt="audit date" /></a>
+  <a href="docs/audit/2026-10-03-quiet-harbor.md"><img src="https://img.shields.io/badge/date-2026--10--03-555?style=flat" alt="audit date" /></a>
 </p>
 <!-- audit:end -->
 
-Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification), а скрипты раскладывают её в каталоги 10+ coding-агентов одним проходом. Единый конфиг путей `scripts/agents.targets.json` - источник правды и для PowerShell-установщика, и для bash-варианта (через Python 3). Полный `pre-deploy-audit` дополнительно содержит zero-dependency Node.js-валидаторы машинных findings и coverage ledger. Каждый скилл self-contained, поэтому одну папку можно скопировать в любой агент или репозиторий.
+Монорепо Agent Skills для экосистемы **DotCore**: каждый скилл - папка `<name>/SKILL.md` по [спецификации](https://agentskills.io/specification). Скрипты одним проходом раскладывают её в каталоги coding-агентов, включая Grok. Единый конфиг путей `scripts/agents.targets.json` читают и PowerShell-установщик, и bash-вариант через Python 3. Полный `pre-deploy-audit` дополнительно содержит zero-dependency Node.js-валидаторы findings и coverage ledger.
 
 ## Скиллы
 
@@ -51,15 +51,16 @@ chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
 
-Выборочно - один скилл, отдельные агенты, junction вместо копии:
+Выборочно - несколько скиллов через запятую, отдельные агенты, junction вместо копии:
 
 ```powershell
-.\scripts\install.ps1 -Skill generate-readme
+.\scripts\install.ps1 -Skill generate-readme,sepia
 .\scripts\install.ps1 -Agent cursor,claude,agents
 .\scripts\install.ps1 -Link
 ```
 
 ```bash
+./scripts/install.sh generate-readme,sepia
 AGENTS=cursor,claude,agents ./scripts/install.sh
 LINK=1 ./scripts/install.sh
 ```
@@ -76,8 +77,9 @@ LINK=1 ./scripts/install.sh
 | `gemini` | Gemini CLI | `~/.gemini/skills/<name>/` |
 | `agents` | Universal | `~/.agents/skills/<name>/` (OpenCode, Amp, Kimi, Replit) |
 | `opencode` / `goose` | OpenCode, Goose | `~/.config/<agent>/skills/<name>/` |
-| `roo` / `junie` | Roo Code, Junie | `~/.roo`, `~/.junie` `/skills/<name>/` |
+| `roo` / `junie` | Roo Code, Junie | `~/.roo/skills/<name>/`, `~/.junie/skills/<name>/` |
 | `amp` | Amp | `~/.config/agents/skills/<name>/` |
+| `grok` | Grok | `~/.grok/skills/<name>/` |
 
 ### В проект
 
@@ -86,11 +88,11 @@ LINK=1 ./scripts/install.sh
 ```powershell
 .\scripts\sync-to-project.ps1 -Target C:\path\to\repo
 .\scripts\sync-to-project.ps1 -Target . -AllAgents -Link
-.\scripts\sync-to-project.ps1 -Target . -Agent cursor,agents -Skill generate-readme
+.\scripts\sync-to-project.ps1 -Target . -Agent cursor,agents -Skill generate-readme,sepia
 ```
 
 ```bash
-./scripts/sync-to-project.sh /path/to/repo generate-readme
+./scripts/sync-to-project.sh /path/to/repo generate-readme,sepia
 ALL_AGENTS=1 LINK=1 ./scripts/sync-to-project.sh .
 ```
 
@@ -102,12 +104,13 @@ ALL_AGENTS=1 LINK=1 ./scripts/sync-to-project.sh .
 |---------|------------|
 | `.\scripts\install.ps1` | Установить все скиллы во всех агентов (user-level) |
 | `.\scripts\install.ps1 -Agent cursor,claude` | Только выбранные агенты по ID |
-| `.\scripts\install.ps1 -Skill generate-readme` | Один скилл |
+| `.\scripts\install.ps1 -Skill generate-readme,sepia` | Один или несколько скиллов через запятую |
 | `.\scripts\install.ps1 -Link` | Junction/symlink вместо копии (разработка) |
 | `.\scripts\install.ps1 -ListAgents` | Список ID агентов и путей |
-| `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents` | Скиллы в project-level каталоги репозитория |
+| `.\scripts\sync-to-project.ps1 -Target <path> -Skill generate-readme,sepia` | Выбранные скиллы в репозиторий |
+| `.\scripts\sync-to-project.ps1 -Target <path> -AllAgents` | Все скиллы в project-level каталоги репозитория |
 
-Bash-эквиваленты: `./scripts/install.sh`, фильтры через переменные окружения (`AGENTS=`, `LINK=1`, `ALL_AGENTS=1`), список - `--list-agents`. Имя скилла - первым позиционным аргументом.
+Bash-эквиваленты: `./scripts/install.sh`, несколько скиллов через запятую первым аргументом (`./scripts/install.sh generate-readme,sepia`), фильтры через `AGENTS=`, `LINK=1`, `ALL_AGENTS=1`, список - `--list-agents`. У `sync-to-project.sh` цель - первый аргумент, имена скиллов - второй: `./scripts/sync-to-project.sh . generate-readme,sepia`.
 
 ## Стек
 
@@ -127,7 +130,7 @@ Bash-эквиваленты: `./scripts/install.sh`, фильтры через �
 
 ## Архитектура
 
-Монорепо без сборки и пакетного менеджера: контент - markdown-скиллы, логика - два параллельных установщика (PowerShell и bash+Python) поверх общего JSON-конфига путей. Каждый скилл self-contained, поэтому одну папку можно скопировать в любой агент или репозиторий без зависимостей.
+Сборки и пакетного менеджера нет. Контент - markdown-скиллы, логика - два установщика (PowerShell и bash+Python) поверх одного JSON-конфига путей.
 
 ```text
 dotcore-skills/
