@@ -59,7 +59,7 @@ your-repo/.cursor/skills/generate-dotcore-image/
 
 ## Триггеры
 
-«картинка в стиле dotcore», «перерисуй в .ядро», «сгенерируй иллюстрацию / svg / png в этом стиле», `/generate-dotcore-image` (Codex).
+«картинка в стиле dotcore», «перерисуй в .ядро», `/generate-dotcore-image` (Codex). Другой файл стиля: скилл `generate-styled-image`.
 
 ## Тест
 

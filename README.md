@@ -20,7 +20,7 @@
 
 ## Скиллы
 
-Ставятся 10 скиллов. Папку `_template` установщики и CI пропускают.
+Ставятся 11 скиллов. Папку `_template` установщики и CI пропускают.
 
 | Скилл | Назначение | Триггеры |
 |-------|------------|----------|
@@ -28,6 +28,7 @@
 | [sync-project-rules](skills/sync-project-rules/) | Только `AGENTS.md` и rule-файлы, без README, обложки и LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Утечки и код перед деплоем или public. Полный режим пишет findings и coverage ledger | «аудит безопасности», «найди уязвимости», «проверь на утечки» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Картинки в стиле DotCore: генерация или restyle. Raster, если модель умеет, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |
+| [generate-styled-image](skills/generate-styled-image/) | Кадр в стиле из файла канона этого запроса. Сюжет только из текущего фрагмента | «в этом стиле», «по канону», «иллюстрация к фрагменту» |
 | [dotcore-design](skills/dotcore-design/) | UX/UI для web, mobile и desktop: сценарии, дизайн-система, ревью | «спроектируй интерфейс», «проверь UX/UI» |
 | [sepia](skills/sepia/) | De-AI: художественный текст и профессиональная проза, русский регистр DotCore | «убери ИИ-слог», «humanize» |
 | [author-voice](skills/author-voice/) | Профиль своего голоса: создать, обновить, применить | «сохрани мой стиль», «пиши как я» |
@@ -148,6 +149,7 @@ dotcore-skills/
 │   ├── sync-project-rules/      # только AGENTS.md + rule-файлы агентов
 │   ├── pre-deploy-audit/        # утечки + coverage-led code security
 │   ├── generate-dotcore-image/  # PNG/SVG в стиле DotCore
+│   ├── generate-styled-image/   # кадр в стиле из файла канона
 │   ├── dotcore-design/          # UX/UI для web, mobile и desktop
 │   ├── sepia/                   # de-AI: fiction и проф. проза
 │   ├── text-naturalizer/        # редактура сообщений и прозы
