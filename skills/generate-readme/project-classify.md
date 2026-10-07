@@ -8,10 +8,10 @@
 
 | Тип | Сигналы в репо | README: опционально | AGENTS.md: акцент |
 |-----|----------------|---------------------|-------------------|
-| `learning` | темы, уроки, `topics/`, учебный UX | `## Что внутри` с числами | как добавлять контент, структура тем |
-| `web-app` | `apps/web`, SPA, `vite.config`, UI deps | `## Что внутри` если UX-богатый | dev-сервер, порты, env |
+| `learning` | темы, уроки, `topics/`, учебный UX | `## Что внутри`, коротко по depth.md | как добавлять контент, структура тем |
+| `web-app` | `apps/web`, SPA, `vite.config`, UI deps | `## Что внутри`, если UX-богатый, коротко по depth.md | dev-сервер, порты, env |
 | `full-stack` | `apps/api` + frontend, monorepo | оба блока при наличии | API + web setup, shared packages |
-| `bot` | Telegram/Discord, `aiogram`, handlers | `## Что внутри` если есть UX-команды | deploy, токены (имена env, не значения) |
+| `bot` | Telegram/Discord, `aiogram`, handlers | `## Что внутри`, если есть UX-команды, коротко по depth.md | deploy, токены (имена env, не значения) |
 | `cli` | `bin/`, `commander`, `argparse`, `main.ts` | без `## Что внутри` | options table, примеры вызова |
 | `library` | `exports`, `pyproject` package, npm lib | API overview в `## Запуск` или отдельный `### API` | public API, publish, versioning |
 | `monorepo-tool` | turbo/nx, много `packages/` | архитектура обязательна | filter-команды, workspace layout |
@@ -56,15 +56,19 @@ project_type: ...
 audience: ...
 distribution: ...
 cover_mode: file | inline | preview
+walkthrough: yes | no
 primary_runtime: ...
 has_tests: yes | no
 has_docker: yes | no
 monorepo: yes | no
 ```
 
+`walkthrough` и выбор уровня с иллюстрациями - [depth.md](depth.md). Уровень и степень записываются после окна вопросов, не вместо этого черновика.
+
 ## Чеклист классификации
 
 - [ ] Тип выведен из структуры репо, не из названия папки.
 - [ ] Cover mode согласован с `distribution` и remote.
-- [ ] `## Что внутри` только если тип и UX это оправдывают.
+- [ ] `## Что внутри` только если тип и UX это оправдывают. Длина и рисунок - [depth.md](depth.md).
 - [ ] Для `library`/`cli` нет маркетинговых feature-буллетов.
+- [ ] `walkthrough` выведен из шагов человека в продукте, не из желания нарисовать сцену.

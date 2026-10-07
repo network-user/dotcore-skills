@@ -2,11 +2,14 @@
 name: generate-readme
 description: >-
   Создаёт или обновляет README.md в стандарте DotCore (русский internal doc, SVG-обложка
-  DotBioSite, flat-бейджи, LoC через code-counter, ASCII-архитектура) и обновляет
-  правила проекта для агентов (additive, не переписывая авторское): AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md.
-  Прозу README проводит через text-naturalizer, затем sepia. Обложка остаётся SVG.
-  Факты только из репозитория. Классификация типа проекта, аудит 1-10. Cursor, Claude Code,
-  Codex, Grok. Use when creating or updating README, AGENTS.md, or project documentation.
+  DotBioSite, flat-бейджи, LoC через code-counter, ASCII-архитектура) и правила проекта
+  (additive): AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md. Перед записью
+  спрашивает уровень (карточка, обычный, полный) и степень иллюстраций. Текст секций
+  короткий: «Что внутри» не складывает несколько фактов в один пункт. Полный режим
+  добавляет схему или анимацию, если есть обход действий.
+  Прозу проводит через text-naturalizer, затем sepia. Факты только из репозитория.
+  Cursor, Claude Code, Codex, Grok. Use when creating or updating README, AGENTS.md,
+  or project documentation.
 ---
 
 # Generate README + Project Rules
@@ -15,6 +18,8 @@ description: >-
 
 Главное правило: **читай репозиторий, не выдумывай**. Источник правды - `package.json`, `Makefile`, `pyproject.toml`, `docker-compose.yml`, CI, код. Старый README / AGENTS.md / CLAUDE.md - не авторитет; при расхождении верь коду.
 
+Перед записью файлов спроси уровень и степень иллюстраций. Длина текста и рисунок функционала - [depth.md](depth.md).
+
 ## Когда применять
 
 - Создать или обновить `README.md`
@@ -22,9 +27,9 @@ description: >-
 - Привести документацию к стандарту DotCore после рефакторинга
 - Запросы: «обнови README», «сгенерируй документацию», «настрой правила проекта»
 
-При обновлении README - **перегенерируй**, не латай: убери centered hero, `<details>`, битые `<img>`, устаревшие команды. Правила проекта (AGENTS.md и rule-файлы), наоборот, обновляй **additive** - см. шаг 5.
+При обновлении README - **перегенерируй**, не латай: убери centered hero, `<details>`, битые `<img>`, устаревшие команды. Правила проекта (AGENTS.md и rule-файлы), наоборот, обновляй **additive** - см. шаг 6. Объём «только README» из [depth.md](depth.md) этот шаг пропускает.
 
-**Исключение - блок security-аудита.** Если в текущем README есть блок `<!-- audit:start -->…<!-- audit:end -->` (артефакт скилла `pre-deploy-audit`), перенеси его **дословно** в новый README - перегенерация не должна стирать бейджи аудита. Не выдумывай этот блок и не меняй его содержимое (статус, уровень, охват, модель, дата). См. шаг 4.
+**Исключение - блок security-аудита.** Если в текущем README есть блок `<!-- audit:start -->…<!-- audit:end -->` (артефакт скилла `pre-deploy-audit`), перенеси его **дословно** в новый README - перегенерация не должна стирать бейджи аудита. Не выдумывай этот блок и не меняй его содержимое (статус, уровень, охват, модель, дата). См. шаг 5.
 
 ## Язык и тон
 
@@ -32,7 +37,7 @@ description: >-
 - Тон сухой, как internal doc. Не marketing, не landing page, не storytelling.
 - README и AGENTS.md - один язык; CLAUDE.md и `.mdc` - кратко на том же языке.
 
-## Workflow (7 шагов)
+## Workflow (8 шагов)
 
 ### 1. Scan
 
@@ -56,11 +61,15 @@ description: >-
 
 ### 2. Classify
 
-Определи профиль по [project-classify.md](project-classify.md): `project_type`, `audience`, `distribution`, `cover_mode`.
+Определи профиль по [project-classify.md](project-classify.md): `project_type`, `audience`, `distribution`, `cover_mode`, `walkthrough`. Обход функционала описан в [depth.md](depth.md).
 
-### 3. Cover mode
+### 3. Ask
 
-SVG-обложка DotBioSite - агент пишет текстом. Детали: [logo-cover.md](logo-cover.md).
+Одно окно по [depth.md](depth.md): уровень, степень иллюстраций, обложка, объём. Рекомендация зависит от `walkthrough` и числа фактов. Файлы пиши после ответа или после закрытия окна без ответа.
+
+### 4. Cover mode
+
+SVG-обложка DotBioSite - агент пишет текстом. Детали: [logo-cover.md](logo-cover.md). Ответ «оставить» не перезаписывает существующий `docs/cover.svg`. «Перерисовать» и отсутствие файла идут по logo-cover. `docs/preview.png` остаётся обложкой.
 
 **Дефолт - GitHub-first: `file`.** README в первую очередь смотрят на github.com, а GitHub **вырезает inline `<svg>`** из markdown - обложки не будет. Поэтому пиши SVG в `docs/cover.svg` и ставь `<img src="docs/cover.svg" width="720">`. `inline` - только для IDE-only репозитория по явному запросу.
 
@@ -70,7 +79,7 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 | `inline` | inline `<svg>` после badges - **только IDE**, на GitHub не виден |
 | `preview` | `<img src="docs/preview.png">`, SVG не трогать |
 
-### 4. Write README
+### 5. Write README
 
 Структура (порядок строгий):
 
@@ -80,19 +89,21 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
                     LoC = 4-й бейдж В ТОЙ ЖЕ строке header, в маркерах <!-- loc:start -->…<!-- loc:end -->
 [cover]
 [audit badges]      ОПЦ. - блок <!-- audit:start -->…<!-- audit:end --> от pre-deploy-audit; перенести дословно, если был в старом README
-{intro}             до 3 предложений
+{intro}             до 2 предложений
 
-## Что внутри       ОПЦ. - см. project-classify.md
+## Что внутри       ОПЦ. - потолок и рисунок в depth.md, уместность в project-classify.md
 ## Запуск
 ## Команды          таблица из scripts
 ## Стек             for-the-badge <img> только
 ## Тесты / …        если есть в репо
-## Архитектура      последняя содержательная: абзац + ASCII-дерево + 3-6 инвариантов
+## Архитектура      последняя содержательная: абзац до 2 предложений + ASCII-дерево + 3-5 инвариантов
 ## Лицензия         футер: строгий All Rights Reserved (см. license.md)
 ```
 
-- **intro** - что это + одно ключевое решение. Без tagline-абзаца и маркетинговых буллетов.
-- **Что внутри** - факты и числа, `**ключ**: значение`, без emoji. Не для library/cli без UX.
+Карточка убирает `## Что внутри`, `## Стек` и `## Тесты`. Остальной порядок тот же. Длина блоков и рисунок - [depth.md](depth.md).
+
+- **intro** - что это + одно ключевое решение, до 2 предложений. Без tagline-абзаца и маркетинговых буллетов.
+- **Что внутри, длина секций и рисунок функционала** - [depth.md](depth.md). [project-classify.md](project-classify.md) решает, уместна ли секция. На карточке её нет.
 - **Архитектура** - ASCII, не mermaid если дерева хватает. После неё - только футер `## Лицензия`.
 - **Лицензия** - всегда присутствует; по умолчанию строгий All Rights Reserved + файл `LICENSE`. См. [license.md](license.md).
 - **Бейджи аудита** - если в старом README был блок `<!-- audit:start -->…<!-- audit:end -->` (артефакт `pre-deploy-audit`), перенеси его **дословно вместе с маркерами** сразу после обложки, перед intro. Это чужой блок: не выдумывай, не дополняй и не правь его (статус, уровень, охват, модель, дата) - только перенос. Нет блока в исходном README - ничего не добавляй. Если регенерация вызвана крупным изменением кода (новые модули/зависимости/архитектура), в отчёте отметь, что бейджи аудита могли устареть и стоит перезапустить `pre-deploy-audit`; сам блок при этом не удаляй. Детали маркеров - [stack-badges.md](stack-badges.md).
@@ -100,7 +111,7 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 Связную прозу (intro и абзацы секций) после черновика прогони дважды. Таблицы, команды, дерево, бейджи, маркеры LoC, блок аудита и футер лицензии стилем не трогай.
 
 1. `text-naturalizer`, режим `light-edit`, если секции уже совпадают со стандартом. Профиль `author-voice` или `VOICE.md` передай, только если такой файл уже есть.
-2. `sepia`, операция `refactor`. Маршрут: `professional-pass.md`, `references/domains/docs.md`, `ru-register.md`. Sepia чинит слог. Набор секций задаёт этот стандарт, не sepia.
+2. `sepia`, операция `refactor`. Маршрут: `professional-pass.md`, `references/domains/docs.md`, `ru-register.md`. Sepia чинит слог. Набор секций и потолок длины задаёт [depth.md](depth.md), не sepia. Раздутый пункт верни к одному предложению.
 
 Нет этих скиллов - поставь их и прочитай `SKILL.md` до прозы:
 
@@ -116,7 +127,9 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 
 Бейджи и LoC: [stack-badges.md](stack-badges.md). Лицензия: [license.md](license.md). Эталон: [reference.md](reference.md).
 
-### 5. Write project rules
+### 6. Write project rules
+
+Объём «только README» этот шаг пропускает. `LICENSE` тогда создаётся, только если файла ещё нет.
 
 Правила проекта (`AGENTS.md` + нативные rule-файлы агентов) генерирует **подскилл [`sync-project-rules`](../sync-project-rules/SKILL.md)** - он владеет шаблонами. Вызови его и выполни его workflow:
 
@@ -133,11 +146,11 @@ SVG-обложка DotBioSite - агент пишет текстом. Детал
 
 Правила - **additive**: существующие `AGENTS.md`/`CLAUDE.md` не переписывай и не реструктурируй. Добавь недостающие DotCore-блоки и точечно почини устаревшие факты; авторский текст и секции сохрани дословно.
 
-### 6. Validate
+### 7. Validate
 
 Self-check (ниже) + аудит [audit.md](audit.md). Минимум **8/10**. Исправь замечания до отчёта.
 
-### 7. LoC finalize
+### 8. LoC finalize
 
 В конце сессии:
 
@@ -165,6 +178,9 @@ LoC - **4-й бейдж в группе header**, на одном уровне �
 ## Чего не делать
 
 - marketing, `<details>`, centered hero, emoji, длинное тире, LLM-маркеры
+- несколько фактов или два предложения в одном пункте «Что внутри»
+- HTML-сцена внутрь README. На GitHub остаётся SVG, сцена открывается ссылкой
+- анимация дерева файлов. Дерево живёт в «Архитектуре»
 - mermaid вместо ASCII-дерева где хватает дерева
 - for-the-badge в header; plain-text в `## Стек`
 - выдуманные команды, пути, env, версии, LoC
@@ -180,6 +196,7 @@ LoC - **4-й бейдж в группе header**, на одном уровне �
 - Буллеты: `**ключ**: значение`
 - Числа сверяй с репо
 - README - для разработчика; AGENTS.md - для агента (build/test/conventions)
+- Длина секций и рисунок функционала - [depth.md](depth.md)
 
 ## Чего не включать в README
 
@@ -195,16 +212,16 @@ LoC - **4-й бейдж в группе header**, на одном уровне �
 - [ ] Русский (или EN-only); тон internal doc
 - [ ] Cover по режиму; SVG tagline на русском; нет битых img
 - [ ] Header: 4 бейджа `<img style=flat>` внутри одного `<p>` - Runtime · Platform · Category · **LoC (4-й, в маркерах)** - один ряд на GitHub, перед cover
-- [ ] Cover для GitHub - `docs/cover.svg` + `<img>` (inline `<svg>` GitHub вырезает); стек - `<img>` for-the-badge в `<p>`
+- [ ] Cover для GitHub - `docs/cover.svg` + `<img>` (inline `<svg>` GitHub вырезает); стек - `<img>` for-the-badge в `<p>` (на карточке секции нет)
 - [ ] Команды из scripts; стек из deps; архитектура - последняя содержательная
 - [ ] `## Лицензия` футером (строгий All Rights Reserved), есть файл `LICENSE`
-- [ ] `## Что внутри` уместна и с числами
+- [ ] Уровень и степень иллюстраций соблюдены, бюджет текста не раздут ([depth.md](depth.md))
 - [ ] Блок аудита `<!-- audit:start -->…<!-- audit:end -->` (если был в старом README) перенесён дословно после обложки, без правок
-- [ ] Связная проза прогнана через text-naturalizer и sepia; команды, дерево, бейджи и лицензия после этого те же
+- [ ] Связная проза прогнана через text-naturalizer и sepia; команды, дерево, бейджи, лицензия и бюджет depth.md после этого те же
 
 **Project rules**
 
-- [ ] `AGENTS.md` создан или дополнен (additive, не переписан), команды проверены
+- [ ] `AGENTS.md` создан или дополнен (additive, не переписан), команды проверены. Объём «только README» файлы правил не трогает
 - [ ] Rule-файл агента запуска создан (папка создана, если её не было)
 - [ ] `AGENTS.md`/`CLAUDE.md`/`.mdc` содержат правило README-sync (обновлять README при глобальных изменениях)
 - [ ] `.cursor/rules/dotcore-project.mdc` существует
@@ -221,6 +238,7 @@ LoC - **4-й бейдж в группе header**, на одном уровне �
 |------|------------|
 | [SKILL.md](SKILL.md) | Workflow (этот файл) |
 | [project-classify.md](project-classify.md) | Тип, аудитория, cover mode |
+| [depth.md](depth.md) | Окно вопросов, уровень, бюджет текста, схема и анимация |
 | [project-rules.md](project-rules.md) | Зеркало/fallback правил (канон - подскилл `sync-project-rules`): AGENTS.md, .mdc, CLAUDE.md, portfolio, агент запуска, README-sync |
 | [license.md](license.md) | Лицензия (строгий All Rights Reserved), LICENSE + футер |
 | [logo-cover.md](logo-cover.md) | SVG DotBioSite |

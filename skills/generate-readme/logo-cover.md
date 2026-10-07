@@ -143,6 +143,8 @@ Standalone-файл не ограничен длиной README, поэтому 
 
 Произвольные иллюстрации в стиле DotCore (не обложка README) - скилл `generate-dotcore-image`.
 
+Карта возможностей `docs/readme/inside.svg` обложкой не является. Её уровень, бюджет и сцена `inside.html` задаёт [depth.md](depth.md).
+
 Raster prompt (fallback):
 
 ```

@@ -24,7 +24,7 @@
 
 | Скилл | Назначение | Триггеры |
 |-------|------------|----------|
-| [generate-readme](skills/generate-readme/) | README в стандарте DotCore и правила агентов. Проза через `text-naturalizer` и `sepia`, обложка SVG | «обнови README», «настрой правила проекта» |
+| [generate-readme](skills/generate-readme/) | README в стандарте DotCore и правила агентов. Перед записью спрашивает уровень и степень иллюстраций, текст секций короткий | «обнови README», «полный режим», «настрой правила проекта» |
 | [sync-project-rules](skills/sync-project-rules/) | Только `AGENTS.md` и rule-файлы, без README, обложки и LoC | «обнови AGENTS.md», «синхронизируй правила проекта» |
 | [pre-deploy-audit](skills/pre-deploy-audit/) | Утечки и код перед деплоем или public. Полный режим пишет findings и coverage ledger | «аудит безопасности», «найди уязвимости», «проверь на утечки» |
 | [generate-dotcore-image](skills/generate-dotcore-image/) | Картинки в стиле DotCore: генерация или restyle. Raster, если модель умеет, иначе SVG | «картинка в стиле dotcore», «перерисуй в .ядро» |

@@ -36,11 +36,14 @@
 - [ ] `.cursor/rules/dotcore-project.mdc` обновлён
 - [ ] `CLAUDE.md` - обёртка на AGENTS.md
 - [ ] Нет дублирования README целиком в AGENTS.md
+- [ ] Объём «только README»: не снижай эту категорию за нетронутые файлы. Ставь 2, если они не ломались в этом прогоне
 
 ### 5. Классификация и полнота (0-2)
 
 - [ ] `project_type` отражён в опциональных секциях
-- [ ] `## Что внутри` только где уместно, с числами
+- [ ] Уровень из [depth.md](depth.md) совпадает с набором секций. На карточке нет «Что внутри», стека и тестов
+- [ ] `## Что внутри` в потолке depth.md: пункт из одного предложения, лишние факты на схеме или в существующих docs
+- [ ] Степень иллюстраций совпадает с файлами: схема и анимация держат `docs/readme/inside.svg`, анимация ещё и `inside.html`
 - [ ] `docs/portfolio-draft.md` если portfolio
 - [ ] Пустые шаблонные секции удалены
 
@@ -57,9 +60,12 @@ DotCore-формат:   X/2
 ИТОГО:            X/10
 
 Исправлено: {список или «ничего»}
-Файлы: README.md, LICENSE, AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md{, <rule-файл агента запуска>}{, docs/portfolio-draft.md}
+Файлы: README.md, LICENSE, AGENTS.md, .cursor/rules/dotcore-project.mdc, CLAUDE.md{, <rule-файл агента запуска>}{, docs/portfolio-draft.md}{, docs/readme/inside.svg}{, docs/readme/inside.html}
 LoC: {N}
 Cover: {file|inline|preview}
+Depth:    card | standard | full
+Visual:   none | schema | motion
+Walkthrough: yes | no
 ```
 
 ## Типичные замечания (исправить сразу)
@@ -79,6 +85,7 @@ Cover: {file|inline|preview}
 | Plain-text в ## Стек | Заменить на `<img>` бейджи |
 | Tagline EN в SVG | Перевести на русский |
 | Нет dotcore-project.mdc | Создать по шаблону |
+| «Что внутри» длиннее одного предложения на пункт | Сжать по [depth.md](depth.md). Избыток на схему или в существующие docs |
 
 ## Промпт аудита (standalone)
 

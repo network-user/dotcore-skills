@@ -2,7 +2,7 @@
 
 Скилл DotCore из monorepo [dotcore-skills](../../README.md): **README.md** (internal doc) + **правила проекта** (`AGENTS.md`, Cursor rule, `CLAUDE.md`) в каждом репозитории, где запущен.
 
-Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Прозу проводит через text-naturalizer и sepia, набор секций не режет. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
+Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Перед записью спрашивает уровень и степень иллюстраций ([depth.md](depth.md)). Прозу проводит через text-naturalizer и sepia и держит короткий бюджет текста. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
 
 ## Что создаётся в целевом проекте
 
@@ -15,6 +15,8 @@
 | `LICENSE` | Строгий All Rights Reserved (всегда) |
 | Файл агента запуска | Нативный rule-файл агента, из которого запущен скилл |
 | `docs/cover.svg` | Обложка для GitHub (если cover_mode=file) |
+| `docs/readme/inside.svg` | Карта возможностей, если выбраны схема или анимация |
+| `docs/readme/inside.html` | Сцена обхода функционала, если выбрана анимация |
 | `docs/portfolio-draft.md` | Черновик DotBioSite (если audience=portfolio) |
 
 ## Файлы скилла
@@ -23,6 +25,7 @@
 |------|------------|
 | [SKILL.md](SKILL.md) | Workflow (точка входа) |
 | [project-classify.md](project-classify.md) | Тип, аудитория, cover mode |
+| [depth.md](depth.md) | Окно вопросов, уровень, бюджет текста, схема и анимация |
 | [project-rules.md](project-rules.md) | Шаблоны AGENTS.md, .mdc, CLAUDE.md, агент запуска, README-sync |
 | [license.md](license.md) | Лицензия (строгий All Rights Reserved) |
 | [logo-cover.md](logo-cover.md) | SVG DotBioSite |
@@ -79,7 +82,7 @@ your-repo/.cursor/skills/generate-readme/
 
 ## Триггеры
 
-«обнови README», «сгенерируй документацию», «настрой правила проекта», `/generate-readme` (Codex).
+«обнови README», «сгенерируй документацию», «настрой правила проекта», «полный прогон», «полный режим», `/generate-readme` (Codex).
 
 ## Тест
 
