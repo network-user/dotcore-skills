@@ -13,7 +13,7 @@
 3. **.cursor/rules/dotcore-project.mdc** - правило Cursor
 4. **CLAUDE.md** - обёртка со ссылкой на AGENTS.md
 5. **Файл правил агента запуска** - создай нативный файл/папку агента, из которого работаешь, если его нет
-6. **LICENSE** - строгий All Rights Reserved (см. блок «Лицензия» ниже)
+6. **LICENSE** - режим из вопроса (см. блок «Лицензия» ниже). Молча не ставь MIT, Apache или GPL
 7. **docs/portfolio-draft.md** - только если проект для портфолио DotBioSite
 
 ## Правила
@@ -28,12 +28,12 @@
 
 1. **Scan** - runtime, scripts, deps, структура, CI, remote, существующие AGENTS.md/CLAUDE.md
 2. **Classify** - тип (learning/web-app/cli/library/bot/…), аудитория (internal/oss/portfolio), distribution (github/local/docker/…). `walkthrough=yes`, если человек проходит шаги в продукте
-3. **Спроси** - одно окно или одно сообщение, до записи файлов. Четыре вопроса: уровень (карточка / обычный / полный), степень иллюстраций (без рисунка / схема / анимация), обложка (оставить / перерисовать), объём (только README / README и правила). Ответ уже есть в сообщении: этот вопрос не повторяй. Окно закрыто без ответа: бери рекомендацию. Уровень - обычный, а при словах «полный прогон» или «полный режим» - полный. Степень - без рисунка на карточке. На обычном - схема, если фактов больше шести, иначе без рисунка. На полном - анимация при walkthrough, иначе схема. Обложку оставляй, если файл уже есть. Объём - README и правила
+3. **Спроси** - одно окно или одно сообщение, до записи файлов. Пять вопросов: уровень (карточка / обычный / полный), степень иллюстраций (без рисунка / схема / анимация), обложка (оставить / перерисовать), объём (только README / README и правила), лицензия (ознакомление / личное пользование / MIT / Apache-2.0 / GPL-3.0 / оставить текущую, если файл уже есть). Ответ уже есть в сообщении: этот вопрос не повторяй. Лицензию не пропускай, пока режим не назван. Окно закрыто без ответа: бери рекомендацию. Уровень - обычный, а при словах «полный прогон» или «полный режим» - полный. Степень - без рисунка на карточке. На обычном - схема, если фактов больше шести, иначе без рисунка. На полном - анимация при walkthrough, иначе схема. Обложку оставляй, если файл уже есть. Объём - README и правила. Лицензия - оставить текущий файл, если он есть. Файла нет - ознакомление. Назови этот выбор в отчёте. «Open source» без имени: до записи спроси MIT, Apache-2.0 или GPL-3.0. Второй вопрос закрыт без ответа: свободную лицензию не ставь
 4. **Cover** - GitHub → `docs/cover.svg` + `<img width="720">`; IDE → inline `<svg>`; есть preview.png → используй. «Оставить» не перезаписывает существующий файл. Генерация изображений SVG-обложку не заменяет
 5. **Write README** - структура и бюджет ниже. Связную прозу прогони text-naturalizer, затем sepia. Они не раздувают пункт до двух предложений. Таблицы, команды, дерево, бейджи и блок аудита не переписывай
 6. **Write rules** - если объём включает правила: AGENTS.md (80-150 строк), dotcore-project.mdc, CLAUDE.md (обёртка)
 7. **LoC** - `code-counter .` → TOTAL в бейдж между `<!-- loc:start -->` / `<!-- loc:end -->`
-8. **Audit** - оценка 1-10, минимум 8. В отчёте назови Depth, Visual, Walkthrough
+8. **Audit** - оценка 1-10, минимум 8. В отчёте назови Depth, Visual, Walkthrough, License
 
 ## Структура README
 
@@ -50,7 +50,7 @@
 ## Стек            только <img for-the-badge>. На карточке секции нет
 ## Тесты / …       если есть. На карточке секции нет
 ## Архитектура     последняя содержательная: абзац до 2 предложений + ASCII-дерево + 3-5 инвариантов по одной строке
-## Лицензия        футер: © {year} {author}, все права защищены + ссылка на LICENSE
+## Лицензия        футер выбранного режима + ссылка на LICENSE
 ```
 
 ## Бюджет текста
@@ -114,9 +114,11 @@ Skeleton (замени {p}, {brand}, {name}, {tagline}, {glyph}):
 
 Ставится сразу после трёх flat-бейджей, без пустой строки между ними.
 
-## Лицензия (строгий All Rights Reserved)
+## Лицензия
 
-Файл `LICENSE` (замени `{year}`, `{author}` - год сессии и автор/бренд из репо; по умолчанию для DotCore - `DotCore`):
+Если рядом лежит `license.md`, он главнее этого блока. `{year}` - год сессии. `{author}` - бренд из репо, для DotCore по умолчанию `DotCore`. «Оставить текущую» файл не перезаписывает: футер описывает существующий `LICENSE`, права своими словами не пересказывай. Объём «только README» выбранный режим всё равно записывает. Это не заключение юриста. Ознакомление и личное пользование не называй open source.
+
+**Ознакомление.** `LICENSE`:
 
 ```text
 Copyright (c) {year} {author}. All Rights Reserved.
@@ -128,18 +130,48 @@ publish, distribute, sublicense, or sell any part of the Software.
 The source is provided for viewing and reference only. Any other use
 requires the prior written permission of the copyright holder.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-Футер README:
+Футер: «© {year} {author}. Все права защищены. Проприетарный код. Использование, копирование, изменение и распространение запрещены без письменного разрешения автора. Исходный код открыт только для ознакомления. См. [LICENSE](LICENSE).»
 
-```markdown
-## Лицензия
+**Личное пользование.** Частное лицо, для себя, без коммерции: запуск, своя копия, правка у себя. Бизнес, организация, найм, заказчик, публикация, распространение и сервис - только с письменного согласия автора. `LICENSE`:
 
-© {year} {author}. Все права защищены. Использование, копирование, изменение и распространение запрещены без письменного разрешения автора. Исходный код открыт только для ознакомления. См. [LICENSE](LICENSE).
+```text
+Copyright (c) {year} {author}. All Rights Reserved.
+
+The source code is published so it can be read. This is not an open-source
+license. No rights are granted except the personal permission below.
+
+Permission is granted to a private individual to use, copy, and modify the
+Software for that person's own personal, non-commercial purposes. This
+includes running it and keeping a private local copy.
+
+Any other use requires the prior written permission of the copyright holder.
+That includes commercial use, business use, use by a company or other
+organization, use for an employer or a client, and any publishing,
+distribution, sublicensing, sale, or offering of the Software as a service.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-Не предлагай open-source лицензию по умолчанию. Прежнюю лицензию (MIT и т.п.) заменяй.
+Футер: «© {year} {author}. Исходный код открыт. Личное некоммерческое использование разрешено: запуск, локальная копия и правка для себя. Бизнес, коммерция, использование в организации или для заказчика, публикация и распространение требуют предварительного письменного согласия автора. Это не open source. См. [LICENSE](LICENSE).»
+
+**MIT.** Полный текст MIT License с `Copyright (c) {year} {author}`, без сокращений. Футер: «© {year} {author}. MIT License. См. [LICENSE](LICENSE).»
+
+**Apache-2.0.** Канонический текст `https://www.apache.org/licenses/LICENSE-2.0.txt`, перед ним `Copyright {year} {author}`. Не пересказывай. Адрес не открылся: файл не выдумывай. Уже есть `LICENSE` - оставь его, иначе поставь ознакомление и напиши об этом. Футер: «© {year} {author}. Apache License 2.0. См. [LICENSE](LICENSE).»
+
+**GPL-3.0.** Канонический текст `https://www.gnu.org/licenses/gpl-3.0.txt`, в начале copyright с `{year}` и `{author}`. Не сокращай. Адрес не открылся: как у Apache. Футер: «© {year} {author}. GNU GPL v3. См. [LICENSE](LICENSE).»
 
 ## README-sync
 
@@ -151,7 +183,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 - [ ] Команды и пути существуют; LoC обновлён, стоит 4-м бейджем в header
 - [ ] Cover по среде; нет битых img; архитектура - последняя содержательная, лицензия - футер
 - [ ] Блок аудита `<!-- audit:start -->…<!-- audit:end -->` (если был в старом README) перенесён дословно после обложки
-- [ ] `LICENSE` создан (строгий All Rights Reserved); прежняя лицензия заменена
+- [ ] `LICENSE` и футер совпадают с выбранным режимом. «Оставить текущую» файл не переписал. MIT, Apache и GPL не поставлены молча
 - [ ] AGENTS.md не дублирует README; CLAUDE.md - обёртка; есть правило README-sync
 - [ ] Аудит ≥ 8/10
 - [ ] Уровень и степень иллюстраций названы. Пункт «Что внутри» не длиннее одного предложения

@@ -13,7 +13,7 @@
 | `.cursor/rules/dotcore-project.mdc` | Cursor | краткий контекст + ссылка на AGENTS.md |
 | `CLAUDE.md` | Claude Code | тонкая обёртка → AGENTS.md |
 | Rule-файл агента запуска | агент, из которого запущен скилл | его нативный файл/папка (таблица ниже), создать если нет |
-| `LICENSE` + футер `## Лицензия` | любой, кто открыл репо | строгий All Rights Reserved (см. [license.md](license.md)) |
+| `LICENSE` + футер `## Лицензия` | любой, кто открыл репо | режим из ответа на вопрос скилла (см. [license.md](license.md)) |
 | `docs/portfolio-draft.md` | DotBioSite | только если `audience=portfolio` |
 
 README остаётся сухим техдоком. Операционные инструкции для агентов - в `AGENTS.md`, не дублируй длинные command-листы в README.
@@ -122,7 +122,7 @@ Codex, Jules, Aider, Copilot читают корневой `AGENTS.md` нати�
 - Не выдумывать команды, зависимости, env, API endpoints.
 - Не добавлять `<details>`, centered hero, emoji в README DotCore.
 - Не менять `docs/cover.svg` без регенерации обложки.
-- Не менять `LICENSE` и текст лицензии без явного запроса пользователя.
+- Не менять `LICENSE` и текст лицензии без явного запроса пользователя. Ответ в окне `generate-readme` - такой запрос.
 - Не коммитить секреты, токены, `.env`.
 - Не удалять маркеры `<!-- loc:start -->` / `<!-- loc:end -->` в README.
 

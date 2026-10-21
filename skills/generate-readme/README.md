@@ -2,7 +2,7 @@
 
 Скилл DotCore из monorepo [dotcore-skills](../../README.md): **README.md** (internal doc) + **правила проекта** (`AGENTS.md`, Cursor rule, `CLAUDE.md`) в каждом репозитории, где запущен.
 
-Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Перед записью спрашивает уровень и степень иллюстраций ([depth.md](depth.md)). Прозу проводит через text-naturalizer и sepia и держит короткий бюджет текста. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
+Сохраняет брендинг: SVG-обложка DotBioSite, flat-бейджи, LoC через `code-counter`, ASCII-архитектура. Перед записью спрашивает уровень, степень иллюстраций и лицензию ([depth.md](depth.md), [license.md](license.md)). Прозу проводит через text-naturalizer и sepia и держит короткий бюджет текста. Классификация проекта, аудит 1-10, стандарт [agents.md](https://agents.md/).
 
 ## Что создаётся в целевом проекте
 
@@ -12,7 +12,7 @@
 | `AGENTS.md` | Канон для Codex, Cursor, Claude, Copilot |
 | `.cursor/rules/dotcore-project.mdc` | Правило Cursor, `alwaysApply: true` |
 | `CLAUDE.md` | Обёртка → AGENTS.md |
-| `LICENSE` | Строгий All Rights Reserved (всегда) |
+| `LICENSE` | Режим из вопроса: ознакомление, личное пользование или именная свободная лицензия |
 | Файл агента запуска | Нативный rule-файл агента, из которого запущен скилл |
 | `docs/cover.svg` | Обложка для GitHub (если cover_mode=file) |
 | `docs/readme/inside.svg` | Карта возможностей, если выбраны схема или анимация |
@@ -27,7 +27,7 @@
 | [project-classify.md](project-classify.md) | Тип, аудитория, cover mode |
 | [depth.md](depth.md) | Окно вопросов, уровень, бюджет текста, схема и анимация |
 | [project-rules.md](project-rules.md) | Шаблоны AGENTS.md, .mdc, CLAUDE.md, агент запуска, README-sync |
-| [license.md](license.md) | Лицензия (строгий All Rights Reserved) |
+| [license.md](license.md) | Режимы лицензии, шаблон `LICENSE` и футер |
 | [logo-cover.md](logo-cover.md) | SVG DotBioSite |
 | [stack-badges.md](stack-badges.md) | Shields, LoC в header |
 | [audit.md](audit.md) | Оценка 1-10 |

@@ -2,7 +2,7 @@
 
 Эталонный вывод скилла для **README.md** (часть 1 из 2). Скилл v2 также генерирует `AGENTS.md`, `.cursor/rules/dotcore-project.mdc`, `CLAUDE.md` - см. [project-rules.md](project-rules.md).
 
-Дефолт (GitHub-first) - обложка в `docs/cover.svg` + `<img width="720">`, [logo-cover.md](logo-cover.md). Здесь для наглядности показан inline `<svg>` (его текст и идёт в `docs/cover.svg`) - на github.com inline вырезается. Бейджи - в одном `<p>` (один ряд на GitHub). LoC - **4-м бейджем в header**, в маркерах, не под cover. Лицензия - футер после архитектуры, [license.md](license.md).
+Дефолт (GitHub-first) - обложка в `docs/cover.svg` + `<img width="720">`, [logo-cover.md](logo-cover.md). Здесь для наглядности показан inline `<svg>` (его текст и идёт в `docs/cover.svg`) - на github.com inline вырезается. Бейджи - в одном `<p>` (один ряд на GitHub). LoC - **4-м бейджем в header**, в маркерах, не под cover. Лицензия - футер после архитектуры, [license.md](license.md). Образец футера ниже - режим «ознакомление».
 
 Образец ниже - уровень обычный, без рисунка функционала. Окно вопросов, потолок текста, схема и анимация - [depth.md](depth.md). Если образец и depth.md расходятся в длине секции, верь depth.md.
 

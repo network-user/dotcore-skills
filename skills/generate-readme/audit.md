@@ -10,7 +10,7 @@
 - [ ] Пути, env-имена, версии, числа сверены с репо
 - [ ] LoC из `code-counter` или явно указан способ подсчёта
 - [ ] Стек-бейджи = реальные зависимости
-- [ ] Лицензия: есть файл `LICENSE` и футер `## Лицензия`; формулировка совпадает с [license.md](license.md)
+- [ ] Лицензия: файл `LICENSE` и футер `## Лицензия` совпадают с режимом из [license.md](license.md). Режим «оставить» файл не переписал
 
 **0** - выдуманные факты · **1** - мелкие несоответствия · **2** - всё проверено
 
@@ -66,6 +66,7 @@ Cover: {file|inline|preview}
 Depth:    card | standard | full
 Visual:   none | schema | motion
 Walkthrough: yes | no
+License:  view | personal | mit | apache-2.0 | gpl-3.0 | keep
 ```
 
 ## Типичные замечания (исправить сразу)
@@ -76,7 +77,7 @@ Walkthrough: yes | no
 | Бейджи/стек разъезжаются по строкам на GitHub | Обернуть группу в один `<p>` |
 | Обложки нет на GitHub | inline `<svg>` → `docs/cover.svg` + `<img src="docs/cover.svg" width="720">` |
 | LoC на отдельной строке от header | Все 4 header-бейджа `<img style=flat>` в одном `<p>` |
-| Нет `LICENSE` / футера лицензии | Создать по [license.md](license.md) (строгий All Rights Reserved) |
+| Нет `LICENSE` / футера лицензии | Создать по режиму из [license.md](license.md). Режим не выбран и файла нет: «ознакомление» |
 | Rule-файл агента запуска не создан | Создать файл и папку по таблице в project-rules.md |
 | Команда не в package.json | Удалить или найти реальный script |
 | AGENTS.md копирует README | Оставить в AGENTS только operational |
